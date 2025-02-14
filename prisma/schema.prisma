@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  name           String?
+  email          String          @unique
+  hashedPassword String // to-do: use bcrypt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  transactions   Transaction[]
+  budgets        Budget[]
+  pots           Pot[]
+  recurringBills RecurringBill[]
+}
+
+model Transaction {
+  id       String          @id @default(uuid())
+  amount   Float
+  title    String
+  type     TransactionType // income or expense
+  category CategoryType
+  date     DateTime
+  userId   String
+  user     User            @relation(fields: [userId], references: [id])
+}
+
+model Budget {
+  id           String       @id @default(uuid())
+  category     CategoryType
+  maxLimit     Float
+  currentSpend Float
+  theme        String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  userId       String
+  user         User         @relation(fields: [userId], references: [id])
+}
+
+model Pot {
+  id            String   @id @default(uuid())
+  name          String
+  targetAmount  Float
+  currentAmount Float    @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+}
+
+model RecurringBill {
+  id        String   @id @default(uuid())
+  name      String
+  amount    Float
+  dueDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum CategoryType {
+  GENERAL
+  GROCERIES
+  DINING_OUT
+  BILLS
+  ENTERTAINMENT
+  PERSONAL_CARE
+}
+
+enum FrequencyType {
+  MONTHLY
+  YEARLY
+}
