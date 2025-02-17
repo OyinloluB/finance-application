@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Icons, IconName } from "../atoms/icons";
 
 interface SidebarItemProps {
   icon: IconName;
   label: string;
   active?: boolean;
-  collapsed?: boolean;
+  showItem?: boolean;
   onClick?: () => void;
 }
 
@@ -13,21 +13,10 @@ const SidebarItem = ({
   icon,
   label,
   active,
-  collapsed,
+  showItem,
   onClick,
 }: SidebarItemProps) => {
   const IconComponent = Icons[icon];
-
-  const [showText, setShowText] = useState(!collapsed);
-
-  useEffect(() => {
-    if (!collapsed) {
-      const timer = setTimeout(() => setShowText(true), 300);
-      return () => clearTimeout(timer);
-    } else {
-      setShowText(false);
-    }
-  }, [collapsed]);
 
   return (
     <div>
@@ -49,8 +38,8 @@ const SidebarItem = ({
           </div>
         )}
         <span
-          className={`whitespace-nowrap flex-1 transition-opacity duration-300 ${
-            showText ? "opacity-100" : "opacity-0"
+          className={`whitespace-nowrap transition-opacity duration-300 ${
+            showItem ? "opacity-100" : "opacity-0"
           }`}
         >
           {label}

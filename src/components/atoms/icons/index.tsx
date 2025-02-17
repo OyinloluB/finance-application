@@ -1,4 +1,5 @@
-import ArrowFatLinesLeftIcon from "./ArrowFatLinesLeft";
+import ArrowFatLinesLeftIcon from "./ArrowFatLinesLeftIcon";
+import ArrowFatLinesRightIcon from "./ArrowFatLinesRightIcon";
 import ArrowsDownUpIcon from "./ArrowsDownUp";
 import BarbellIcon from "./BarbellIcon";
 import BookOpenTextIcon from "./BookOpenTextIcon";
@@ -14,7 +15,9 @@ import FilterIcon from "./FilterIcon";
 import HouseIcon from "./HouseIcon";
 import JarFillIcon from "./JarFillIcon";
 import ListBulletsIcon from "./ListBulletsIcon";
+import Logo from "./Logo";
 import MagnifyingGlassIcon from "./MagnifyingGlassIcon";
+import MinLogo from "./MinLogo";
 import MusicNoteIcon from "./MusicNoteIcon";
 import NetworkIcon from "./NetworkIcon";
 import PottedPlantIcon from "./PottedPlantIcon";
@@ -26,6 +29,7 @@ import WrenchIcon from "./WrenchIcon";
 
 export const Icons = {
   ArrowFatLinesLeftIcon,
+  ArrowFatLinesRightIcon,
   ArrowsDownUpIcon,
   BarbellIcon,
   BookOpenTextIcon,
@@ -50,6 +54,8 @@ export const Icons = {
   WarehouseIcon,
   WarningCircleIcon,
   WrenchIcon,
+  Logo,
+  MinLogo,
 };
 
 // export a type for better TypeScript inference
