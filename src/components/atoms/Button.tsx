@@ -1,5 +1,5 @@
 import React from "react";
-import CaretRightIcon from "./icons/CaretRightIcon";
+import { CaretRightIcon } from "./icons";
 
 type ButtonType = "primary" | "secondary" | "tertiary" | "destroy";
 
