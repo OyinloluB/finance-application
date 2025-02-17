@@ -1,25 +1,56 @@
-export { default as ArrowFatLinesLeftIcon } from "./ArrowFatLinesLeft";
-export { default as ArrowsDownUpIcon } from "./ArrowsDownUp";
-export { default as BarbellIcon } from "./BarbellIcon";
-export { default as BookOpenTextIcon } from "./BookOpenTextIcon";
-export { default as CaretDownIcon } from "./CaretDownIcon";
-export { default as CaretRightIcon } from "./CaretRightIcon";
-export { default as CaretUpIcon } from "./CaretUpIcon";
-export { default as ChartDonutIcon } from "./ChartDonutIcon";
-export { default as CheckCircleIcon } from "./CheckCircleIcon";
-export { default as DotsThreeOutlineIcon } from "./DotsThreeOutlineIcon";
-export { default as EyeIcon } from "./EyeIcon";
-export { default as EyeSlashIcon } from "./EyeSlashIcon";
-export { default as FilterIcon } from "./FilterIcon";
-export { default as HouseIcon } from "./HouseIcon";
-export { default as JarFillIcon } from "./JarFillIcon";
-export { default as ListBulletsIcon } from "./ListBulletsIcon";
-export { default as MagnifyingGlassIcon } from "./MagnifyingGlassIcon";
-export { default as MusicNoteIcon } from "./MusicNoteIcon";
-export { default as NetworkIcon } from "./NetworkIcon";
-export { default as PottedPlantIcon } from "./PottedPlantIcon";
-export { default as ReceiptIcon } from "./ReceiptIcon";
-export { default as VideoIcon } from "./VideoIcon";
-export { default as WarehouseIcon } from "./WarehouseIcon";
-export { default as WarningCircleIcon } from "./WarningCircleIcon";
-export { default as WrenchIcon } from "./WrenchIcon";
+import ArrowFatLinesLeftIcon from "./ArrowFatLinesLeft";
+import ArrowsDownUpIcon from "./ArrowsDownUp";
+import BarbellIcon from "./BarbellIcon";
+import BookOpenTextIcon from "./BookOpenTextIcon";
+import CaretDownIcon from "./CaretDownIcon";
+import CaretRightIcon from "./CaretRightIcon";
+import CaretUpIcon from "./CaretUpIcon";
+import ChartDonutIcon from "./ChartDonutIcon";
+import CheckCircleIcon from "./CheckCircleIcon";
+import DotsThreeOutlineIcon from "./DotsThreeOutlineIcon";
+import EyeIcon from "./EyeIcon";
+import EyeSlashIcon from "./EyeSlashIcon";
+import FilterIcon from "./FilterIcon";
+import HouseIcon from "./HouseIcon";
+import JarFillIcon from "./JarFillIcon";
+import ListBulletsIcon from "./ListBulletsIcon";
+import MagnifyingGlassIcon from "./MagnifyingGlassIcon";
+import MusicNoteIcon from "./MusicNoteIcon";
+import NetworkIcon from "./NetworkIcon";
+import PottedPlantIcon from "./PottedPlantIcon";
+import ReceiptIcon from "./ReceiptIcon";
+import VideoIcon from "./VideoIcon";
+import WarehouseIcon from "./WarehouseIcon";
+import WarningCircleIcon from "./WarningCircleIcon";
+import WrenchIcon from "./WrenchIcon";
+
+export const Icons = {
+  ArrowFatLinesLeftIcon,
+  ArrowsDownUpIcon,
+  BarbellIcon,
+  BookOpenTextIcon,
+  CaretDownIcon,
+  CaretRightIcon,
+  CaretUpIcon,
+  ChartDonutIcon,
+  CheckCircleIcon,
+  DotsThreeOutlineIcon,
+  EyeIcon,
+  EyeSlashIcon,
+  FilterIcon,
+  HouseIcon,
+  JarFillIcon,
+  ListBulletsIcon,
+  MagnifyingGlassIcon,
+  MusicNoteIcon,
+  NetworkIcon,
+  PottedPlantIcon,
+  ReceiptIcon,
+  VideoIcon,
+  WarehouseIcon,
+  WarningCircleIcon,
+  WrenchIcon,
+};
+
+// export a type for better TypeScript inference
+export type IconName = keyof typeof Icons;

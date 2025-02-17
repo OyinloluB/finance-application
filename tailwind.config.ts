@@ -62,6 +62,9 @@ export default {
         100: "8px",
         50: "4px",
       },
+      borderRadius: {
+        "5xl": "1rem",
+      },
     },
   },
   plugins: [],

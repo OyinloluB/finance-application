@@ -1,5 +1,5 @@
 import React from "react";
-import { CaretRightIcon } from "./icons";
+import CaretRightIcon from "./icons/CaretRightIcon";
 
 type ButtonType = "primary" | "secondary" | "tertiary" | "destroy";
 
@@ -24,8 +24,6 @@ const Button = ({ text = "Placeholder", type, className }: ButtonProps) => {
       "relative bg-secondary-red text-white overflow-hidden " +
       "after:content-[''] after:absolute after:inset-0 after:bg-white after:opacity-0 after:transition-opacity after:duration-200 hover:after:opacity-20",
   };
-
-  console.log(type);
 
   return (
     <div className={`${baseStyles} ${buttonStyles[type]} ${className ?? ""}`}>
