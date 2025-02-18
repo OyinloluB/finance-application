@@ -21,9 +21,9 @@ const SidebarItem = ({
   return (
     <div>
       <div
-        className={`flex items-center gap-200 px-400 py-200 border-l-4 border-transparent cursor-pointer text-preset-3 font-bold transition-all duration-300 ${
+        className={`flex items-center gap-200 px-400 py-200 border-l-4 border-transparent cursor-pointer text-preset-3 font-bold transition-all duration-300 w-[85%] ${
           active
-            ? "text-grey-900 bg-beige-100 rounded-r-lg border-l-secondary-green w-[85%]"
+            ? "text-grey-900 bg-beige-100 rounded-r-lg border-l-secondary-green"
             : "text-grey-300"
         }`}
         onClick={onClick}

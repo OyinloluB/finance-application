@@ -18,6 +18,6 @@
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  /* background: var(--background); */
   font-family: "Public Sans", sans-serif;
 }
