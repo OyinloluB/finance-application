@@ -13,7 +13,7 @@ interface ButtonProps {
 
 const Button = ({ text = "Placeholder", type, className }: ButtonProps) => {
   const baseStyles =
-    "p-200 text-preset-4 font-bold rounded-md transition-all duration-200 cursor-pointer box-border";
+    "p-200 text-preset-4 text-center font-bold rounded-md transition-all duration-200 cursor-pointer box-border";
 
   const buttonStyles = {
     primary: "bg-grey-900 text-white hover:bg-grey-500",
@@ -26,12 +26,12 @@ const Button = ({ text = "Placeholder", type, className }: ButtonProps) => {
   };
 
   return (
-    <div className={`${baseStyles} ${buttonStyles[type]} ${className ?? ""}`}>
+    <button type="submit" className={`${baseStyles} ${buttonStyles[type]} ${className ?? ""}`}>
       {text}
       {type === "tertiary" && (
         <CaretRightIcon className="w-4 h-4 transition-colors duration-200 text-inherit" />
       )}
-    </div>
+    </button>
   );
 };
 

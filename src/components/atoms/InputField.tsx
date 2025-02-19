@@ -1,7 +1,5 @@
-"use client";
-
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { IconName, Icons } from "./icons";
 
 interface InputProps {
@@ -21,9 +19,11 @@ const InputField = ({
   prefix,
   icon,
   helperText,
-  error,
 }: InputProps) => {
-  const { register } = useForm();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
   const IconComponent = icon && Icons[icon];
 
   return (
@@ -33,14 +33,14 @@ const InputField = ({
       )}
       <div
         className={`flex items-center py-150 px-250 border rounded-lg ${
-          error ? "border-secondary-red" : "border-beige-500"
+          errors[name] ? "border-secondary-red" : "border-beige-500"
         }`}
       >
         {prefix && <span className="pr-150 text-beige-500">{prefix}</span>}
         <input
           {...register(name)}
           placeholder={placeholder}
-          className="flex-1 bg-transparent focus:outline-none"
+          className="flex-1 bg-transparent focus:outline-none text-grey-900"
         />
         {IconComponent && (
           <div>
@@ -48,12 +48,14 @@ const InputField = ({
           </div>
         )}
       </div>
-      {helperText && !error && (
+      {helperText && !errors[name] && (
         <p className="text-preset-5 text-right text-grey-500">{helperText}</p>
       )}
 
-      {error && (
-        <p className="text-preset-5 text-right text-secondary-red">{error}</p>
+      {errors[name] && (
+        <p className="text-preset-5 text-right text-secondary-red">
+          {errors[name]?.message as string}
+        </p>
       )}
     </div>
   );
