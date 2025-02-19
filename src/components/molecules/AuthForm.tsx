@@ -1,11 +1,18 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { useRouter } from "next/navigation";
 import InputField from "../atoms/InputField";
 import Button from "../atoms/Button";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { auth } from "@/services/firebaseConfig";
+import { getFirebaseErrorMessage } from "@/utils/firebaseErrors";
 
 interface AuthFormProps {
   type: "signup" | "login";
@@ -18,6 +25,9 @@ interface FormDataProps {
 }
 
 const AuthForm = ({ type }: AuthFormProps) => {
+  const router = useRouter();
+  const [firebaseError, setFirebaseError] = useState<string | null>(null);
+
   const validationSchema = useMemo(
     () =>
       yup.object({
@@ -41,11 +51,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
     resolver: yupResolver(validationSchema),
     mode: "onSubmit",
     reValidateMode: "onChange",
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
   });
 
   const {
@@ -53,8 +58,20 @@ const AuthForm = ({ type }: AuthFormProps) => {
     formState: { isValid },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormDataProps> = (data) => {
-    console.log("Form submitted:", data);
+  const onSubmit: SubmitHandler<FormDataProps> = async (data) => {
+    setFirebaseError(null);
+
+    try {
+      if (type === "signup") {
+        await createUserWithEmailAndPassword(auth, data.email, data.password);
+      } else {
+        await signInWithEmailAndPassword(auth, data.email, data.password);
+      }
+
+      router.push("/dashboard");
+    } catch (error) {
+      setFirebaseError(getFirebaseErrorMessage(error));
+    }
   };
 
   return (
@@ -85,6 +102,12 @@ const AuthForm = ({ type }: AuthFormProps) => {
             disabled={!isValid}
             className="w-full mt-400"
           />
+
+          {firebaseError && (
+            <p className="text-preset-4 text-secondary-red text-center mt-400">
+              {firebaseError}
+            </p>
+          )}
 
           <p className="text-preset-4 text-center text-grey-500 mt-400">
             {type === "signup"
