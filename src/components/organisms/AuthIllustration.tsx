@@ -4,8 +4,8 @@ import Logo from "../atoms/icons/Logo";
 
 const AuthIllustration = () => {
   return (
-    <div className="p-250">
-      <div className="flex relative">
+    <div className="bg-gray-900 p-300 rounded-b-lg lg:p-250 lg:bg-transparent flex justify-center">
+      <div className="hidden lg:flex relative">
         <div className="absolute top-500 left-500">
           <Logo />
         </div>
@@ -26,6 +26,9 @@ const AuthIllustration = () => {
             transactions, set budgets, and add to savings pots easily.
           </p>
         </div>
+      </div>
+      <div className="lg:hidden flex justify-center">
+        <Logo />
       </div>
     </div>
   );

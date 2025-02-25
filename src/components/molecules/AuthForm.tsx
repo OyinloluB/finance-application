@@ -3,16 +3,11 @@
 import React, { useMemo, useState } from "react";
 import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
 import { useRouter } from "next/navigation";
 import InputField from "../atoms/InputField";
 import Button from "../atoms/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { auth } from "@/services/firebaseConfig";
-import { getFirebaseErrorMessage } from "@/utils/firebaseErrors";
+import { useAuth } from "@/context/AuthContext";
 
 interface AuthFormProps {
   type: "signup" | "login";
@@ -26,7 +21,8 @@ interface FormDataProps {
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const router = useRouter();
-  const [firebaseError, setFirebaseError] = useState<string | null>(null);
+  const { signUp, signIn, firebaseError } = useAuth();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const validationSchema = useMemo(
     () =>
@@ -59,24 +55,28 @@ const AuthForm = ({ type }: AuthFormProps) => {
   } = methods;
 
   const onSubmit: SubmitHandler<FormDataProps> = async (data) => {
-    setFirebaseError(null);
+    setErrorMessage(null);
 
     try {
       if (type === "signup") {
-        await createUserWithEmailAndPassword(auth, data.email, data.password);
+        await signUp(data.email, data.password);
       } else {
-        await signInWithEmailAndPassword(auth, data.email, data.password);
+        await signIn(data.email, data.password);
       }
 
       router.push("/dashboard");
     } catch (error) {
-      setFirebaseError(getFirebaseErrorMessage(error));
+      console.error(error);
+      console.log(firebaseError);
+      setErrorMessage(
+        firebaseError || "Something went wrong, please try again."
+      );
     }
   };
 
   return (
     <FormProvider {...methods}>
-      <div className="flex flex-1 items-center justify-center">
+      <div className="flex flex-1 items-center justify-center p-250">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="bg-white p-400 shadow-md w-[560px] h-fit rounded-lg"
@@ -103,9 +103,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
             className="w-full mt-400"
           />
 
-          {firebaseError && (
+          {errorMessage && (
             <p className="text-preset-4 text-secondary-red text-center mt-400">
-              {firebaseError}
+              {errorMessage}
             </p>
           )}
 

@@ -3,6 +3,7 @@ import SidebarItem from "../atoms/SidebarItem";
 import { IconName } from "../atoms/icons";
 import Logo from "../atoms/icons/Logo";
 import MinLogo from "../atoms/icons/MinLogo";
+import { useAuth } from "@/context/AuthContext";
 
 interface SidebarItemsProps {
   label: string;
@@ -23,6 +24,7 @@ const sidebarItems: SidebarItemsProps[] = [
 ];
 
 const Sidebar = () => {
+  const { logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [activeItem, setActiveItem] = useState("/dashboard");
 
@@ -74,7 +76,14 @@ const Sidebar = () => {
           ))}
         </div>
       </div>
-      <button>
+
+      <div>
+        <SidebarItem
+          label="Log Out"
+          icon={"ArrowFatLinesLeftIcon"}
+          onClick={() => logout()}
+          showItem={showItem}
+        />
         <SidebarItem
           label="Minimize Menu"
           icon={
@@ -85,7 +94,7 @@ const Sidebar = () => {
           onClick={() => setCollapsed(!collapsed)}
           showItem={showItem}
         />
-      </button>
+      </div>
     </div>
   );
 };
