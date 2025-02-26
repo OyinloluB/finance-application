@@ -24,6 +24,7 @@ interface SelectFieldProps {
   helperText?: string;
   error?: string;
   variant?: "default" | "color-selection" | "with-icons";
+  layout?: "row" | "column";
 }
 
 const SelectField = ({
@@ -36,6 +37,7 @@ const SelectField = ({
   helperText,
   icon = "CaretDownIcon",
   variant = "default",
+  layout = "column",
 }: SelectFieldProps) => {
   const { control, setValue } = useFormContext();
   const { field } = useController({ name, control });
@@ -64,12 +66,17 @@ const SelectField = ({
   }, [open]);
 
   return (
-    <div className="relative flex flex-col gap-50" ref={dropdownRef}>
+    <div
+      className={`relative flex ${
+        layout === "row" ? "flex-row items-center gap-200" : "flex-col gap-50"
+      }`}
+      ref={dropdownRef}
+    >
       {label && (
         <label className="text-preset-5 text-grey-500 font-bold">{label}</label>
       )}
       <div
-        className={`flex items-center py-150 px-250 border rounded-lg ${
+        className={`flex items-center py-150 px-250 gap-200 border rounded-lg ${
           error ? "border-secondary-red" : "border-beige-500"
         }`}
         onClick={() => setOpen(!open)}

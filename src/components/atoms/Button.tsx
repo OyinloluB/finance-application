@@ -1,5 +1,5 @@
 import React from "react";
-import CaretRightIcon from "./icons/CaretRightIcon";
+import { IconName, Icons } from "./icons";
 
 type ButtonType = "primary" | "secondary" | "tertiary" | "destroy";
 
@@ -9,27 +9,44 @@ interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
+  iconLeft?: IconName;
+  iconRight?: IconName;
 }
 
-const Button = ({ text = "Placeholder", type, className }: ButtonProps) => {
+const Button = ({
+  text = "Placeholder",
+  type,
+  className,
+  iconLeft,
+  iconRight,
+}: ButtonProps) => {
   const baseStyles =
-    "p-200 text-preset-4 text-center font-bold rounded-md transition-all duration-200 cursor-pointer box-border";
+    "p-200 text-preset-4 text-center rounded-md transition-all duration-200 cursor-pointer box-border flex items-center justify-center gap-200";
 
   const buttonStyles = {
-    primary: "bg-grey-900 text-white hover:bg-grey-500",
+    primary: "bg-grey-900 text-white hover:bg-grey-500 font-bold",
     secondary:
       "bg-beige-100 text-grey-900 hover:bg-white border border-transparent hover:border-beige-500",
-    tertiary: "text-grey-500 flex items-center gap-100 hover:text-grey-900",
+    tertiary: "text-grey-500 hover:text-grey-900 font-normal border border-beige-500",
     destroy:
       "relative bg-secondary-red text-white overflow-hidden " +
       "after:content-[''] after:absolute after:inset-0 after:bg-white after:opacity-0 after:transition-opacity after:duration-200 hover:after:opacity-20",
   };
 
+  const IconLeftComponent = iconLeft ? Icons[iconLeft] : null;
+  const IconRightComponent = iconRight ? Icons[iconRight] : null;
+
   return (
-    <button type="submit" className={`${baseStyles} ${buttonStyles[type]} ${className ?? ""}`}>
+    <button
+      type="submit"
+      className={`${baseStyles} ${buttonStyles[type]} ${className ?? ""}`}
+    >
+      {IconLeftComponent && (
+        <IconLeftComponent className="text-inherit" />
+      )}
       {text}
-      {type === "tertiary" && (
-        <CaretRightIcon className="w-4 h-4 transition-colors duration-200 text-inherit" />
+      {IconRightComponent && (
+        <IconRightComponent className="text-inherit" />
       )}
     </button>
   );

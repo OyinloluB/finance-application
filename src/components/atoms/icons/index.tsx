@@ -4,6 +4,7 @@ import ArrowsDownUpIcon from "./ArrowsDownUp";
 import BarbellIcon from "./BarbellIcon";
 import BookOpenTextIcon from "./BookOpenTextIcon";
 import CaretDownIcon from "./CaretDownIcon";
+import CaretLeftIcon from "./CaretLeftIcon";
 import CaretRightIcon from "./CaretRightIcon";
 import CaretUpIcon from "./CaretUpIcon";
 import ChartDonutIcon from "./ChartDonutIcon";
@@ -35,6 +36,7 @@ export const Icons = {
   BookOpenTextIcon,
   CaretDownIcon,
   CaretRightIcon,
+  CaretLeftIcon,
   CaretUpIcon,
   ChartDonutIcon,
   CheckCircleIcon,

@@ -27,7 +27,7 @@ const InputField = ({
   const IconComponent = icon && Icons[icon];
 
   return (
-    <div className="flex flex-col gap-50">
+    <div className="flex flex-col gap-50 w-full">
       {label && (
         <label className="text-preset-5 text-grey-500 font-bold">{label}</label>
       )}

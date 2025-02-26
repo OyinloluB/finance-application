@@ -4,6 +4,7 @@ import { IconName } from "../atoms/icons";
 import Logo from "../atoms/icons/Logo";
 import MinLogo from "../atoms/icons/MinLogo";
 import { useAuth } from "@/context/AuthContext";
+import { usePathname, useRouter } from "next/navigation";
 
 interface SidebarItemsProps {
   label: string;
@@ -13,20 +14,25 @@ interface SidebarItemsProps {
 
 const sidebarItems: SidebarItemsProps[] = [
   { label: "Overview", icon: "HouseIcon", route: "/dashboard" },
-  { label: "Transactions", icon: "ArrowsDownUpIcon", route: "/transactions" },
-  { label: "Budgets", icon: "ChartDonutIcon", route: "/budgets" },
-  { label: "Pots", icon: "ReceiptIcon", route: "/pots" },
+  {
+    label: "Transactions",
+    icon: "ArrowsDownUpIcon",
+    route: "/dashboard/transactions",
+  },
+  { label: "Budgets", icon: "ChartDonutIcon", route: "/dashboard/budgets" },
+  { label: "Pots", icon: "ReceiptIcon", route: "/dashboard/pots" },
   {
     label: "Recurring Bills",
     icon: "ListBulletsIcon",
-    route: "/recurring-bills",
+    route: "/dashboard/recurring-bills",
   },
 ];
 
 const Sidebar = () => {
   const { logout } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
-  const [activeItem, setActiveItem] = useState("/dashboard");
 
   const [showItem, setShowItem] = useState(!collapsed);
 
@@ -41,7 +47,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`flex flex-col justify-between bg-grey-900 text-white h-screen transition-all duration-300 rounded-r-5xl py-500 ${
+      className={`flex flex-col justify-between bg-grey-900 text-white min-h-screen h-full transition-all duration-300 rounded-r-5xl py-500 ${
         collapsed ? "w-[88px]" : "w-[300px]"
       }`}
     >
@@ -67,10 +73,12 @@ const Sidebar = () => {
           {sidebarItems.map((item) => (
             <SidebarItem
               label={item.label}
-              active={activeItem === item.route}
+              active={pathname === item.route}
               icon={item.icon}
               key={item.route}
-              onClick={() => setActiveItem(item.route)}
+              onClick={() => {
+                router.push(item.route);
+              }}
               showItem={showItem}
             />
           ))}

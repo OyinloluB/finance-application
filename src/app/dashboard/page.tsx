@@ -1,13 +1,9 @@
-import ProtectedRoute from "@/components/molecules/ProtectedRoute";
-import SidebarContainer from "@/components/organisms/SidebarContainer";
+"use client";
+
 import React from "react";
 
 const Dashboard = () => {
-  return (
-    <ProtectedRoute>
-      <SidebarContainer />
-    </ProtectedRoute>
-  );
+  return <h1 className="text-preset-1 font-bold">Dashboard Overview</h1>;
 };
 
 export default Dashboard;
