@@ -1,93 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
 import ProtectedRoute from "@/components/molecules/ProtectedRoute";
 import Table from "@/components/organisms/Table";
 import Pagination from "@/components/molecules/Pagination";
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
 import { FormProvider, useForm } from "react-hook-form";
-
-console.log("Layout is being used!");
+import useTransactions from "@/hooks/useTransactions";
+import Spinner from "@/components/atoms/Spinner";
+import { getErrorMessage } from "@/utils/errors";
 
 const Transactions = () => {
   const methods = useForm();
-  const [transactions, setTransactions] = useState([
-    {
-      id: "1",
-      name: "Emma Richardson",
-      image: "/images/profile-one.png",
-      category: "General",
-      date: "19 Aug 2024",
-      amount: 75.5,
-    },
-    {
-      id: "2",
-      name: "Savory Bites Bistro",
-      image: "/images/profile-two.png",
-      category: "Dining Out",
-      date: "19 Aug 2024",
-      amount: -55.5,
-    },
-    {
-      id: "3",
-      name: "Daniel Carter",
-      image: "/images/profile-three.png",
-      category: "General",
-      date: "18 Aug 2024",
-      amount: -42.3,
-    },
-    {
-      id: "1",
-      name: "Emma Richardson",
-      image: "/images/profile-one.png",
-      category: "General",
-      date: "19 Aug 2024",
-      amount: 75.5,
-    },
-    {
-      id: "2",
-      name: "Savory Bites Bistro",
-      image: "/images/profile-two.png",
-      category: "Dining Out",
-      date: "19 Aug 2024",
-      amount: -55.5,
-    },
-    {
-      id: "3",
-      name: "Daniel Carter",
-      image: "/images/profile-three.png",
-      category: "General",
-      date: "18 Aug 2024",
-      amount: -42.3,
-    },
-    {
-      id: "1",
-      name: "Emma Richardson",
-      image: "/images/profile-one.png",
-      category: "General",
-      date: "19 Aug 2024",
-      amount: 75.5,
-    },
-    {
-      id: "2",
-      name: "Savory Bites Bistro",
-      image: "/images/profile-two.png",
-      category: "Dining Out",
-      date: "19 Aug 2024",
-      amount: -55.5,
-    },
-    {
-      id: "3",
-      name: "Daniel Carter",
-      image: "/images/profile-three.png",
-      category: "General",
-      date: "18 Aug 2024",
-      amount: -42.3,
-    },
-  ]);
-
-  const [loading, setLoading] = useState(false);
+  const { data: transactions, isLoading, error } = useTransactions();
 
   return (
     <ProtectedRoute>
@@ -140,13 +65,23 @@ const Transactions = () => {
             </div>
           </FormProvider>
 
-          {loading ? (
-            <p>Loading transactions...</p>
-          ) : (
+          {isLoading ? (
+            <div className="flex justify-center items-center py-400">
+              <Spinner /> {/* ✅ Replace text with centered spinner */}
+            </div>
+          ) : error ? (
+            <p className="text-red-500 text-center py-400">
+              {getErrorMessage(error)}
+            </p>
+          ) : transactions.length > 0 ? (
             <>
               <Table data={transactions} />
               <Pagination />
             </>
+          ) : (
+            <p className="text-center text-grey-500 py-400">
+              No transactions found.
+            </p>
           )}
         </div>
       </div>

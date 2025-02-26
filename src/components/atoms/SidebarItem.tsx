@@ -18,8 +18,6 @@ const SidebarItem = ({
 }: SidebarItemProps) => {
   const IconComponent = Icons[icon];
 
-  console.log(active);
-
   return (
     <div>
       <div

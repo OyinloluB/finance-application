@@ -48,7 +48,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setFirebaseError(null);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const firebaseUser = userCredential.user;
+
+      await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: firebaseUser.uid,
+          email: firebaseUser.email,
+          name: firebaseUser.displayName || "",
+        }),
+      });
     } catch (error) {
       setFirebaseError(getFirebaseErrorMessage(error));
       throw error;
