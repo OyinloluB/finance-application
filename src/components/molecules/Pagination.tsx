@@ -1,16 +1,45 @@
 import React from "react";
 import Button from "../atoms/Button";
 
-const Pagination = () => {
+interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
+
+const Pagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: PaginationProps) => {
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   return (
     <div className="flex justify-between items-center mt-400">
-      <Button text="Prev" type="tertiary" iconLeft="CaretLeftIcon" />
+      <Button
+        text="Prev"
+        type="tertiary"
+        iconLeft="CaretLeftIcon"
+        disabled={currentPage <= 1}
+        onClick={() => onPageChange(currentPage - 1)}
+      />
       <div className="flex gap-100">
-        <Button text="1" type="tertiary" className="w-[40px] h-[40px]" />
-        <Button text="2" type="tertiary" className="w-[40px] h-[40px]" />
-        <Button text="3" type="tertiary" className="w-[40px] h-[40px]" />
+        {pages.map((page) => (
+          <Button
+            key={page}
+            text={page.toString()}
+            type={currentPage === page ? "primary" : "tertiary"}
+            className="w-[40px] h-[40px]"
+            onClick={() => onPageChange(page)}
+          />
+        ))}
       </div>
-      <Button text="Next" type="tertiary" iconRight="CaretRightIcon" />
+      <Button
+        text="Next"
+        type="tertiary"
+        iconRight="CaretRightIcon"
+        disabled={currentPage >= totalPages}
+        onClick={() => onPageChange(currentPage + 1)}
+      />
     </div>
   );
 };

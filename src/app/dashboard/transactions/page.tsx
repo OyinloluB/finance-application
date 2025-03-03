@@ -1,19 +1,19 @@
 "use client";
 
 import ProtectedRoute from "@/components/molecules/ProtectedRoute";
-import Table, { Transaction } from "@/components/organisms/Table";
+import Table from "@/components/organisms/Table";
 import Pagination from "@/components/molecules/Pagination";
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import useTransactions from "@/hooks/useTransactions";
 import Spinner from "@/components/atoms/Spinner";
 import { getErrorMessage } from "@/utils/errors";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
+import useTransactions from "@/hooks/useTransactions";
 
 const Transactions = () => {
   const methods = useForm();
-  const { data: transactions, isLoading, error } = useTransactions();
+  const [currentPage, setCurrentPage] = useState(1);
 
   const watchedSearch = useWatch({
     control: methods.control,
@@ -28,49 +28,16 @@ const Transactions = () => {
     name: "sort_by",
   });
 
-  const filteredTransactions = useMemo(() => {
-    if (!transactions) return [];
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [watchedSearch, watchedCategory, watchedSortBy]);
 
-    const searchQuery = (watchedSearch || "").toLowerCase().trim();
-    const selectedCategory = (watchedCategory || "all_transactions")
-      .toLowerCase()
-      .trim();
-    const sortBy = watchedSortBy || "latest";
-
-    let result = transactions.filter((tx: Transaction) => {
-      const matchesSearch = tx.name.toLowerCase().includes(searchQuery);
-      const matchesCategory =
-        selectedCategory === "all_transactions"
-          ? true
-          : tx.category.toLowerCase() === selectedCategory;
-
-      return matchesSearch && matchesCategory;
-    });
-
-    result = [...result].sort((a, b) => {
-      if (sortBy === "latest") {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      }
-      if (sortBy === "oldest") {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      }
-      if (sortBy === "a_to_z") {
-        return a.name.localeCompare(b.name);
-      }
-      if (sortBy === "z_to_a") {
-        return b.name.localeCompare(a.name);
-      }
-      if (sortBy === "highest") {
-        return b.amount - a.amount;
-      }
-      if (sortBy === "lowest") {
-        return a.amount - b.amount;
-      }
-      return 0;
-    });
-
-    return result;
-  }, [transactions, watchedSearch, watchedCategory, watchedSortBy]);
+  const { data, isLoading, error } = useTransactions({
+    page: currentPage,
+    search: watchedSearch || "",
+    category: watchedCategory || "all_transactions",
+    sortBy: watchedSortBy || "latest",
+  });
 
   return (
     <ProtectedRoute>
@@ -133,10 +100,14 @@ const Transactions = () => {
             <p className="text-red-500 text-center py-400">
               {getErrorMessage(error)}
             </p>
-          ) : filteredTransactions.length > 0 ? (
+          ) : data?.transactions.length > 0 ? (
             <>
-              <Table data={filteredTransactions} />
-              <Pagination />
+              <Table data={data.transactions} />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={data.totalPages}
+                onPageChange={setCurrentPage}
+              />
             </>
           ) : (
             <p className="text-center text-grey-500 py-400">
