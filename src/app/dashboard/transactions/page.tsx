@@ -49,7 +49,7 @@ const Transactions = () => {
         <div className="p-400 bg-white rounded-md">
           <FormProvider {...methods}>
             <div className="flex items-end justify-between gap-300 mb-400 ">
-              <div className="max-w-[350px]">
+              <div className="max-w-[380px] flex-1">
                 <InputField
                   name="search_transactions"
                   placeholder="Search transaction"
