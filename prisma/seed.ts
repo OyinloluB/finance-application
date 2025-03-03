@@ -7,9 +7,9 @@ async function main() {
     where: { email: "oyinloluwab@gmail.com" },
     update: {},
     create: {
+      id: "",
       email: "oyinloluwab@gmail.com",
       name: "Test User",
-      hashedPassword: "hashedpassword",
     },
   });
 

@@ -1,18 +1,76 @@
 "use client";
 
 import ProtectedRoute from "@/components/molecules/ProtectedRoute";
-import Table from "@/components/organisms/Table";
+import Table, { Transaction } from "@/components/organisms/Table";
 import Pagination from "@/components/molecules/Pagination";
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import useTransactions from "@/hooks/useTransactions";
 import Spinner from "@/components/atoms/Spinner";
 import { getErrorMessage } from "@/utils/errors";
+import { useMemo } from "react";
 
 const Transactions = () => {
   const methods = useForm();
   const { data: transactions, isLoading, error } = useTransactions();
+
+  const watchedSearch = useWatch({
+    control: methods.control,
+    name: "search_transactions",
+  });
+  const watchedCategory = useWatch({
+    control: methods.control,
+    name: "category",
+  });
+  const watchedSortBy = useWatch({
+    control: methods.control,
+    name: "sort_by",
+  });
+
+  const filteredTransactions = useMemo(() => {
+    if (!transactions) return [];
+
+    const searchQuery = (watchedSearch || "").toLowerCase().trim();
+    const selectedCategory = (watchedCategory || "all_transactions")
+      .toLowerCase()
+      .trim();
+    const sortBy = watchedSortBy || "latest";
+
+    let result = transactions.filter((tx: Transaction) => {
+      const matchesSearch = tx.name.toLowerCase().includes(searchQuery);
+      const matchesCategory =
+        selectedCategory === "all_transactions"
+          ? true
+          : tx.category.toLowerCase() === selectedCategory;
+
+      return matchesSearch && matchesCategory;
+    });
+
+    result = [...result].sort((a, b) => {
+      if (sortBy === "latest") {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+      if (sortBy === "oldest") {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      }
+      if (sortBy === "a_to_z") {
+        return a.name.localeCompare(b.name);
+      }
+      if (sortBy === "z_to_a") {
+        return b.name.localeCompare(a.name);
+      }
+      if (sortBy === "highest") {
+        return b.amount - a.amount;
+      }
+      if (sortBy === "lowest") {
+        return a.amount - b.amount;
+      }
+      return 0;
+    });
+
+    return result;
+  }, [transactions, watchedSearch, watchedCategory, watchedSortBy]);
 
   return (
     <ProtectedRoute>
@@ -24,7 +82,7 @@ const Transactions = () => {
         <div className="p-400 bg-white rounded-md">
           <FormProvider {...methods}>
             <div className="flex items-end justify-between gap-300 mb-400 ">
-              <div className="max-w-[320px]">
+              <div className="max-w-[350px]">
                 <InputField
                   name="search_transactions"
                   placeholder="Search transaction"
@@ -52,6 +110,8 @@ const Transactions = () => {
                   placeholder="All Transactions"
                   layout="row"
                   options={[
+                    { label: "All Transactions", value: "all_transactions" },
+                    { label: "General", value: "general" },
                     { label: "Entertainment", value: "entertainment" },
                     { label: "Bills", value: "bills" },
                     { label: "Groceries", value: "groceries" },
@@ -67,15 +127,15 @@ const Transactions = () => {
 
           {isLoading ? (
             <div className="flex justify-center items-center py-400">
-              <Spinner /> {/* ✅ Replace text with centered spinner */}
+              <Spinner />
             </div>
           ) : error ? (
             <p className="text-red-500 text-center py-400">
               {getErrorMessage(error)}
             </p>
-          ) : transactions.length > 0 ? (
+          ) : filteredTransactions.length > 0 ? (
             <>
-              <Table data={transactions} />
+              <Table data={filteredTransactions} />
               <Pagination />
             </>
           ) : (

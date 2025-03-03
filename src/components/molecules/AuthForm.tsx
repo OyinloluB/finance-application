@@ -59,7 +59,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
     try {
       if (type === "signup") {
-        await signUp(data.email, data.password);
+        await signUp(data.name ?? "", data.email, data.password);
       } else {
         await signIn(data.email, data.password);
       }

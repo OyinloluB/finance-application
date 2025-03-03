@@ -20,7 +20,7 @@ import { getFirebaseErrorMessage } from "@/utils/firebaseErrors";
 interface AuthContextProps {
   user: User | null;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (name: string, email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   firebaseError: string | null;
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (name: string, email: string, password: string) => {
     setFirebaseError(null);
 
     try {
@@ -55,13 +55,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
       const firebaseUser = userCredential.user;
 
+      console.log({ firebaseUser });
+
       await fetch("/api/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: firebaseUser.uid,
           email: firebaseUser.email,
-          name: firebaseUser.displayName || "",
+          name: name || "",
         }),
       });
     } catch (error) {

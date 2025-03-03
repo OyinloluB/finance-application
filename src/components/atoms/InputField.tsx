@@ -40,7 +40,7 @@ const InputField = ({
         <input
           {...register(name)}
           placeholder={placeholder}
-          className="flex-1 bg-transparent focus:outline-none text-grey-900"
+          className="flex-1 bg-transparent focus:outline-none placeholder:text-preset-4 text-grey-900"
         />
         {IconComponent && (
           <div>

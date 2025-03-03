@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
+import { DateTime } from "luxon";
 import {
   ColumnDef,
   flexRender,
@@ -10,7 +11,7 @@ import {
 } from "@tanstack/react-table";
 import Image from "next/image";
 
-interface Transaction {
+export interface Transaction {
   id: string;
   name: string;
   image: string;
@@ -22,6 +23,18 @@ interface Transaction {
 interface TableProps {
   data: Transaction[];
 }
+
+const categoryLabels: Record<string, string> = {
+  ALL: "All Transactions",
+  GENERAL: "General",
+  GROCERIES: "Groceries",
+  DINING_OUT: "Dining Out",
+  BILLS: "Bills",
+  ENTERTAINMENT: "Entertainment",
+  PERSONAL_CARE: "Personal Care",
+  TRANSPORTATION: "transportation",
+  EDUCATION: "education",
+};
 
 const Table = ({ data }: TableProps) => {
   const columns = useMemo<ColumnDef<Transaction>[]>(
@@ -37,9 +50,9 @@ const Table = ({ data }: TableProps) => {
               <Image
                 src={row.image}
                 alt={row.name}
-                width={32}
-                height={32}
-                className="w-12 h-12 rounded-full "
+                width={28}
+                height={28}
+                className="w-10 h-10 rounded-full "
               />
               <span className="font-bold text-grey-900">
                 {String(info.getValue())}
@@ -51,12 +64,21 @@ const Table = ({ data }: TableProps) => {
       {
         accessorKey: "category",
         header: "Category",
-        cell: (info: CellContext<Transaction, unknown>) => info.getValue(),
+        cell: (info: CellContext<Transaction, unknown>) => {
+          const rawCategory = info.getValue() as string;
+          const category = categoryLabels[rawCategory];
+          return <span>{category}</span>;
+        },
       },
       {
         accessorKey: "date",
         header: "Transaction Date",
-        cell: (info: CellContext<Transaction, unknown>) => info.getValue(),
+        cell: (info: CellContext<Transaction, unknown>) => {
+          const rawDate = info.getValue() as string;
+          const formattedDate =
+            DateTime.fromISO(rawDate).toFormat("MMM dd, yyyy");
+          return <span>{formattedDate}</span>;
+        },
       },
       {
         accessorKey: "amount",
@@ -116,7 +138,7 @@ const Table = ({ data }: TableProps) => {
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="px-200 py-300 text-preset-5 text-grey-500 font-normal last:text-right"
+                    className="px-200 py-200 text-preset-5 text-grey-500 font-normal last:text-right"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>

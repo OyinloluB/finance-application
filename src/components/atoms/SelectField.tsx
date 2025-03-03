@@ -88,7 +88,8 @@ const SelectField = ({
             field.value ? "text-grey-900" : "text-beige-500"
           }`}
         >
-          {field.value || placeholder}
+          {options.find((option) => option.value === field.value)?.label ||
+            placeholder}
         </span>
 
         {IconComponent && (
@@ -100,54 +101,57 @@ const SelectField = ({
 
       {open && (
         <ul className="absolute left-0 top-full mt-50 w-full bg-white py-150 px-250 rounded-lg shadow-lg z-10 overflow-hidden max-h-[250px] overflow-y-auto no-scrollbar">
-          {options.map(({ label, color, icon, status }, i) => (
-            <li
-              className={`flex items-center justify-between py-200 px-250 text-preset-4 ${
-                status === "used" ? "text-beige-500" : "text-grey-900"
-              }  border-b border-grey-100 cursor-pointer`}
-              key={i}
-              onClick={() => {
-                setValue(name, label);
-                setOpen(false);
-              }}
-            >
-              {variant === "color-selection" && (
-                <div className="flex items-center gap-150">
-                  {color && (
-                    <span
-                      className={`w-4 h-4 rounded-full ${
-                        status === "used" ? "opacity-25" : "opacity-1"
-                      }`}
-                      style={{ backgroundColor: color }}
-                    />
-                  )}
-                  <span>{label}</span>
-                </div>
-              )}
-              {variant === "with-icons" && (
-                <div className="flex items-center gap-150">
-                  {icon && (
-                    <span
-                      className="w-4 h-4 rounded-full"
-                      style={{ backgroundColor: color }}
-                    />
-                  )}
-                  <span>{label}</span>
-                </div>
-              )}
+          {options.map(({ label, color, icon, status, value }, i) => {
+            console.log({ label });
+            return (
+              <li
+                className={`flex items-center justify-between py-200 px-250 text-preset-4 ${
+                  status === "used" ? "text-beige-500" : "text-grey-900"
+                }  border-b border-grey-100 cursor-pointer`}
+                key={i}
+                onClick={() => {
+                  setValue(name, value);
+                  setOpen(false);
+                }}
+              >
+                {variant === "color-selection" && (
+                  <div className="flex items-center gap-150">
+                    {color && (
+                      <span
+                        className={`w-4 h-4 rounded-full ${
+                          status === "used" ? "opacity-25" : "opacity-1"
+                        }`}
+                        style={{ backgroundColor: color }}
+                      />
+                    )}
+                    <span>{label}</span>
+                  </div>
+                )}
+                {variant === "with-icons" && (
+                  <div className="flex items-center gap-150">
+                    {icon && (
+                      <span
+                        className="w-4 h-4 rounded-full"
+                        style={{ backgroundColor: color }}
+                      />
+                    )}
+                    <span>{label}</span>
+                  </div>
+                )}
 
-              {variant === "default" && <span>{label}</span>}
-              {status && (
-                <span
-                  className={`${
-                    status === "used" ? "text-beige-500" : "text-grey-500"
-                  }  text-sm}`}
-                >
-                  {status === "used" ? "Already Used" : ""}
-                </span>
-              )}
-            </li>
-          ))}
+                {variant === "default" && <span>{label}</span>}
+                {status && (
+                  <span
+                    className={`${
+                      status === "used" ? "text-beige-500" : "text-grey-500"
+                    }  text-sm}`}
+                  >
+                    {status === "used" ? "Already Used" : ""}
+                  </span>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
 
