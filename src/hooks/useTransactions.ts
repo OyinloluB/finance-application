@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 
 export const fetchTransactions = async ({
   page = 1,
-  limit = 5,
+  limit = 6,
   search = "",
   category = "all_transactions",
   sortBy = "latest",
