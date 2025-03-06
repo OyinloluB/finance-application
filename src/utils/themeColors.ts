@@ -1,0 +1,15 @@
+export const themeColors: Record<string, string> = {
+  GREEN: "bg-green-500",
+  YELLOW: "bg-yellow-500",
+  CYAN: "bg-cyan-500",
+  NAVY: "bg-blue-900",
+  RED: "bg-red-500",
+  PURPLE: "bg-purple-500",
+  TURQUOISE: "bg-teal-500",
+  BROWN: "bg-amber-700",
+  MAGENTA: "bg-pink-500",
+  BLUE: "bg-blue-500",
+  GREY: "bg-gray-500",
+  ARMY: "bg-green-700",
+  PINK: "bg-pink-400",
+};

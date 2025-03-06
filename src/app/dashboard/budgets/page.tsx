@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Button from "@/components/atoms/Button";
-import BudgetCard from "@/components/molecules/BudgetCard";
-import BudgetChart from "@/components/molecules/BudgetChart";
+import BudgetChart from "@/components/organisms/BudgetChart";
+import BudgetSpendingSummaryItem from "@/components/molecules/BudgetSpendingSummaryItem";
+import BudgetCard from "@/components/organisms/BudgetCard";
 
 const dummyBudgets = [
   {
@@ -101,24 +102,8 @@ const dummyBudgets = [
   },
 ];
 
-export const themeColors: Record<string, string> = {
-  GREEN: "bg-green-500",
-  YELLOW: "bg-yellow-500",
-  CYAN: "bg-cyan-500",
-  NAVY: "bg-blue-900",
-  RED: "bg-red-500",
-  PURPLE: "bg-purple-500",
-  TURQUOISE: "bg-teal-500",
-  BROWN: "bg-amber-700",
-  MAGENTA: "bg-pink-500",
-  BLUE: "bg-blue-500",
-  GREY: "bg-gray-500",
-  ARMY: "bg-green-700",
-  PINK: "bg-pink-400",
-};
-
 const BudgetsPage = () => {
-  const [budgets, setBudgets] = useState(dummyBudgets);
+  const [budgets] = useState(dummyBudgets);
 
   return (
     <div className="flex-1 p-400 min-h-screen">
@@ -141,25 +126,7 @@ const BudgetsPage = () => {
 
             <div className="flex-1">
               {budgets.map((budget) => (
-                <div
-                  key={budget.id}
-                  className="flex justify-between text-grey-500 text-preset-4 py-200 first:pt-0 border-b last:border-b-0 border-grey-100"
-                >
-                  <div className="flex items-center gap-200">
-                    <span
-                      className={`w-50 h-full rounded-md ${
-                        themeColors[budget.theme]
-                      }`}
-                    />
-                    <span>{budget.category}</span>
-                  </div>
-                  <span>
-                    <span className="text-grey-900 text-preset-3 font-bold">
-                      ${budget.currentSpend.toFixed(2)}
-                    </span>{" "}
-                    of ${budget.maxLimit.toFixed(2)}
-                  </span>
-                </div>
+                <BudgetSpendingSummaryItem key={budget.id} budget={budget} />
               ))}
             </div>
           </div>
