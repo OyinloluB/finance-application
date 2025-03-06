@@ -133,7 +133,7 @@ const Table = ({ data }: TableProps) => {
             table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
-                className="border-b last:border-b-0 border-grey-100"
+                className="s"
               >
                 {row.getVisibleCells().map((cell) => (
                   <td

@@ -30,18 +30,22 @@ model Transaction {
   image    String?
   name     String
   user     User            @relation(fields: [userId], references: [id])
+  budgetId String?
+  budget   Budget?         @relation(fields: [budgetId], references: [id])
 }
 
 model Budget {
-  id           String       @id @default(uuid())
+  id           String        @id @default(uuid())
   category     CategoryType
+  theme        BudgetTheme
   maxLimit     Float
-  currentSpend Float
-  theme        String
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  currentSpend Float         @default(0)
+  remaining    Float         @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   userId       String
-  user         User         @relation(fields: [userId], references: [id])
+  user         User          @relation(fields: [userId], references: [id])
+  transactions Transaction[]
 }
 
 model Pot {
@@ -83,4 +87,20 @@ enum CategoryType {
 enum FrequencyType {
   MONTHLY
   YEARLY
+}
+
+enum BudgetTheme {
+  GREEN
+  YELLOW
+  CYAN
+  NAVY
+  RED
+  PURPLE
+  TURQUOISE
+  BROWN
+  MAGENTA
+  BLUE
+  GREY
+  ARMY
+  PINK
 }
