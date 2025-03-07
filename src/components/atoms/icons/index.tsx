@@ -9,6 +9,7 @@ import CaretRightIcon from "./CaretRightIcon";
 import CaretUpIcon from "./CaretUpIcon";
 import ChartDonutIcon from "./ChartDonutIcon";
 import CheckCircleIcon from "./CheckCircleIcon";
+import CloseIcon from "./CloseIcon";
 import DotsThreeOutlineIcon from "./DotsThreeOutlineIcon";
 import EyeIcon from "./EyeIcon";
 import EyeSlashIcon from "./EyeSlashIcon";
@@ -58,6 +59,7 @@ export const Icons = {
   WrenchIcon,
   Logo,
   MinLogo,
+  CloseIcon,
 };
 
 // export a type for better TypeScript inference

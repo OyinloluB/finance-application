@@ -1,18 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { themeColors } from "@/utils/themeColors";
 import { Budget } from "@/types/budget";
 import DropdownMenu from "../atoms/Dropdown";
 import BudgetStat from "../molecules/BudgetStat";
 import BudgetTransactionItem from "../molecules/BudgetTransactionItem";
+import BudgetFormModal from "../molecules/BudgetFormModal";
+import DeleteBudgetModal from "../molecules/DeleteBudgetModal";
 
-const BudgetCard = ({ budget }: { budget: Budget }) => {
-  const handleEdit = () => {
-    console.log(`Editing budget: ${budget.id}`);
+interface BudgetCardProps {
+  budget: Budget;
+  setBudgets: React.Dispatch<React.SetStateAction<Budget[]>>;
+}
+
+const BudgetCard = ({ budget, setBudgets }: BudgetCardProps) => {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const handleEditBudget = (updatedBudget: Budget) => {
+    setBudgets((prevBudget) =>
+      prevBudget.map((b) =>
+        b.id === budget.id ? { ...b, ...updatedBudget } : b
+      )
+    );
+    setIsEditModalOpen(false);
   };
 
-  const handleDelete = () => {
-    console.log(`Deleting budget: ${budget.id}`);
+  const handleDeleteBudget = () => {
+    setBudgets((prevBudget) => prevBudget.filter((b) => b.id !== budget.id));
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -28,8 +44,12 @@ const BudgetCard = ({ budget }: { budget: Budget }) => {
         </h3>
         <DropdownMenu
           items={[
-            { label: "Edit Budget", action: handleEdit },
-            { label: "Delete Budget", action: handleDelete, danger: true },
+            { label: "Edit Budget", action: () => setIsEditModalOpen(true) },
+            {
+              label: "Delete Budget",
+              action: () => setIsDeleteModalOpen(true),
+              danger: true,
+            },
           ]}
         />
       </div>
@@ -70,6 +90,23 @@ const BudgetCard = ({ budget }: { budget: Budget }) => {
           <BudgetTransactionItem key={tx.id} tx={tx} />
         ))}
       </div>
+
+      <BudgetFormModal
+        title="Edit Budget"
+        actionButtonText="Save Changes"
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onSubmit={handleEditBudget}
+        defaultValues={budget}
+      />
+
+      <DeleteBudgetModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDeleteBudget}
+        title={`Delete '${budget.category}'?`}
+        description="Are you sure you want to delete this budget? This action cannot be reversed, and all the data inside it will be removed forever."
+      />
     </div>
   );
 };

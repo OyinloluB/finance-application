@@ -43,7 +43,6 @@ const SelectField = ({
   const { field } = useController({ name, control });
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
   const IconComponent = icon && Icons[icon];
 
   useEffect(() => {
@@ -65,6 +64,10 @@ const SelectField = ({
     return () => document.removeEventListener("mousedown", handleClickOut);
   }, [open]);
 
+  const getSelectedOption = () =>
+    options.find((opt) => opt.value === field.value);
+  const selectedOption = getSelectedOption();
+
   return (
     <div
       className={`relative flex ${
@@ -76,20 +79,29 @@ const SelectField = ({
         <label className="text-preset-5 text-grey-500 font-bold">{label}</label>
       )}
       <div
-        className={`flex items-center py-150 px-250 gap-200 border rounded-lg ${
+        className={`flex items-center py-150 px-250 gap-200 border rounded-lg cursor-pointer ${
           error ? "border-secondary-red" : "border-beige-500"
         }`}
         onClick={() => setOpen(!open)}
       >
         {prefix && <span className="pr-150 text-beige-500">{prefix}</span>}
 
-        <span
-          className={`flex-1 text-preset-4 cursor-pointer ${
-            field.value ? "text-grey-900" : "text-beige-500"
-          }`}
-        >
-          {options.find((option) => option.value === field.value)?.label ||
-            placeholder}
+        <span className="flex-1 text-preset-4 flex items-center gap-150">
+          {variant === "color-selection" && selectedOption ? (
+            <>
+              <span
+                className="w-4 h-4 rounded-full"
+                style={{
+                  backgroundColor: selectedOption.color,
+                }}
+              />
+              <span className="text-gray-900">{selectedOption.label}</span>
+            </>
+          ) : (
+            <span className="text-gray-900">
+              {selectedOption?.label || placeholder}
+            </span>
+          )}
         </span>
 
         {IconComponent && (
@@ -102,16 +114,19 @@ const SelectField = ({
       {open && (
         <ul className="absolute left-0 top-full mt-50 w-full bg-white py-150 px-250 rounded-lg shadow-lg z-10 overflow-hidden max-h-[250px] overflow-y-auto no-scrollbar">
           {options.map(({ label, color, icon, status, value }, i) => {
-            console.log({ label });
+            const isDisabled = status === "used";
+
             return (
               <li
-                className={`flex items-center justify-between py-200 px-250 text-preset-4 ${
-                  status === "used" ? "text-beige-500" : "text-grey-900"
+                className={`flex items-center justify-between py-200 text-preset-4 ${
+                  isDisabled ? "text-beige-500" : "text-grey-900"
                 }  border-b border-grey-100 cursor-pointer`}
                 key={i}
                 onClick={() => {
-                  setValue(name, value);
-                  setOpen(false);
+                  if (!isDisabled) {
+                    setValue(name, value);
+                    setOpen(false);
+                  }
                 }}
               >
                 {variant === "color-selection" && (
@@ -119,7 +134,7 @@ const SelectField = ({
                     {color && (
                       <span
                         className={`w-4 h-4 rounded-full ${
-                          status === "used" ? "opacity-25" : "opacity-1"
+                          isDisabled ? "opacity-25" : "opacity-1"
                         }`}
                         style={{ backgroundColor: color }}
                       />
@@ -127,6 +142,7 @@ const SelectField = ({
                     <span>{label}</span>
                   </div>
                 )}
+
                 {variant === "with-icons" && (
                   <div className="flex items-center gap-150">
                     {icon && (
@@ -140,13 +156,14 @@ const SelectField = ({
                 )}
 
                 {variant === "default" && <span>{label}</span>}
+
                 {status && (
                   <span
                     className={`${
-                      status === "used" ? "text-beige-500" : "text-grey-500"
+                      isDisabled ? "text-beige-500" : "text-grey-500"
                     }  text-sm}`}
                   >
-                    {status === "used" ? "Already Used" : ""}
+                    {isDisabled ? "Already Used" : ""}
                   </span>
                 )}
               </li>

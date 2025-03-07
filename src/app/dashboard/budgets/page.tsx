@@ -5,6 +5,8 @@ import Button from "@/components/atoms/Button";
 import BudgetChart from "@/components/organisms/BudgetChart";
 import BudgetSpendingSummaryItem from "@/components/molecules/BudgetSpendingSummaryItem";
 import BudgetCard from "@/components/organisms/BudgetCard";
+import { Budget } from "@/types/budget";
+import BudgetFormModal from "@/components/molecules/BudgetFormModal";
 
 const dummyBudgets = [
   {
@@ -103,7 +105,21 @@ const dummyBudgets = [
 ];
 
 const BudgetsPage = () => {
-  const [budgets] = useState(dummyBudgets);
+  const [budgets, setBudgets] = useState<Budget[]>(dummyBudgets);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  const handleAddBudget = (newBudget: Budget) => {
+    setBudgets((prev) => [
+      ...prev,
+      {
+        ...newBudget,
+        id: (prev.length + 1).toString(),
+        currentSpend: 0,
+        remaining: newBudget.maxLimit!,
+      },
+    ]);
+    setIsAddModalOpen(false);
+  };
 
   return (
     <div className="flex-1 p-400 min-h-screen">
@@ -112,7 +128,7 @@ const BudgetsPage = () => {
         <Button
           type="primary"
           text="+ Add New Budget"
-          onClick={() => console.log("Open Add Budget Modal")}
+          onClick={() => setIsAddModalOpen(true)}
         />
       </div>
       <div className="flex gap-300">
@@ -134,10 +150,23 @@ const BudgetsPage = () => {
 
         <div className="flex-auto grid grid-cols-1 gap-400">
           {budgets.map((budget) => (
-            <BudgetCard key={budget.id} budget={budget} />
+            <BudgetCard
+              key={budget.id}
+              budget={budget}
+              setBudgets={setBudgets}
+            />
           ))}
         </div>
       </div>
+
+      <BudgetFormModal
+        title="Add New Budget"
+        description="Choose a category to set a spending budget. These categories can help you monitor spending."
+        actionButtonText="Add Budget"
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSubmit={handleAddBudget}
+      />
     </div>
   );
 };

@@ -6,6 +6,21 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    "bg-green-800",
+    "bg-yellow-800",
+    "bg-cyan-500",
+    "bg-blue-800",
+    "bg-red-800",
+    "bg-purple-800",
+    "bg-teal-800",
+    "bg-amber-800",
+    "bg-pink-800",
+    "bg-blue-800",
+    "bg-gray-800",
+    "bg-green-800",
+    "bg-pink-800",
+  ],
   theme: {
     extend: {
       fontFamily: {
