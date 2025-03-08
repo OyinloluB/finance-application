@@ -25,7 +25,6 @@ const BudgetFormModal = ({
   onSubmit,
   defaultValues,
 }: BudgetFormModalProps) => {
-  console.log({ defaultValues });
 
   const methods = useForm({
     defaultValues: defaultValues || {
@@ -35,6 +34,10 @@ const BudgetFormModal = ({
     },
   });
 
+  const handleSubmitForm = () => {
+    methods.handleSubmit(onSubmit)();
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -42,6 +45,7 @@ const BudgetFormModal = ({
       description={description}
       actionButtonText={actionButtonText}
       onClose={onClose}
+      onConfirm={handleSubmitForm}
     >
       <FormProvider {...methods}>
         <form
@@ -65,6 +69,7 @@ const BudgetFormModal = ({
             name="maxLimit"
             label="Maximum Spend"
             prefix="$"
+            type="number"
             placeholder="e.g. 2000"
           />
           <SelectField
@@ -95,7 +100,6 @@ const BudgetFormModal = ({
               { label: "Purple", value: "PURPLE", color: "#826CB0" },
             ]}
           />
-          <button type="submit" className="hidden" />
         </form>
       </FormProvider>
     </Modal>

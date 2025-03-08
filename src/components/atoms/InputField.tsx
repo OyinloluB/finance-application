@@ -10,6 +10,7 @@ interface InputProps {
   icon?: IconName;
   helperText?: string;
   error?: string;
+  type?: "number" | "text";
 }
 
 const InputField = ({
@@ -19,6 +20,7 @@ const InputField = ({
   prefix,
   icon,
   helperText,
+  type = "text",
 }: InputProps) => {
   const {
     register,
@@ -40,6 +42,7 @@ const InputField = ({
         <input
           {...register(name)}
           placeholder={placeholder}
+          type={type}
           className="flex-1 bg-transparent focus:outline-none placeholder:text-preset-4 text-grey-900"
         />
         {IconComponent && (

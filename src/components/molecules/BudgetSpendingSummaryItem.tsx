@@ -1,4 +1,5 @@
 import { Budget } from "@/types/budget";
+import { CategoryLabels } from "@/types/categories";
 import { themeColors } from "@/utils/themeColors";
 
 const BudgetSpendingSummaryItem = ({ budget }: { budget: Budget }) => {
@@ -8,13 +9,13 @@ const BudgetSpendingSummaryItem = ({ budget }: { budget: Budget }) => {
         <span
           className={`w-50 h-full rounded-md ${themeColors[budget.theme]}`}
         />
-        <span>{budget.category}</span>
+        <span>{CategoryLabels[budget.category]}</span>
       </div>
       <span>
         <span className="text-grey-900 text-preset-3 font-bold">
-          ${budget.currentSpend.toFixed(2)}
+          ${budget.currentSpend}
         </span>{" "}
-        of ${budget.maxLimit.toFixed(2)}
+        of ${budget.maxLimit}
       </span>
     </div>
   );

@@ -6,6 +6,7 @@ interface BudgetChartProps {
   budgets: {
     category: string;
     currentSpend: number;
+    maxLimit: number;
     theme: string;
   }[];
 }
@@ -15,16 +16,15 @@ const BudgetChart: React.FC<BudgetChartProps> = ({ budgets }) => {
     (acc, budget) => acc + budget.currentSpend,
     0
   );
-  const totalLimit = budgets.reduce(
-    (acc, budget) => acc + budget.currentSpend,
-    0
-  );
+  const totalLimit = budgets.reduce((acc, budget) => acc + budget.maxLimit, 0);
 
-  const data = budgets.map((budget) => ({
-    name: budget.category,
-    value: budget.currentSpend,
-    color: budget.theme,
-  }));
+  const data = budgets
+    .filter((budget) => budget.currentSpend > 0)
+    .map((budget) => ({
+      name: budget.category,
+      value: budget.currentSpend,
+      color: budget.theme,
+    }));
 
   const COLORS = {
     GREEN: "#16A34A",

@@ -3,7 +3,7 @@ import { getUserIdToken } from "./authService";
 
 const API_BASE_URL = "/api/budgets";
 
-export const fetchBudgets = async (): Promise<Budget> => {
+export const fetchBudgets = async (): Promise<Budget[]> => {
   const token = await getUserIdToken();
   const response = await fetch(API_BASE_URL, {
     method: "GET",
@@ -11,13 +11,16 @@ export const fetchBudgets = async (): Promise<Budget> => {
   });
 
   if (!response.ok) throw new Error("Failed to fetch budgets");
-  return response.json();
+
+  const data = await response.json();
+  return data ?? [];
 };
 
 export const createBudget = async (
   newBudget: Partial<Budget>
 ): Promise<Budget> => {
   const token = await getUserIdToken();
+
   const response = await fetch(API_BASE_URL, {
     method: "POST",
     headers: {
@@ -38,7 +41,7 @@ export const updateBudget = async (
   updatedBudget: Partial<Budget>
 ): Promise<Budget> => {
   const token = await getUserIdToken();
-  const response = await fetch(`API_BASE_URL/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,

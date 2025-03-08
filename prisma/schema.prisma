@@ -38,7 +38,7 @@ model Budget {
   id           String        @id @default(uuid())
   category     CategoryType
   theme        BudgetTheme
-  maxLimit     Float
+  maxLimit     Float         @default(0)
   currentSpend Float         @default(0)
   remaining    Float         @default(0)
   createdAt    DateTime      @default(now())

@@ -5,7 +5,7 @@ import {
   updateBudget,
 } from "@/services/budgetService";
 import { Budget } from "@/types/budget";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export const useBudgets = () => {
   const queryClient = useQueryClient();

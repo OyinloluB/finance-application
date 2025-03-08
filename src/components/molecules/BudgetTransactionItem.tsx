@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { LatestTransaction } from "@/types/budget";
+import { DateTime } from "luxon";
 
 const BudgetTransactionItem = ({ tx }: { tx: LatestTransaction }) => (
   <div className="flex justify-between text-sm text-grey-700 py-150 last:pb-0 first:pt-0 border-b last:border-b-0 border-gray-500/15">
@@ -15,9 +16,10 @@ const BudgetTransactionItem = ({ tx }: { tx: LatestTransaction }) => (
       <span className="font-bold text-grey-900">{tx.name}</span>
     </div>
     <div className="flex flex-col items-end gap-50 text-preset-5">
-      <span className="font-bold text-gray-900">${tx.amount.toFixed(2)}</span>
-      {/* <span>{DateTime.fromISO(tx.date).toFormat("MMM dd, yyyy")}</span> */}
-      <span className="text-gray-500">{tx.date}</span>
+      <span className="font-bold text-gray-900">${tx.amount}</span>
+      <span className="text-gray-500">
+        {DateTime.fromISO(tx.date).toFormat("MMM dd, yyyy")}
+      </span>
     </div>
   </div>
 );

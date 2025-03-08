@@ -10,6 +10,7 @@ import {
   CellContext,
 } from "@tanstack/react-table";
 import Image from "next/image";
+import { CategoryLabels } from "@/types/categories";
 
 export interface Transaction {
   id: string;
@@ -23,18 +24,6 @@ export interface Transaction {
 interface TableProps {
   data: Transaction[];
 }
-
-const categoryLabels: Record<string, string> = {
-  ALL: "All Transactions",
-  GENERAL: "General",
-  GROCERIES: "Groceries",
-  DINING_OUT: "Dining Out",
-  BILLS: "Bills",
-  ENTERTAINMENT: "Entertainment",
-  PERSONAL_CARE: "Personal Care",
-  TRANSPORTATION: "transportation",
-  EDUCATION: "education",
-};
 
 const Table = ({ data }: TableProps) => {
   const columns = useMemo<ColumnDef<Transaction>[]>(
@@ -66,7 +55,7 @@ const Table = ({ data }: TableProps) => {
         header: "Category",
         cell: (info: CellContext<Transaction, unknown>) => {
           const rawCategory = info.getValue() as string;
-          const category = categoryLabels[rawCategory];
+          const category = CategoryLabels[rawCategory];
           return <span>{category}</span>;
         },
       },
@@ -91,9 +80,7 @@ const Table = ({ data }: TableProps) => {
                 value >= 0 ? "text-secondary-green" : "text-grey-900"
               }`}
             >
-              {value >= 0
-                ? `+$${value.toFixed(2)}`
-                : `-$${Math.abs(value).toFixed(2)}`}
+              {value >= 0 ? `+$${value}` : `-$${Math.abs(value).toFixed(2)}`}
             </span>
           );
         },
@@ -131,10 +118,7 @@ const Table = ({ data }: TableProps) => {
         <tbody>
           {table.getRowModel().rows.length > 0 ? (
             table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className="s"
-              >
+              <tr key={row.id} className="s">
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}

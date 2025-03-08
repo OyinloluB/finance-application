@@ -7,28 +7,35 @@ import BudgetStat from "../molecules/BudgetStat";
 import BudgetTransactionItem from "../molecules/BudgetTransactionItem";
 import BudgetFormModal from "../molecules/BudgetFormModal";
 import DeleteBudgetModal from "../molecules/DeleteBudgetModal";
+import { useBudgets } from "@/hooks/useBudgets";
+import { CategoryLabels } from "@/types/categories";
 
 interface BudgetCardProps {
   budget: Budget;
-  setBudgets: React.Dispatch<React.SetStateAction<Budget[]>>;
 }
 
-const BudgetCard = ({ budget, setBudgets }: BudgetCardProps) => {
+const BudgetCard = ({ budget }: BudgetCardProps) => {
+  const { updateBudget, deleteBudget } = useBudgets();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const handleEditBudget = (updatedBudget: Budget) => {
-    setBudgets((prevBudget) =>
-      prevBudget.map((b) =>
-        b.id === budget.id ? { ...b, ...updatedBudget } : b
-      )
+  const handleEditBudget = (updatedBudget: Partial<Budget>) => {
+    updateBudget.mutate(
+      { id: budget.id, updatedBudget },
+      {
+        onSuccess: () => {
+          setIsEditModalOpen(false);
+        },
+      }
     );
-    setIsEditModalOpen(false);
   };
 
   const handleDeleteBudget = () => {
-    setBudgets((prevBudget) => prevBudget.filter((b) => b.id !== budget.id));
-    setIsDeleteModalOpen(false);
+    deleteBudget.mutate(budget.id, {
+      onSuccess: () => {
+        setIsDeleteModalOpen(false);
+      },
+    });
   };
 
   return (
@@ -40,7 +47,7 @@ const BudgetCard = ({ budget, setBudgets }: BudgetCardProps) => {
               themeColors[budget.theme]
             } mr-200`}
           />
-          {budget.category}
+          {CategoryLabels[budget.category]}
         </h3>
         <DropdownMenu
           items={[
@@ -56,7 +63,7 @@ const BudgetCard = ({ budget, setBudgets }: BudgetCardProps) => {
 
       <div className="mb-250">
         <span className="text-preset-4 text-grey-500">
-          Maximum of ${budget.maxLimit.toFixed(2)}
+          Maximum of ${budget.maxLimit}
         </span>
         <div className="mt-200 bg-beige-100 h-400 p-50 rounded-sm overflow-hidden">
           <div
@@ -86,9 +93,15 @@ const BudgetCard = ({ budget, setBudgets }: BudgetCardProps) => {
         <h4 className="text-preset-3 text-grey-900 font-bold mb-200">
           Latest Spending
         </h4>
-        {budget.transactions.slice(0, 3).map((tx) => (
-          <BudgetTransactionItem key={tx.id} tx={tx} />
-        ))}
+        {budget.transactions.length > 0 ? (
+          budget.transactions
+            .slice(0, 3)
+            .map((tx) => <BudgetTransactionItem key={tx.id} tx={tx} />)
+        ) : (
+          <p className="text-grey-500 text-center text-preset-5 italic">
+            No transactions yet
+          </p>
+        )}
       </div>
 
       <BudgetFormModal
@@ -104,7 +117,7 @@ const BudgetCard = ({ budget, setBudgets }: BudgetCardProps) => {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleDeleteBudget}
-        title={`Delete '${budget.category}'?`}
+        title={`Delete '${CategoryLabels[budget.category]}'?`}
         description="Are you sure you want to delete this budget? This action cannot be reversed, and all the data inside it will be removed forever."
       />
     </div>

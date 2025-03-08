@@ -14,7 +14,7 @@ const BudgetStat = ({
     <div className="flex flex-col gap-50">
       <span className="text-preset-5 text-gray-500">{label}</span>
       <span className="text-preset-4 text-gray-900 font-bold">
-        ${value.toFixed(2)}
+        ${value}
       </span>
     </div>
   </div>

@@ -44,9 +44,15 @@ export async function PATCH(
 
     const { category, maxLimit, theme } = await req.json();
 
+    const parsedMaxLimit = Number(maxLimit);
     const updatedBudget = await prisma.budget.update({
       where: { id: params.id, userId },
-      data: { category, maxLimit, theme },
+      data: {
+        category: category.toUpperCase(),
+        maxLimit: parsedMaxLimit,
+        theme: theme.toUpperCase(),
+        userId,
+      },
     });
 
     return NextResponse.json(updatedBudget, { status: 200 });
@@ -58,7 +64,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const userId = await verifyToken(req);
@@ -67,7 +73,16 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await prisma.budget.delete({ where: { id: params.id, userId } });
+    const budgetId = context.params.id;
+
+    await prisma.budget.delete({
+      where: { id: budgetId, userId },
+    });
+
+    return NextResponse.json(
+      { message: "Budget deleted successfully" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error deleting budget:", error);
     NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

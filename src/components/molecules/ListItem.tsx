@@ -18,9 +18,7 @@ const ListItem = ({ name, category, date, amount }: ListItemProps) => {
           amount >= 0 ? "text-green-500" : "text-red-500"
         }`}
       >
-        {amount >= 0
-          ? `+$${amount.toFixed(2)}`
-          : `-$${Math.abs(amount).toFixed(2)}`}
+        {amount >= 0 ? `+$${amount}` : `-$${Math.abs(amount)}`}
       </p>
     </div>
   );
