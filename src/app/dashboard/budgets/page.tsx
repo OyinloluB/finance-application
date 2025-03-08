@@ -8,9 +8,10 @@ import BudgetCard from "@/components/organisms/BudgetCard";
 import { Budget } from "@/types/budget";
 import BudgetFormModal from "@/components/molecules/BudgetFormModal";
 import { useBudgets } from "@/hooks/useBudgets";
+import Spinner from "@/components/atoms/Spinner";
 
 const BudgetsPage = () => {
-  const { budgets, createBudget } = useBudgets();
+  const { budgets, createBudget, isLoading } = useBudgets();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -30,31 +31,38 @@ const BudgetsPage = () => {
           onClick={() => setIsAddModalOpen(true)}
         />
       </div>
-      <div className="flex gap-300">
-        <div className="flex-1 h-fit bg-white p-400 rounded-lg mb-400">
-          <BudgetChart budgets={budgets} />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div className="flex gap-300">
+          <div className="flex-1 h-fit bg-white p-400 rounded-lg mb-400">
+            <BudgetChart budgets={budgets} isLoading={isLoading} />
 
-          <div>
-            <h2 className="text-preset-2 font-bold text-grey-900 mb-300">
-              Spending Summary
-            </h2>
+            <div>
+              <h2 className="text-preset-2 font-bold text-grey-900 mb-300">
+                Spending Summary
+              </h2>
 
-            <div className="flex-1">
-              {budgets
-                .filter((budget) => budget.transactions.length > 0)
-                .map((budget) => (
-                  <BudgetSpendingSummaryItem key={budget.id} budget={budget} />
-                ))}
+              <div className="flex-1">
+                {budgets
+                  .filter((budget) => budget.transactions.length > 0)
+                  .map((budget) => (
+                    <BudgetSpendingSummaryItem
+                      key={budget.id}
+                      budget={budget}
+                    />
+                  ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex-auto grid grid-cols-1 gap-400">
-          {budgets.map((budget) => (
-            <BudgetCard key={budget.id} budget={budget} />
-          ))}
+          <div className="flex-auto grid grid-cols-1 gap-400">
+            {budgets.map((budget) => (
+              <BudgetCard key={budget.id} budget={budget} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       <BudgetFormModal
         title="Add New Budget"

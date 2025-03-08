@@ -1,8 +1,10 @@
 "use client";
 
 import { PieChart, Pie, Cell } from "recharts";
+import Spinner from "../atoms/Spinner";
 
 interface BudgetChartProps {
+  isLoading: boolean;
   budgets: {
     category: string;
     currentSpend: number;
@@ -11,7 +13,15 @@ interface BudgetChartProps {
   }[];
 }
 
-const BudgetChart: React.FC<BudgetChartProps> = ({ budgets }) => {
+const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[250px]">
+        <Spinner />
+      </div>
+    );
+  }
+
   const totalSpending = budgets.reduce(
     (acc, budget) => acc + budget.currentSpend,
     0

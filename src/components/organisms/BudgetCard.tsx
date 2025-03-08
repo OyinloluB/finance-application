@@ -9,13 +9,14 @@ import BudgetFormModal from "../molecules/BudgetFormModal";
 import DeleteBudgetModal from "../molecules/DeleteBudgetModal";
 import { useBudgets } from "@/hooks/useBudgets";
 import { CategoryLabels } from "@/types/categories";
+import Spinner from "../atoms/Spinner";
 
 interface BudgetCardProps {
   budget: Budget;
 }
 
 const BudgetCard = ({ budget }: BudgetCardProps) => {
-  const { updateBudget, deleteBudget } = useBudgets();
+  const { updateBudget, deleteBudget, isLoading } = useBudgets();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -37,6 +38,14 @@ const BudgetCard = ({ budget }: BudgetCardProps) => {
       },
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[150px]">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white p-400 rounded-lg">
