@@ -13,7 +13,7 @@ const BudgetTransactionItem = ({ tx }: { tx: LatestTransaction }) => (
         height={32}
         className="w-400 h-400 rounded-full"
       />
-      <span className="font-bold text-grey-900">{tx.name}</span>
+      <span className="font-bold text-grey-900">{tx.recipient.name}</span>
     </div>
     <div className="flex flex-col items-end gap-50 text-preset-5">
       <span className="font-bold text-gray-900">${tx.amount}</span>

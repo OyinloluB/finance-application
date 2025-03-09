@@ -3,6 +3,7 @@ import {
   createTransaction,
   fetchTransactions,
 } from "@/services/transactionService";
+import { useBudgets } from "./useBudgets";
 
 const useTransactions = (params: {
   page: number;
@@ -12,11 +13,13 @@ const useTransactions = (params: {
 }) => {
   const queryClient = useQueryClient();
   const queryKey = ["transactions", params];
+  const { updateBudgetsAfterTransaction } = useBudgets();
 
   const createTransactionMutation = useMutation({
     mutationFn: createTransaction,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
+      updateBudgetsAfterTransaction();
     },
   });
 

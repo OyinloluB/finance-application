@@ -67,6 +67,24 @@ export async function POST(req: Request) {
       },
     });
 
+    const budget = await prisma.budget.findFirst({
+      where: {
+        userId,
+        category: category.toUpperCase(),
+      },
+    });
+
+    if (budget && type === "EXPENSE") {
+      await prisma.budget.update({
+        where: { id: budget.id },
+        data: {
+          currentSpend: budget.currentSpend + Math.abs(Number(amount)),
+          remaining:
+            budget.maxLimit - (budget.currentSpend + Math.abs(Number(amount))),
+        },
+      });
+    }
+
     return NextResponse.json(transaction, { status: 201 });
   } catch (error) {
     console.error("Error creating transaction:", error);

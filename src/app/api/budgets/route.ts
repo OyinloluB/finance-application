@@ -25,14 +25,42 @@ export async function POST(req: Request) {
     }
 
     const parsedMaxLimit = Number(maxLimit);
+
+    const pastTransactions = await prisma.transaction.findMany({
+      where: {
+        userId,
+        category: category.toUpperCase(),
+        type: "EXPENSE",
+        budgetId: null,
+      },
+    });
+
+    const totalSpent = pastTransactions.reduce(
+      (sum, transaction) => sum + Math.abs(Number(transaction.amount)),
+      0
+    );
+
     const budget = await prisma.budget.create({
       data: {
         category: category.toUpperCase(),
         maxLimit: parsedMaxLimit,
         theme: theme.toUpperCase(),
         userId,
+        currentSpend: totalSpent,
+        remaining: parsedMaxLimit - totalSpent,
       },
     });
+
+    if (pastTransactions.length > 0) {
+      await prisma.transaction.updateMany({
+        where: {
+          id: { in: pastTransactions.map((tx) => tx.id) },
+        },
+        data: {
+          budgetId: budget.id,
+        },
+      });
+    }
 
     return NextResponse.json(budget, { status: 201 });
   } catch (error) {
@@ -56,26 +84,28 @@ export async function GET(req: Request) {
       include: {
         transactions: {
           where: {
-            amount: { lt: 0 },
+            type: "EXPENSE",
+          },
+          select: {
+            id: true,
+            amount: true,
+            date: true,
+            type: true,
+            recipientId: true,
+            recipient: {
+              select: {
+                name: true,
+              },
+            },
+            image: true,
           },
         },
       },
     });
 
-    const budgetsWithCalculatedFields = budgets.map((budget) => {
-      const totalSpent = budget.transactions.reduce(
-        (sum, transaction) => sum + Math.abs(Number(transaction.amount)),
-        0
-      );
+    console.log("Budgets Retrieved:", budgets);
 
-      return {
-        ...budget,
-        currentSpend: totalSpent,
-        remaining: budget.maxLimit - totalSpent,
-      };
-    });
-
-    return NextResponse.json(budgetsWithCalculatedFields, { status: 200 });
+    return NextResponse.json(budgets, { status: 200 });
   } catch (error) {
     console.error("Error fetching budgets", error);
     NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

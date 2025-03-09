@@ -41,6 +41,10 @@ export const useBudgets = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budgets"] }),
   });
 
+  const updateBudgetsAfterTransaction = () => {
+    queryClient.invalidateQueries({ queryKey: ["budgets"] });
+  };
+
   return {
     budgets,
     isLoading,
@@ -48,5 +52,6 @@ export const useBudgets = () => {
     createBudget: createBudgetMutation,
     updateBudget: updateBudgetMutation,
     deleteBudget: deleteBudgetMutation,
+    updateBudgetsAfterTransaction,
   };
 };

@@ -33,7 +33,7 @@ const BudgetsPage = () => {
       </div>
       {isLoading ? (
         <Spinner />
-      ) : (
+      ) : budgets.length > 0 ? (
         <div className="flex gap-300">
           <div className="flex-1 h-fit bg-white p-400 rounded-lg mb-400">
             <BudgetChart budgets={budgets} isLoading={isLoading} />
@@ -61,6 +61,13 @@ const BudgetsPage = () => {
               <BudgetCard key={budget.id} budget={budget} />
             ))}
           </div>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center text-center text-grey-500 mt-400">
+          <p className="text-preset-3 mb-50">No budgets found</p>
+          <p className="text-preset-3">
+            Start by creating a budget to track your spending.
+          </p>
         </div>
       )}
 

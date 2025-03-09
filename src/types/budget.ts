@@ -4,6 +4,9 @@ export interface LatestTransaction {
   name: string;
   amount: number;
   date: string;
+  recipient: {
+    name: string;
+  };
 }
 
 export interface Budget {
