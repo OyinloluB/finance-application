@@ -57,6 +57,7 @@ model Pot {
   name          String
   targetAmount  Float
   currentAmount Float    @default(0)
+  theme         PotTheme
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   userId        String
@@ -94,6 +95,22 @@ enum FrequencyType {
 }
 
 enum BudgetTheme {
+  GREEN
+  YELLOW
+  CYAN
+  NAVY
+  RED
+  PURPLE
+  TURQUOISE
+  BROWN
+  MAGENTA
+  BLUE
+  GREY
+  ARMY
+  PINK
+}
+
+enum PotTheme {
   GREEN
   YELLOW
   CYAN
