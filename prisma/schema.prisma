@@ -9,29 +9,33 @@ datasource db {
 }
 
 model User {
-  id             String          @id
-  name           String?
-  email          String          @unique
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  budgets        Budget[]
-  pots           Pot[]
-  recurringBills RecurringBill[]
-  transactions   Transaction[]
+  id                   String          @id
+  name                 String?
+  email                String          @unique
+  image                String          @default("/images/profile-one.png")
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  budgets              Budget[]
+  pots                 Pot[]
+  recurringBills       RecurringBill[]
+  sentTransactions     Transaction[]   @relation(name: "TransactionOwner")
+  receivedTransactions Transaction[]   @relation(name: "TransactionRecipient")
 }
 
 model Transaction {
-  id       String          @id @default(uuid())
-  amount   Decimal
-  type     TransactionType
-  category CategoryType
-  date     DateTime
-  userId   String
-  image    String?
-  name     String
-  user     User            @relation(fields: [userId], references: [id])
-  budgetId String?
-  budget   Budget?         @relation(fields: [budgetId], references: [id])
+  id          String          @id @default(uuid())
+  amount      Decimal
+  type        TransactionType
+  category    CategoryType
+  date        DateTime
+  userId      String
+  recipientId String?
+  image       String?
+  name        String
+  user        User            @relation(name: "TransactionOwner", fields: [userId], references: [id])
+  recipient   User?           @relation(name: "TransactionRecipient", fields: [recipientId], references: [id])
+  budgetId    String?
+  budget      Budget?         @relation(fields: [budgetId], references: [id])
 }
 
 model Budget {

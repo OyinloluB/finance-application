@@ -11,15 +11,7 @@ import {
 } from "@tanstack/react-table";
 import Image from "next/image";
 import { CategoryLabels } from "@/types/categories";
-
-export interface Transaction {
-  id: string;
-  name: string;
-  image: string;
-  category: string;
-  date: string;
-  amount: number;
-}
+import { Transaction } from "@/types/transaction";
 
 interface TableProps {
   data: Transaction[];
@@ -33,6 +25,7 @@ const Table = ({ data }: TableProps) => {
         header: "Recipient / Sender",
         cell: (info: CellContext<Transaction, unknown>) => {
           const row = info.row.original;
+          const isExpense = row.type === "EXPENSE";
 
           return (
             <div className="flex items-center gap-200">
@@ -44,7 +37,7 @@ const Table = ({ data }: TableProps) => {
                 className="w-10 h-10 rounded-full "
               />
               <span className="font-bold text-grey-900">
-                {String(info.getValue())}
+                {isExpense ? `${row.recipient.name}` : `${row.name}`}
               </span>
             </div>
           );

@@ -67,7 +67,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
-      console.log(firebaseError);
       setErrorMessage(
         firebaseError || "Something went wrong, please try again."
       );

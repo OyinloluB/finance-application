@@ -55,8 +55,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
       const firebaseUser = userCredential.user;
 
-      console.log({ firebaseUser });
-
       await fetch("/api/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -10,10 +10,14 @@ import Spinner from "@/components/atoms/Spinner";
 import { getErrorMessage } from "@/utils/errors";
 import { useEffect, useState } from "react";
 import useTransactions from "@/hooks/useTransactions";
+import Button from "@/components/atoms/Button";
+import TransactionFormModal from "@/components/molecules/TransactionFormModal";
+import { TransactionFormData } from "@/types/transaction";
 
 const Transactions = () => {
   const methods = useForm();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const watchedSearch = useWatch({
     control: methods.control,
@@ -28,23 +32,36 @@ const Transactions = () => {
     name: "sort_by",
   });
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [watchedSearch, watchedCategory, watchedSortBy]);
-
-  const { data, isLoading, error } = useTransactions({
+  const { data, isLoading, error, createTransaction } = useTransactions({
     page: currentPage,
     search: watchedSearch || "",
     category: watchedCategory || "all_transactions",
     sortBy: watchedSortBy || "latest",
   });
 
+  const handleAddTransaction = async (newTransaction: TransactionFormData) => {
+    createTransaction.mutate(newTransaction, {
+      onSuccess: () => setIsAddModalOpen(false),
+    });
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [watchedSearch, watchedCategory, watchedSortBy]);
+
   return (
     <ProtectedRoute>
       <div className="flex-1 p-400 h-screen">
-        <h1 className="text-preset-1 font-bold text-grey-900 mb-400">
-          Transactions
-        </h1>
+        <div className="flex justify-between items-center mb-400">
+          <h1 className="text-preset-1 font-bold text-grey-900">
+            Transactions
+          </h1>
+          <Button
+            type="primary"
+            text="+ Add New Transaction"
+            onClick={() => setIsAddModalOpen(true)}
+          />
+        </div>
 
         <div className="p-400 bg-white rounded-md">
           <FormProvider {...methods}>
@@ -115,6 +132,13 @@ const Transactions = () => {
             </p>
           )}
         </div>
+        <TransactionFormModal
+          title="Add New Transaction"
+          actionButtonText="Add Transaction"
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onSubmit={handleAddTransaction}
+        />
       </div>
     </ProtectedRoute>
   );

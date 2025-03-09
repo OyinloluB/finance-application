@@ -10,7 +10,7 @@ interface InputProps {
   icon?: IconName;
   helperText?: string;
   error?: string;
-  type?: "number" | "text";
+  type?: "number" | "text" | "date";
 }
 
 const InputField = ({

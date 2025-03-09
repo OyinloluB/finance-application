@@ -1,5 +1,8 @@
-import { useQuery } from "react-query";
-import { fetchTransactions } from "@/services/transactionService";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  createTransaction,
+  fetchTransactions,
+} from "@/services/transactionService";
 
 const useTransactions = (params: {
   page: number;
@@ -7,9 +10,30 @@ const useTransactions = (params: {
   category?: string;
   sortBy?: string;
 }) => {
-  return useQuery(["transactions", params], () => fetchTransactions(params), {
-    keepPreviousData: true,
+  const queryClient = useQueryClient();
+  const queryKey = ["transactions", params];
+
+  const createTransactionMutation = useMutation({
+    mutationFn: createTransaction,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
+    },
   });
+
+  const { data, isLoading, error } = useQuery(
+    queryKey,
+    () => fetchTransactions(params),
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  return {
+    data,
+    isLoading,
+    error,
+    createTransaction: createTransactionMutation,
+  };
 };
 
 export default useTransactions;
