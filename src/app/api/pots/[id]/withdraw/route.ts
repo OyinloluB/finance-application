@@ -1,6 +1,6 @@
+import { verifyToken } from "@/app/api/transactions/route";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { verifyToken } from "../../transactions/route";
 
 const prisma = new PrismaClient();
 

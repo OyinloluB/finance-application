@@ -3,6 +3,7 @@ export type Pot = {
   name: string;
   targetAmount: number;
   currentAmount: number;
+  theme: string;
   createdAt: string;
   updatedAt: string;
   userId: string;

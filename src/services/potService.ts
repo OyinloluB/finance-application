@@ -1,45 +1,73 @@
 import { Pot } from "@/types/pot";
+import { getUserIdToken } from "./authService";
+
+const API_BASE_URL = "/api/pots";
 
 export const fetchPots = async (): Promise<Pot[]> => {
-  const res = await fetch("/api/pots");
-  if (!res.ok) {
+  const token = await getUserIdToken();
+
+  const response = await fetch(API_BASE_URL, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
     throw new Error("Failed to fetch pots");
   }
-  return res.json();
+
+  return response.json();
 };
 
-export const createPot = async (
-  pot: Omit<Pot, "id" | "createdAt" | "updatedAt" | "userId">
-): Promise<Pot> => {
-  const res = await fetch("/api/pots", {
+export const createPot = async (pot: Partial<Pot>): Promise<Pot> => {
+  const token = await getUserIdToken();
+
+  const response = await fetch(API_BASE_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(pot),
   });
-  if (!res.ok) {
+
+  if (!response.ok) {
     throw new Error("Failed to create pot");
   }
-  return res.json();
+
+  return response.json();
 };
 
 export const updatePot = async (
   id: string,
   updatedPot: Partial<Pot>
 ): Promise<Pot> => {
-  const res = await fetch(`/api/pots/${id}`, {
+  const token = await getUserIdToken();
+
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(updatedPot),
   });
-  if (!res.ok) {
+
+  if (!response.ok) {
     throw new Error("Failed to update pot");
   }
-  return res.json();
+
+  return response.json();
 };
 
 export const deletePot = async (id: string): Promise<void> => {
-  const res = await fetch(`/api/pots/${id}`, { method: "DELETE" });
-  if (!res.ok) {
+  const token = await getUserIdToken();
+
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
     throw new Error("Failed to delete pot");
   }
 };
@@ -48,28 +76,42 @@ export const depositToPot = async (
   id: string,
   amount: number
 ): Promise<Pot> => {
-  const res = await fetch(`/api/pots/${id}/deposit`, {
+  const token = await getUserIdToken();
+
+  const response = await fetch(`${API_BASE_URL}/${id}/deposit`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ amount }),
   });
-  if (!res.ok) {
+
+  if (!response.ok) {
     throw new Error("Failed to deposit to pot");
   }
-  return res.json();
+
+  return response.json();
 };
 
 export const withdrawFromPot = async (
   id: string,
   amount: number
 ): Promise<Pot> => {
-  const res = await fetch(`/api/pots/${id}/withdraw`, {
+  const token = await getUserIdToken();
+
+  const response = await fetch(`${API_BASE_URL}/${id}/withdraw`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ amount }),
   });
-  if (!res.ok) {
+
+  if (!response.ok) {
     throw new Error("Failed to withdraw from pot");
   }
-  return res.json();
+
+  return response.json();
 };

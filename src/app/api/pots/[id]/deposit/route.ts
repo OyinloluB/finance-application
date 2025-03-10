@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { verifyToken } from "../../transactions/route";
+import { verifyToken } from "../../../transactions/route";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();

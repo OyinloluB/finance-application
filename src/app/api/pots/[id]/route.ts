@@ -41,11 +41,19 @@ export async function DELETE(
 ) {
   try {
     const userId = await verifyToken(req);
+
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await prisma.pot.delete({ where: { id: params.id, userId } });
+    const { id } = params;
+
+    await prisma.pot.delete({ where: { id, userId } });
+
+    return NextResponse.json(
+      { message: "Pot deleted successfully" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error deleting pot:", error);
     return NextResponse.json(

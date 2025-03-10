@@ -7,6 +7,8 @@ const prisma = new PrismaClient();
 export async function POST(req: Request) {
   try {
     const userId = await verifyToken(req);
+
+    console.log("user", userId);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -41,12 +43,16 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   try {
     const userId = await verifyToken(req);
+
+    console.log("user", userId);
+
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const pots = await prisma.pot.findMany({
       where: { userId },
+      orderBy: { createdAt: "asc" },
     });
 
     return NextResponse.json(pots, { status: 200 });
