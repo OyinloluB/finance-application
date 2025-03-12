@@ -81,6 +81,7 @@ export async function GET(req: Request) {
 
     const budgets = await prisma.budget.findMany({
       where: { userId },
+      orderBy: { createdAt: "asc" },
       include: {
         transactions: {
           where: {

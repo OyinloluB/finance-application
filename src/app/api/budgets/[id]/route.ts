@@ -4,10 +4,7 @@ import { verifyToken } from "../../transactions/route";
 
 const prisma = new PrismaClient();
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request, context: { params: { id: string } }) {
   try {
     const userId = await verifyToken(req);
 
@@ -15,8 +12,10 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const budgetId = context.params.id;
+
     const budget = await prisma.budget.findUnique({
-      where: { id: params.id, userId },
+      where: { id: budgetId, userId },
       include: { transactions: true },
     });
 
@@ -31,10 +30,7 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: Request, context: { params: { id: string } }) {
   try {
     const userId = await verifyToken(req);
 
@@ -42,11 +38,12 @@ export async function PATCH(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const budgetId = context.params.id;
     const { category, maxLimit, theme } = await req.json();
 
     const parsedMaxLimit = Number(maxLimit);
     const updatedBudget = await prisma.budget.update({
-      where: { id: params.id, userId },
+      where: { id: budgetId, userId },
       data: {
         category: category.toUpperCase(),
         maxLimit: parsedMaxLimit,
