@@ -36,7 +36,6 @@ const PotTransactionModal = ({
 
   const currentPercentage = (pot.currentAmount / pot.targetAmount) * 100;
   const newPercentage = (newAmount / pot.targetAmount) * 100;
-  console.log({ newAmount });
 
   return (
     <Modal

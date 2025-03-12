@@ -103,8 +103,6 @@ export async function GET(req: Request) {
       },
     });
 
-    console.log("Budgets Retrieved:", budgets);
-
     return NextResponse.json(budgets, { status: 200 });
   } catch (error) {
     console.error("Error fetching budgets", error);

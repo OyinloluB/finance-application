@@ -15,8 +15,6 @@ const Overview = () => {
     );
   }
 
-  console.log({ data });
-
   return (
     <div className="flex-1 min-h-screen">
       <h1 className="text-preset-1 font-bold text-grey-900 mb-400">Overview</h1>
