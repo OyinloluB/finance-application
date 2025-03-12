@@ -6,6 +6,7 @@ import Table from "@/components/organisms/Table";
 import BillSummary from "@/components/molecules/summary/BillSummary";
 import BillFilters from "@/components/molecules/BillFilters";
 import { useBills } from "@/hooks/useBills";
+import Spinner from "@/components/atoms/Spinner";
 
 const Bills = () => {
   const methods = useForm({
@@ -18,7 +19,7 @@ const Bills = () => {
   });
   const watchedSortBy = useWatch({ control: methods.control, name: "sort_by" });
 
-  const { data: bills } = useBills(watchedSortBy, watchedSearch);
+  const { data: bills, isLoading } = useBills(watchedSortBy, watchedSearch);
 
   return (
     <div className="flex-1 min-h-screen">
@@ -35,7 +36,11 @@ const Bills = () => {
               <BillFilters />
             </FormProvider>
 
-            {bills?.length > 0 ? (
+            {isLoading ? (
+              <div className="flex justify-center items-center py-400">
+                <Spinner />
+              </div>
+            ) : bills?.length > 0 ? (
               <Table data={bills} columns={billColumns} />
             ) : (
               <p>No bills found.</p>
