@@ -7,9 +7,10 @@ import { usePots } from "@/hooks/usePots";
 import { Pot } from "@/types/pot";
 import PotFormModal from "@/components/molecules/modal/PotFormModal";
 import PotCard from "@/components/organisms/PotCard";
+import Spinner from "@/components/atoms/Spinner";
 
 const PotsPage = () => {
-  const { pots, createPot } = usePots();
+  const { pots, createPot, isLoading } = usePots();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -30,7 +31,11 @@ const PotsPage = () => {
         />
       </div>
 
-      {pots.length > 0 ? (
+      {isLoading ? (
+        <div className="flex justify-center items-center py-400">
+          <Spinner />
+        </div>
+      ) : pots.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-300">
           {pots.map((pot) => (
             <PotCard key={pot.id} pot={pot} />

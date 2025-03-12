@@ -8,6 +8,7 @@ import BudgetCard from "@/components/organisms/BudgetCard";
 import { Budget } from "@/types/budget";
 import { useBudgets } from "@/hooks/useBudgets";
 import BudgetFormModal from "@/components/molecules/modal/BudgetFormModal";
+import Spinner from "@/components/atoms/Spinner";
 
 const BudgetsPage = () => {
   const { budgets, createBudget, isLoading } = useBudgets();
@@ -30,7 +31,11 @@ const BudgetsPage = () => {
           onClick={() => setIsAddModalOpen(true)}
         />
       </div>
-      {budgets.length > 0 ? (
+      {isLoading ? (
+        <div className="flex justify-center items-center py-400">
+          <Spinner />
+        </div>
+      ) : budgets.length > 0 ? (
         <div className="flex gap-300">
           <div className="flex-1 h-fit bg-white p-400 rounded-lg mb-400">
             <BudgetChart budgets={budgets} isLoading={isLoading} />
