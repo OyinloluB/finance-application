@@ -3,6 +3,7 @@ import { getUserIdToken } from "./authService";
 import { DateTime } from "luxon";
 
 const API_BASE_URL = "/api/transactions";
+const MAX_TRANSACTIONS_LIMIT = 1000;
 
 export const createTransaction = async (
   newTransaction: TransactionFormData
@@ -33,23 +34,26 @@ export const createTransaction = async (
   return response.json();
 };
 
-export const fetchTransactions = async ({
-  page = 1,
-  limit = 6,
-  search = "",
-  category = "all_transactions",
-  sortBy = "latest",
+export const fetchTransactions = async (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  category?: string;
+  sortBy?: string;
+  fetchAll?: boolean;
 }) => {
   const token = await getUserIdToken();
 
   const queryParams = new URLSearchParams({
-    page: page.toString(),
-    limit: limit.toString(),
-    search,
-    category,
-    sortBy,
+    page: params?.fetchAll ? "1" : params?.page?.toString() || "1",
+    limit: params?.fetchAll
+      ? MAX_TRANSACTIONS_LIMIT.toString()
+      : params?.limit?.toString() || "6",
+    search: params?.search || "",
+    category: params?.category || "all_transactions",
+    sortBy: params?.sortBy || "latest",
   });
-
+  
   const response = await fetch(`${API_BASE_URL}?${queryParams}`, {
     method: "GET",
     headers: {

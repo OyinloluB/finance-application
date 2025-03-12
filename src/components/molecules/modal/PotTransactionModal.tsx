@@ -3,6 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import Modal from "@/components/atoms/Modal";
 import InputField from "@/components/atoms/InputField";
 import { Pot } from "@/types/pot";
+import { formatCurrency } from "@/utils/formatCurrency";
 
 interface PotTransactionModalProps {
   isOpen: boolean;
@@ -54,7 +55,7 @@ const PotTransactionModal = ({
         <div className="flex justify-between items-center mt-250 mb-200">
           <span className="text-preset-4 text-gray-500">New Amount</span>
           <span className="text-preset-1 text-gray-900 font-bold">
-            ${newAmount.toFixed(2)}
+            {formatCurrency(newAmount)}
           </span>
         </div>
 

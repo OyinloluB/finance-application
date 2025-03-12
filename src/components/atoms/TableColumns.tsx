@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Transaction } from "@/types/transaction";
 import { RecurringBill } from "@/types/bills";
 import { DateTime } from "luxon";
+import { formatCurrency } from "@/utils/formatCurrency";
 
 export const transactionColumns: ColumnDef<Transaction>[] = [
   {
@@ -47,7 +48,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
             value >= 0 ? "text-green-500" : "text-red-500"
           }`}
         >
-          ${Math.abs(value).toFixed(2)}
+          {formatCurrency(value)}
         </span>
       );
     },
@@ -94,7 +95,7 @@ export const billColumns: ColumnDef<RecurringBill>[] = [
             bill.status === "DUE_SOON" ? "text-red-500" : "text-black"
           }`}
         >
-          ${value.toFixed(2)}
+          {formatCurrency(value)}
         </span>
       );
     },

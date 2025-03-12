@@ -1,5 +1,6 @@
 import ReceiptIconOutline from "@/components/atoms/icons/ReceiptIconOutline";
 import { RecurringBill } from "@/types/bills";
+import { formatCurrency } from "@/utils/formatCurrency";
 import { useMemo } from "react";
 
 interface BillSummaryProps {
@@ -22,7 +23,7 @@ const TotalBills = ({ totalAmount }: { totalAmount: number }) => (
     <ReceiptIconOutline className="w-8 h-8" />
     <div>
       <h2 className="text-preset-4 mb-50">Total Bills</h2>
-      <p className="text-preset-1 font-bold">${totalAmount.toFixed(2)}</p>
+      <p className="text-preset-1 font-bold"> {formatCurrency(totalAmount)}</p>
     </div>
   </div>
 );
