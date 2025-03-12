@@ -1,5 +1,5 @@
+import Modal from "@/components/atoms/Modal";
 import React from "react";
-import Modal from "../atoms/Modal";
 
 interface DeleteBudgetModalProps {
   isOpen: boolean;

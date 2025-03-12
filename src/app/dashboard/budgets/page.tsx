@@ -3,12 +3,11 @@
 import { useState } from "react";
 import Button from "@/components/atoms/Button";
 import BudgetChart from "@/components/organisms/BudgetChart";
-import BudgetSpendingSummaryItem from "@/components/molecules/BudgetSpendingSummaryItem";
+import BudgetSpendingSummaryItem from "@/components/molecules/summary/BudgetSpendingSummaryItem";
 import BudgetCard from "@/components/organisms/BudgetCard";
 import { Budget } from "@/types/budget";
-import BudgetFormModal from "@/components/molecules/BudgetFormModal";
 import { useBudgets } from "@/hooks/useBudgets";
-import Spinner from "@/components/atoms/Spinner";
+import BudgetFormModal from "@/components/molecules/modal/BudgetFormModal";
 
 const BudgetsPage = () => {
   const { budgets, createBudget, isLoading } = useBudgets();
@@ -22,7 +21,7 @@ const BudgetsPage = () => {
   };
 
   return (
-    <div className="flex-1 p-400 min-h-screen">
+    <div className="flex-1 min-h-screen">
       <div className="flex justify-between items-center mb-400">
         <h1 className="text-preset-1 font-bold text-grey-900">Budgets</h1>
         <Button
@@ -31,9 +30,7 @@ const BudgetsPage = () => {
           onClick={() => setIsAddModalOpen(true)}
         />
       </div>
-      {isLoading ? (
-        <Spinner />
-      ) : budgets.length > 0 ? (
+      {budgets.length > 0 ? (
         <div className="flex gap-300">
           <div className="flex-1 h-fit bg-white p-400 rounded-lg mb-400">
             <BudgetChart budgets={budgets} isLoading={isLoading} />

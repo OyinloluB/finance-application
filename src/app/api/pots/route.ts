@@ -44,8 +44,6 @@ export async function GET(req: Request) {
   try {
     const userId = await verifyToken(req);
 
-    console.log("user", userId);
-
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

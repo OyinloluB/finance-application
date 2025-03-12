@@ -27,7 +27,7 @@ const PotTransactionModal = ({
     defaultValues: { amount: 0 },
   });
 
-  const enteredAmount = methods.watch("amount") || 0;
+  const enteredAmount = Number(methods.watch("amount")) || 0;
   const newAmount =
     type === "withdraw"
       ? pot.currentAmount - enteredAmount
@@ -35,6 +35,7 @@ const PotTransactionModal = ({
 
   const currentPercentage = (pot.currentAmount / pot.targetAmount) * 100;
   const newPercentage = (newAmount / pot.targetAmount) * 100;
+  console.log({ newAmount });
 
   return (
     <Modal

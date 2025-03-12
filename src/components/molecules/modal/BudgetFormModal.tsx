@@ -4,7 +4,7 @@ import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
 import { useForm, FormProvider } from "react-hook-form";
 import { Budget } from "@/types/budget";
-import Modal from "../atoms/Modal";
+import Modal from "@/components/atoms/Modal";
 
 interface BudgetFormModalProps {
   title: string;

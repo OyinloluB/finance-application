@@ -2,11 +2,11 @@ import { Pot } from "@/types/pot";
 import Button from "@/components/atoms/Button";
 import { useState } from "react";
 import { usePots } from "@/hooks/usePots";
-import PotTransactionModal from "../molecules/PotTransactionModal";
+import PotTransactionModal from "../molecules/modal/PotTransactionModal";
 import { themeColors } from "@/utils/themeColors";
 import DropdownMenu from "../atoms/Dropdown";
-import DeletePotModal from "../molecules/DeletePotModal";
-import PotFormModal from "../molecules/PotFormModal";
+import DeletePotModal from "../molecules/modal/DeletePotModal";
+import PotFormModal from "../molecules/modal/PotFormModal";
 
 interface PotCardProps {
   pot: Pot;

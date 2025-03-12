@@ -5,11 +5,11 @@ import { Budget } from "@/types/budget";
 import DropdownMenu from "../atoms/Dropdown";
 import BudgetStat from "../molecules/BudgetStat";
 import BudgetTransactionItem from "../molecules/BudgetTransactionItem";
-import BudgetFormModal from "../molecules/BudgetFormModal";
-import DeleteBudgetModal from "../molecules/DeleteBudgetModal";
 import { useBudgets } from "@/hooks/useBudgets";
 import { CategoryLabels } from "@/types/categories";
 import Spinner from "../atoms/Spinner";
+import BudgetFormModal from "../molecules/modal/BudgetFormModal";
+import DeleteBudgetModal from "../molecules/modal/DeleteBudgetModal";
 
 interface BudgetCardProps {
   budget: Budget;

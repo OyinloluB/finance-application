@@ -1,8 +1,8 @@
 "use client";
 
-import ProtectedRoute from "@/components/molecules/ProtectedRoute";
+import ProtectedRoute from "@/components/atoms/ProtectedRoute";
 import Table from "@/components/organisms/Table";
-import Pagination from "@/components/molecules/Pagination";
+import Pagination from "@/components/organisms/Pagination";
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
@@ -11,8 +11,9 @@ import { getErrorMessage } from "@/utils/errors";
 import { useEffect, useState } from "react";
 import useTransactions from "@/hooks/useTransactions";
 import Button from "@/components/atoms/Button";
-import TransactionFormModal from "@/components/molecules/TransactionFormModal";
+import TransactionFormModal from "@/components/molecules/modal/TransactionFormModal";
 import { TransactionFormData } from "@/types/transaction";
+import { transactionColumns } from "@/components/atoms/TableColumns";
 
 const Transactions = () => {
   const methods = useForm();
@@ -51,7 +52,7 @@ const Transactions = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex-1 p-400 h-screen">
+      <div className="flex-1 h-screen">
         <div className="flex justify-between items-center mb-400">
           <h1 className="text-preset-1 font-bold text-grey-900">
             Transactions
@@ -119,7 +120,7 @@ const Transactions = () => {
             </p>
           ) : data?.transactions.length > 0 ? (
             <>
-              <Table data={data.transactions} />
+              <Table data={data.transactions} columns={transactionColumns} />
               <Pagination
                 currentPage={currentPage}
                 totalPages={data.totalPages}

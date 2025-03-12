@@ -4,13 +4,12 @@ import { useState } from "react";
 import Button from "@/components/atoms/Button";
 
 import { usePots } from "@/hooks/usePots";
-import Spinner from "@/components/atoms/Spinner";
 import { Pot } from "@/types/pot";
-import PotFormModal from "@/components/molecules/PotFormModal";
+import PotFormModal from "@/components/molecules/modal/PotFormModal";
 import PotCard from "@/components/organisms/PotCard";
 
 const PotsPage = () => {
-  const { pots, createPot, isLoading } = usePots();
+  const { pots, createPot } = usePots();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -21,7 +20,7 @@ const PotsPage = () => {
   };
 
   return (
-    <div className="flex-1 p-400 min-h-screen">
+    <div className="flex-1 min-h-screen">
       <div className="flex justify-between items-center mb-400">
         <h1 className="text-preset-1 font-bold text-grey-900">Pots</h1>
         <Button
@@ -31,9 +30,7 @@ const PotsPage = () => {
         />
       </div>
 
-      {isLoading ? (
-        <Spinner />
-      ) : pots.length > 0 ? (
+      {pots.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-300">
           {pots.map((pot) => (
             <PotCard key={pot.id} pot={pot} />

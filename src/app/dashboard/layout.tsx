@@ -2,7 +2,7 @@
 
 import React from "react";
 import SidebarContainer from "@/components/organisms/SidebarContainer";
-import ProtectedRoute from "@/components/molecules/ProtectedRoute";
+import ProtectedRoute from "@/components/atoms/ProtectedRoute";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (

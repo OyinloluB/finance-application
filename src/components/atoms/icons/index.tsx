@@ -24,6 +24,7 @@ import MusicNoteIcon from "./MusicNoteIcon";
 import NetworkIcon from "./NetworkIcon";
 import PottedPlantIcon from "./PottedPlantIcon";
 import ReceiptIcon from "./ReceiptIcon";
+import ReceiptIconOutline from "./ReceiptIconOutline";
 import VideoIcon from "./VideoIcon";
 import WarehouseIcon from "./WarehouseIcon";
 import WarningCircleIcon from "./WarningCircleIcon";
@@ -53,6 +54,7 @@ export const Icons = {
   NetworkIcon,
   PottedPlantIcon,
   ReceiptIcon,
+  ReceiptIconOutline,
   VideoIcon,
   WarehouseIcon,
   WarningCircleIcon,

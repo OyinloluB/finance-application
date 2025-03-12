@@ -2,7 +2,7 @@ import React from "react";
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
 import { useForm, FormProvider, useWatch } from "react-hook-form";
-import Modal from "../atoms/Modal";
+import Modal from "../../atoms/Modal";
 import { TransactionFormData } from "@/types/transaction";
 import { CategoryType } from "@/types/categories";
 import { DateTime } from "luxon";
