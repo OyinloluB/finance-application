@@ -17,7 +17,7 @@ export default {
     "bg-amber-800",
     "bg-pink-800",
     "bg-blue-800",
-    "bg-gray-800",
+    "bg-grey-800",
     "bg-green-800",
     "bg-pink-800",
   ],

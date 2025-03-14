@@ -54,7 +54,7 @@ const PotCard = ({ pot }: PotCardProps) => {
   return (
     <div className="bg-white p-300 rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-500">
-        <h3 className="text-preset-2 font-bold text-gray-900 flex items-center">
+        <h3 className="text-preset-2 font-bold text-grey-900 flex items-center">
           <span
             className={`w-200 h-200 rounded-full ${
               themeColors[pot.theme]
@@ -75,8 +75,8 @@ const PotCard = ({ pot }: PotCardProps) => {
       </div>
 
       <div className="flex justify-between items-center mb-200">
-        <span className="text-preset-4 text-gray-500">Total Saved</span>
-        <span className="text-preset-1 text-gray-900 font-bold">
+        <span className="text-preset-4 text-grey-500">Total Saved</span>
+        <span className="text-preset-1 text-grey-900 font-bold">
           ${pot.currentAmount.toFixed(2)}
         </span>
       </div>
@@ -91,10 +91,10 @@ const PotCard = ({ pot }: PotCardProps) => {
       </div>
 
       <div className="flex justify-between items-center mb-500">
-        <span className="text-preset-5 font-bold text-gray-500">
+        <span className="text-preset-5 font-bold text-grey-500">
           {pot.targetAmount > 0 ? `${percentageSaved.toFixed(2)}%` : "0%"}
         </span>
-        <span className="text-preset-5 text-gray-500">
+        <span className="text-preset-5 text-grey-500">
           Target of ${pot.targetAmount}
         </span>
       </div>

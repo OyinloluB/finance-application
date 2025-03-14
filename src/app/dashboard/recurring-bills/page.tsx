@@ -3,7 +3,7 @@
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { billColumns } from "@/components/atoms/TableColumns";
 import Table from "@/components/organisms/Table";
-import BillSummary from "@/components/molecules/summary/BillSummary";
+import BillSummary from "@/components/molecules/summary/BillSummaryItem";
 import BillFilters from "@/components/molecules/BillFilters";
 import { useBills } from "@/hooks/useBills";
 import Spinner from "@/components/atoms/Spinner";

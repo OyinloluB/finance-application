@@ -32,7 +32,7 @@ const Modal = ({
       <div className="bg-white p-400 rounded-lg w-[560px] max-w-full shadow-lg">
         <div className="flex justify-between items-center mb-250">
           <h2 className="text-preset-1 font-bold text-grey-900">{title}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-black">
+          <button onClick={onClose} className="text-grey-400 hover:text-black">
             <CloseIcon />
           </button>
         </div>

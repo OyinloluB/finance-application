@@ -95,10 +95,10 @@ const SelectField = ({
                   backgroundColor: selectedOption.color,
                 }}
               />
-              <span className="text-gray-900">{selectedOption.label}</span>
+              <span className="text-grey-900">{selectedOption.label}</span>
             </>
           ) : (
-            <span className="text-gray-900">
+            <span className="text-grey-900">
               {selectedOption?.label || placeholder}
             </span>
           )}

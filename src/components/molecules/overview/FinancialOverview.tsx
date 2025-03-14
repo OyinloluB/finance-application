@@ -46,10 +46,16 @@ const SummaryCard = ({
 }) => (
   <div
     className={`p-300 rounded-lg shadow-md flex-1 h-[119px] ${
-      highlight ? "bg-grey-900 text-white" : "bg-white text-gray-900"
+      highlight ? "bg-grey-900 text-white" : "bg-white text-grey-900"
     }`}
   >
-    <h2 className="text-preset-4 mb-150">{title}</h2>
+    <h2
+      className={`text-preset-4 mb-150 ${
+        highlight ? "text-white" : " text-grey-500"
+      }`}
+    >
+      {title}
+    </h2>
     <p className={`text-preset-1 font-bold`}>{formatCurrency(amount)}</p>
   </div>
 );

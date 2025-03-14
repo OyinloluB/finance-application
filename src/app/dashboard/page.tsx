@@ -1,7 +1,11 @@
 "use client";
 
 import Spinner from "@/components/atoms/Spinner";
-import FinancialSummary from "@/components/molecules/summary/FinancialSummary";
+import BillsOverview from "@/components/molecules/overview/BillsOverview";
+import BudgetsOverview from "@/components/molecules/overview/BudgetsOverview";
+import FinancialSummary from "@/components/molecules/overview/FinancialOverview";
+import PotsOverview from "@/components/molecules/overview/PotsOverview";
+import TransactionsOverview from "@/components/molecules/overview/TransactionsOverview";
 import useOverviewData from "@/hooks/useOverview";
 
 const Overview = () => {
@@ -22,7 +26,16 @@ const Overview = () => {
       <div className="flex gap-400">
         <FinancialSummary transactions={data?.allTransactions.transactions} />
       </div>
-      <div className="flex gap-400"></div>
+      <div className="flex gap-300">
+        <div className="w-3/5 flex flex-col gap-400">
+          <PotsOverview />
+          <TransactionsOverview />
+        </div>
+        <div className="w-2/5 flex flex-col gap-400">
+          <BudgetsOverview />
+          <BillsOverview />
+        </div>
+      </div>
     </div>
   );
 };

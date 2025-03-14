@@ -38,8 +38,9 @@ const BudgetsPage = () => {
       ) : budgets.length > 0 ? (
         <div className="flex gap-300">
           <div className="flex-1 h-fit bg-white p-400 rounded-lg mb-400">
-            <BudgetChart budgets={budgets} isLoading={isLoading} />
-
+            <div className="mb-400">
+              <BudgetChart budgets={budgets} isLoading={isLoading} />
+            </div>
             <div>
               <h2 className="text-preset-2 font-bold text-grey-900 mb-300">
                 Spending Summary

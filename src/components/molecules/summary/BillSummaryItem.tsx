@@ -66,11 +66,11 @@ const SummaryItem = ({
   highlight?: boolean;
 }) => (
   <div className="flex justify-between text-preset-5 border-b border-grey-100 py-200">
-    <span className={`text-gray-500 ${highlight ? "text-red-500" : ""}`}>
+    <span className={`text-grey-500 ${highlight ? "text-red-500" : ""}`}>
       {label}
     </span>
     <span
-      className={`font-bold ${highlight ? "text-red-500" : "text-gray-900"}`}
+      className={`font-bold ${highlight ? "text-red-500" : "text-grey-900"}`}
     >
       {count} (${total.toFixed(2)})
     </span>

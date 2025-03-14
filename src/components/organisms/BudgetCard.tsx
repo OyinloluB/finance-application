@@ -4,7 +4,7 @@ import { themeColors } from "@/utils/themeColors";
 import { Budget } from "@/types/budget";
 import DropdownMenu from "../atoms/Dropdown";
 import BudgetStat from "../molecules/BudgetStat";
-import BudgetTransactionItem from "../molecules/BudgetTransactionItem";
+import BudgetTransactionItem from "../molecules/TransactionItem";
 import { useBudgets } from "@/hooks/useBudgets";
 import { CategoryLabels } from "@/types/categories";
 import Spinner from "../atoms/Spinner";
@@ -50,7 +50,7 @@ const BudgetCard = ({ budget }: BudgetCardProps) => {
   return (
     <div className="bg-white p-400 rounded-lg">
       <div className="flex justify-between items-center mb-250">
-        <h3 className="text-preset-2 font-bold text-gray-900 flex items-center">
+        <h3 className="text-preset-2 font-bold text-grey-900 flex items-center">
           <span
             className={`w-200 h-200 rounded-full ${
               themeColors[budget.theme]

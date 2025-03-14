@@ -52,8 +52,8 @@ const PotTransactionModal = ({
     >
       <FormProvider {...methods}>
         <div className="flex justify-between items-center mt-250 mb-200">
-          <span className="text-preset-4 text-gray-500">New Amount</span>
-          <span className="text-preset-1 text-gray-900 font-bold">
+          <span className="text-preset-4 text-grey-500">New Amount</span>
+          <span className="text-preset-1 text-grey-900 font-bold">
             {formatCurrency(newAmount)}
           </span>
         </div>
@@ -98,7 +98,7 @@ const PotTransactionModal = ({
           >
             {pot.targetAmount > 0 ? `${newPercentage.toFixed(2)}%` : "0%"}
           </span>
-          <span className="text-preset-5 text-gray-500">
+          <span className="text-preset-5 text-grey-500">
             Target of ${pot.targetAmount}
           </span>
         </div>

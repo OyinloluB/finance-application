@@ -20,6 +20,7 @@ import ListBulletsIcon from "./ListBulletsIcon";
 import Logo from "./Logo";
 import MagnifyingGlassIcon from "./MagnifyingGlassIcon";
 import MinLogo from "./MinLogo";
+import MoneyBagIcon from "./MoneyBagIcon";
 import MusicNoteIcon from "./MusicNoteIcon";
 import NetworkIcon from "./NetworkIcon";
 import PottedPlantIcon from "./PottedPlantIcon";
@@ -62,6 +63,7 @@ export const Icons = {
   Logo,
   MinLogo,
   CloseIcon,
+  MoneyBagIcon,
 };
 
 // export a type for better TypeScript inference

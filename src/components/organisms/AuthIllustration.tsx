@@ -4,7 +4,7 @@ import Logo from "../atoms/icons/Logo";
 
 const AuthIllustration = () => {
   return (
-    <div className="bg-gray-900 p-300 rounded-b-lg lg:p-250 lg:bg-transparent flex justify-center">
+    <div className="bg-grey-900 p-300 rounded-b-lg lg:p-250 lg:bg-transparent flex justify-center">
       <div className="hidden lg:flex relative">
         <div className="absolute top-500 left-500">
           <Logo />

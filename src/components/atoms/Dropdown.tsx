@@ -30,7 +30,7 @@ const DropdownMenu = ({ items }: DropdownMenuProps) => {
   return (
     <div className="relative" ref={menuRef}>
       <div onClick={() => setIsOpen(!isOpen)}>
-        <DotsThreeOutlineIcon className="text-gray-300 cursor-pointer" />
+        <DotsThreeOutlineIcon className="text-grey-300 cursor-pointer" />
       </div>
 
       {isOpen && (
@@ -42,9 +42,9 @@ const DropdownMenu = ({ items }: DropdownMenuProps) => {
                 item.action();
                 setIsOpen(false);
               }}
-              className={`block w-full py-150 text-preset-4 text-gray-900 ${
+              className={`block w-full py-150 text-preset-4 text-grey-900 ${
                 item.danger ? "text-red-500" : ""
-              } border-b last:border-b-0 border-gray-100 cursor-pointer`}
+              } border-b last:border-b-0 border-grey-100 cursor-pointer`}
             >
               {item.label}
             </span>

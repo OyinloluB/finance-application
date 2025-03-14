@@ -53,7 +53,7 @@ const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center mb-400 ">
+    <div className="flex flex-col items-center">
       <PieChart width={250} height={250} className="relative">
         <Pie
           data={data}
