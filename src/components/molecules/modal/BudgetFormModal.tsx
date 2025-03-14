@@ -25,7 +25,6 @@ const BudgetFormModal = ({
   onSubmit,
   defaultValues,
 }: BudgetFormModalProps) => {
-
   const methods = useForm({
     defaultValues: defaultValues || {
       category: "entertainment",
@@ -87,13 +86,11 @@ const BudgetFormModal = ({
                 label: "Yellow",
                 value: "YELLOW",
                 color: "#F2CDAC",
-                status: "used",
               },
               {
                 label: "Cyan",
                 value: "CYAN",
                 color: "#82C9D7",
-                status: "used",
               },
               { label: "Navy", value: "NAVY", color: "#626070" },
               { label: "Red", value: "RED", color: "#C94736" },

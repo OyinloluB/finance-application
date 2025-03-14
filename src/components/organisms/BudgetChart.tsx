@@ -2,6 +2,7 @@
 
 import { PieChart, Pie, Cell } from "recharts";
 import Spinner from "../atoms/Spinner";
+import { themeColors } from "@/utils/themeColors";
 
 interface BudgetChartProps {
   isLoading: boolean;
@@ -37,19 +38,12 @@ const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
     }));
 
   const COLORS = {
-    GREEN: "#16A34A",
-    YELLOW: "#EAB308",
-    CYAN: "#06B6D4",
-    NAVY: "#1E3A8A",
-    RED: "#DC2626",
-    PURPLE: "#9333EA",
-    TURQUOISE: "#14B8A6",
-    BROWN: "#92400E",
-    MAGENTA: "#DB2777",
-    BLUE: "#2563EB",
-    GREY: "#6B7280",
-    ARMY: "#4D7C0F",
-    PINK: "#EC4899",
+    GREEN: "#277C78",
+    YELLOW: "#F2CDAC",
+    CYAN: "#82C9D7",
+    NAVY: "#626070",
+    RED: "#C94736",
+    PURPLE: "#826CB0",
   };
 
   return (
@@ -65,13 +59,17 @@ const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
           outerRadius={100}
           stroke="none"
         >
-          {data.map((entry, index) => (
-            <Cell
-              key={`cell-${index}`}
-              fill={COLORS[entry.color as keyof typeof COLORS]}
-              pointerEvents="none"
-            />
-          ))}
+          {data.map((entry, index) => {
+            console.log(themeColors[entry.color]);
+            return (
+              <Cell
+                className="bg-blue-700"
+                key={`cell-${index}`}
+                fill={COLORS[entry.color as keyof typeof COLORS]}
+                pointerEvents="none"
+              />
+            );
+          })}
         </Pie>
         <Pie
           data={data}

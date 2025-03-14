@@ -32,7 +32,7 @@ const Sidebar = () => {
   const { logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
 
   const [showItem, setShowItem] = useState(!collapsed);
 

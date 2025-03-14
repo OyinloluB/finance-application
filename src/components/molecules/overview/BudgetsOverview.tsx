@@ -1,21 +1,28 @@
 import Button from "@/components/atoms/Button";
 import Spinner from "@/components/atoms/Spinner";
 import BudgetChart from "@/components/organisms/BudgetChart";
-import { useBudgets } from "@/hooks/useBudgets";
+import useOverviewData from "@/hooks/useOverview";
+import { CategoryLabels } from "@/types/categories";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { themeColors } from "@/utils/themeColors";
 import React from "react";
 
 const BudgetsOverview = () => {
-  const { budgets, isLoading } = useBudgets();
+  const { data, isLoading } = useOverviewData();
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner />
+      </div>
+    );
   }
 
-  if (!budgets) {
+  if (!data) {
     return <p>No data...</p>;
   }
+
+  const budgets = data.budgets ?? [];
 
   return (
     <div className="p-400 bg-white rounded-lg w-full h-fit">
@@ -34,10 +41,13 @@ const BudgetsOverview = () => {
         <div className="grid grid-cols-[auto-fit,minmax(200px,1fr)] gap-200 w-full">
           {budgets.slice(0, 4).map((budget) => (
             <div key={budget.id} className="flex gap-200">
-              <div className={`w-50 rounded-md ${themeColors[budget.theme]}`} />
+              <div
+                className="w-50 rounded-md"
+                style={{ backgroundColor: `${themeColors[budget.theme]}` }}
+              />
               <div className="flex flex-col gap-50">
                 <span className="text-preset-4 text-grey-500">
-                  {budget.category}
+                  {CategoryLabels[budget.category]}
                 </span>
                 <span className="text-preset-4 text-grey-900 font-bold">
                   {formatCurrency(budget.currentSpend)}

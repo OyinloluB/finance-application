@@ -52,7 +52,7 @@ const Transactions = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex-1 h-screen">
+      <div className="flex-1 h-screen p-400">
         <div className="flex justify-between items-center mb-400">
           <h1 className="text-preset-1 font-bold text-grey-900">
             Transactions

@@ -7,7 +7,8 @@ const BudgetSpendingSummaryItem = ({ budget }: { budget: Budget }) => {
     <div className="flex justify-between text-grey-500 text-preset-4 py-200 first:pt-0 border-b last:border-b-0 border-grey-100">
       <div className="flex items-center gap-200">
         <span
-          className={`w-50 h-full rounded-md ${themeColors[budget.theme]}`}
+          className="w-50 h-full rounded-md"
+          style={{ backgroundColor: `${themeColors[budget.theme]}` }}
         />
         <span>{CategoryLabels[budget.category]}</span>
       </div>

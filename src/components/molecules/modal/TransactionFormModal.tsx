@@ -31,7 +31,7 @@ const TransactionFormModal = ({
   const methods = useForm<TransactionFormData>({
     defaultValues: {
       name: "",
-      amount: 0.0,
+      amount: undefined,
       category: CategoryType.GENERAL,
       date: DateTime.now().toISODate(),
       type: "EXPENSE",

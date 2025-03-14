@@ -64,9 +64,9 @@ const PotCard = ({ pot }: PotCardProps) => {
         </h3>
         <DropdownMenu
           items={[
-            { label: "Edit Budget", action: () => setIsEditModalOpen(true) },
+            { label: "Edit Pot", action: () => setIsEditModalOpen(true) },
             {
-              label: "Delete Budget",
+              label: "Delete Pot",
               action: () => setIsDeleteModalOpen(true),
               danger: true,
             },
@@ -86,6 +86,7 @@ const PotCard = ({ pot }: PotCardProps) => {
           className={`h-full rounded-full ${themeColors[pot.theme]}`}
           style={{
             width: `${(pot.currentAmount / pot.targetAmount) * 100}%`,
+            backgroundColor: `${themeColors[pot.theme]}`,
           }}
         />
       </div>

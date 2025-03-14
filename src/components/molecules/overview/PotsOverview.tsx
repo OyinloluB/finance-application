@@ -10,7 +10,11 @@ const PotsOverview = () => {
   const { data, isLoading } = useOverviewData();
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner />
+      </div>
+    );
   }
 
   if (!data) {
@@ -49,7 +53,8 @@ const PotsOverview = () => {
           {pots.slice(0, 4).map((pot) => (
             <div className="flex gap-200 min-w-[130px]" key={pot.id}>
               <div
-                className={`w-50 h-[50px] rounded-md ${themeColors[pot.theme]}`}
+                className="w-50 h-[50px] rounded-md"
+                style={{ backgroundColor: `${themeColors[pot.theme]}` }}
               />
               <div className="flex flex-col gap-50">
                 <span className="text-preset-4 text-grey-500">{pot.name}</span>

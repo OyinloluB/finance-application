@@ -22,7 +22,7 @@ const BudgetsPage = () => {
   };
 
   return (
-    <div className="flex-1 min-h-screen">
+    <div className="flex-1 min-h-screen p-400">
       <div className="flex justify-between items-center mb-400">
         <h1 className="text-preset-1 font-bold text-grey-900">Budgets</h1>
         <Button
@@ -66,9 +66,11 @@ const BudgetsPage = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center text-center text-grey-500 mt-400">
-          <p className="text-preset-3 mb-50">No budgets found</p>
-          <p className="text-preset-3">
+        <div className="flex flex-col items-center justify-center h-[70vh] text-grey-600">
+          <p className="text-preset-4 text-grey-900 font-medium">
+            No budgets found
+          </p>
+          <p className="text-sm text-grey-500">
             Start by creating a budget to track your spending.
           </p>
         </div>

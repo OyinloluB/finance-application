@@ -4,6 +4,7 @@ import { Transaction } from "@/types/transaction";
 import { RecurringBill } from "@/types/bills";
 import { DateTime } from "luxon";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { CategoryLabels } from "@/types/categories";
 
 export const transactionColumns: ColumnDef<Transaction>[] = [
   {
@@ -27,6 +28,15 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
           </span>
         </div>
       );
+    },
+  },
+  {
+    accessorKey: "category",
+    header: "Category",
+    cell: (info: CellContext<Transaction, unknown>) => {
+      const row = info.row.original;
+
+      return <span>{CategoryLabels[row.category]}</span>;
     },
   },
   {

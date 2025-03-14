@@ -47,14 +47,15 @@ const BudgetCard = ({ budget }: BudgetCardProps) => {
     );
   }
 
+  console.log({ budget });
+
   return (
     <div className="bg-white p-400 rounded-lg">
       <div className="flex justify-between items-center mb-250">
         <h3 className="text-preset-2 font-bold text-grey-900 flex items-center">
           <span
-            className={`w-200 h-200 rounded-full ${
-              themeColors[budget.theme]
-            } mr-200`}
+            className="w-200 h-200 rounded-full mr-200"
+            style={{ backgroundColor: `${themeColors[budget.theme]}` }}
           />
           {CategoryLabels[budget.category]}
         </h3>
@@ -76,9 +77,10 @@ const BudgetCard = ({ budget }: BudgetCardProps) => {
         </span>
         <div className="mt-200 bg-beige-100 h-400 p-50 rounded-sm overflow-hidden">
           <div
-            className={`h-full rounded-md ${themeColors[budget.theme]}`}
+            className="h-full rounded-md"
             style={{
               width: `${(budget.currentSpend / budget.maxLimit) * 100}%`,
+              backgroundColor: `${themeColors[budget.theme]}`,
               maxWidth: "100%",
             }}
           />
