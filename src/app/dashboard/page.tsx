@@ -41,7 +41,7 @@ const Overview = () => {
           </p>
         </div>
       ) : (
-        <div className="flex-1 min-h-screen">
+        <div className="flex-1 min-h-screen p-400">
           <h1 className="text-preset-1 font-bold text-grey-900 mb-400">
             Overview
           </h1>

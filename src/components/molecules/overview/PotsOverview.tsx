@@ -43,7 +43,7 @@ const PotsOverview = () => {
             <span className="text-preset-4 text-grey-500 pb-[11px]">
               Total Saved
             </span>
-            <span className="text-preset-1 font-bold text-grey-900">
+            <span className="text-preset-2 font-bold text-grey-900">
               {formatCurrency(totalSaved)}
             </span>
           </div>
