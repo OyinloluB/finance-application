@@ -88,7 +88,7 @@ const Sidebar = () => {
       <div>
         <SidebarItem
           label="Log Out"
-          icon={"ArrowFatLinesLeftIcon"}
+          icon={"WrenchIcon"}
           onClick={() => logout()}
           showItem={showItem}
         />
