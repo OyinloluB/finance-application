@@ -18,8 +18,6 @@ const Overview = () => {
     (!data?.pots?.length || data?.pots.length === 0) &&
     (!data?.budgets?.length || data?.budgets.length === 0);
 
-  console.log(isEmpty);
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">

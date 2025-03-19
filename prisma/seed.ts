@@ -73,8 +73,6 @@ async function main() {
       });
     }
   }
-
-  console.log("Recurring bills seeded successfully!");
 }
 
 main()

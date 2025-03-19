@@ -47,8 +47,6 @@ const BudgetCard = ({ budget }: BudgetCardProps) => {
     );
   }
 
-  console.log({ budget });
-
   return (
     <div className="bg-white p-400 rounded-lg">
       <div className="flex justify-between items-center mb-250">

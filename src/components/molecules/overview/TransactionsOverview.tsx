@@ -23,8 +23,6 @@ const TransactionsOverview = () => {
 
   const transactions = data.latestTransactions.transactions ?? [];
 
-  console.log(transactions);
-
   return (
     <div className="p-400 bg-white rounded-lg w-full h-fit">
       <div className="flex items-center justify-between">

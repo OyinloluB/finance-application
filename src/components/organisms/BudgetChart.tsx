@@ -2,7 +2,6 @@
 
 import { PieChart, Pie, Cell } from "recharts";
 import Spinner from "../atoms/Spinner";
-import { themeColors } from "@/utils/themeColors";
 
 interface BudgetChartProps {
   isLoading: boolean;
@@ -60,7 +59,6 @@ const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
           stroke="none"
         >
           {data.map((entry, index) => {
-            console.log(themeColors[entry.color]);
             return (
               <Cell
                 className="bg-blue-700"
