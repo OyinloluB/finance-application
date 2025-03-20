@@ -2,15 +2,11 @@
 
 import { PieChart, Pie, Cell } from "recharts";
 import Spinner from "../atoms/Spinner";
+import { Budget } from "@/types/budget";
 
 interface BudgetChartProps {
   isLoading: boolean;
-  budgets: {
-    category: string;
-    currentSpend: number;
-    maxLimit: number;
-    theme: string;
-  }[];
+  budgets: Budget[];
 }
 
 const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {

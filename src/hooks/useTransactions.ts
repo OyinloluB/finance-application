@@ -6,12 +6,13 @@ import {
   fetchTransactions,
 } from "@/services/transactionService";
 import { useBudgets } from "./useBudgets";
+import { CategoryType } from "@/types/categories";
 
 const useTransactions = (params: {
   page: number;
   search?: string;
-  category?: string;
-  sortBy?: string;
+  category?: CategoryType | "all_transactions";
+  sortBy?: "latest" | "oldest" | "a_to_z" | "z_to_a" | "highest" | "lowest";
 }) => {
   const queryClient = useQueryClient();
   const queryKey = ["transactions", params];

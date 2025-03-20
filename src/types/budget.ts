@@ -1,3 +1,5 @@
+import { themeColors } from "@/utils/themeColors";
+
 export interface LatestTransaction {
   id: string;
   image: string;
@@ -15,6 +17,12 @@ export interface Budget {
   maxLimit: number;
   currentSpend: number;
   remaining: number;
+  theme: keyof typeof themeColors;
+  transactions?: LatestTransaction[];
+}
+
+export interface BudgetFormData {
+  category: string;
+  maxLimit: number;
   theme: string;
-  transactions: LatestTransaction[];
 }

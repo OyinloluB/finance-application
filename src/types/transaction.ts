@@ -7,7 +7,7 @@ export interface Transaction {
     name: string;
   };
   image: string;
-  category: string;
+  category: CategoryType;
   date: string;
   amount: number;
   type: "INCOME" | "EXPENSE";

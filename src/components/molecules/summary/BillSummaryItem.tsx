@@ -4,10 +4,10 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import { useMemo } from "react";
 
 interface BillSummaryProps {
-  bills: RecurringBill[] | undefined;
+  bills: RecurringBill[];
 }
 
-const BillSummary = ({ bills = [] }: BillSummaryProps) => {
+const BillSummary = ({ bills }: BillSummaryProps) => {
   const summaryData = useMemo(() => calculateSummary(bills), [bills]);
 
   return (
@@ -77,7 +77,14 @@ const SummaryItem = ({
   </div>
 );
 
-const calculateSummary = (bills: RecurringBill[]) => {
+const calculateSummary = (
+  bills: RecurringBill[]
+): {
+  totalAmount: number;
+  paid: { count: number; total: number };
+  upcoming: { count: number; total: number };
+  dueSoon: { count: number; total: number };
+} => {
   const summary = {
     totalAmount: 0,
     paid: { count: 0, total: 0 },

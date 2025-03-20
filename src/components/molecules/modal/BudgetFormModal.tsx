@@ -3,7 +3,7 @@ import React from "react";
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
 import { useForm, FormProvider } from "react-hook-form";
-import { Budget } from "@/types/budget";
+import { Budget, BudgetFormData } from "@/types/budget";
 import Modal from "@/components/atoms/Modal";
 
 interface BudgetFormModalProps {
@@ -13,7 +13,7 @@ interface BudgetFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: Budget) => void;
-  defaultValues?: Budget;
+  defaultValues?: Partial<Budget>;
 }
 
 const BudgetFormModal = ({
@@ -25,17 +25,21 @@ const BudgetFormModal = ({
   onSubmit,
   defaultValues,
 }: BudgetFormModalProps) => {
-  const methods = useForm({
-    defaultValues: defaultValues || {
-      category: "entertainment",
-      maxLimit: undefined,
-      theme: "GREEN",
+  const methods = useForm<BudgetFormData>({
+    defaultValues: {
+      category: defaultValues?.category ?? "entertainment",
+      maxLimit: defaultValues?.maxLimit ?? 0,
+      theme: defaultValues?.theme ?? "GREEN",
     },
   });
 
-  const handleSubmitForm = () => {
-    methods.handleSubmit(onSubmit)();
-  };
+  const handleSubmitForm = methods.handleSubmit((data: BudgetFormData) => {
+    const newBudget: Partial<Budget> = {
+      ...data,
+    };
+
+    onSubmit(newBudget as Budget);
+  });
 
   return (
     <Modal
@@ -47,10 +51,7 @@ const BudgetFormModal = ({
       onConfirm={handleSubmitForm}
     >
       <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit(onSubmit)}
-          className="flex flex-col gap-300"
-        >
+        <form onSubmit={handleSubmitForm} className="flex flex-col gap-300">
           <SelectField
             name="category"
             label="Budget Category"
