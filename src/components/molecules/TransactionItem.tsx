@@ -8,7 +8,7 @@ const TransactionItem = ({ tx }: { tx: LatestTransaction }) => (
     <div className="flex items-center gap-200">
       <Image
         src={tx.image}
-        alt={tx.name}
+        alt={tx.name || "transaction name"}
         width={32}
         height={32}
         className="w-400 h-400 rounded-full"

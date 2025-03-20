@@ -43,7 +43,7 @@ const TransactionsOverview = () => {
           <div className="flex items-center gap-200">
             <Image
               src={transaction.image}
-              alt={transaction.name}
+              alt={transaction.name || "transaction name"}
               width={40}
               height={40}
               className="w-500 h-500 rounded-full"

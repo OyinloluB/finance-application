@@ -18,7 +18,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
         <div className="flex items-center gap-200">
           <Image
             src={row.image}
-            alt={row.name}
+            alt={row.name || "name"}
             width={28}
             height={28}
             className="w-10 h-10 rounded-full"
@@ -75,7 +75,7 @@ export const billColumns: ColumnDef<RecurringBill>[] = [
         <div className="flex items-center gap-200">
           <Image
             src={bill.image}
-            alt={bill.name}
+            alt={bill.name || "bill name"}
             width={28}
             height={28}
             className="w-10 h-10 rounded-full"
