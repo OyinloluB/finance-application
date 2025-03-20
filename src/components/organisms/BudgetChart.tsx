@@ -3,6 +3,7 @@
 import { PieChart, Pie, Cell } from "recharts";
 import Spinner from "../atoms/Spinner";
 import { Budget } from "@/types/budget";
+import { themeColors } from "@/utils/themeColors";
 
 interface BudgetChartProps {
   isLoading: boolean;
@@ -32,15 +33,6 @@ const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
       color: budget.theme,
     }));
 
-  const COLORS = {
-    GREEN: "#277C78",
-    YELLOW: "#F2CDAC",
-    CYAN: "#82C9D7",
-    NAVY: "#626070",
-    RED: "#C94736",
-    PURPLE: "#826CB0",
-  };
-
   return (
     <div className="flex flex-col items-center">
       <PieChart width={250} height={250} className="relative">
@@ -59,7 +51,7 @@ const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
               <Cell
                 className="bg-blue-700"
                 key={`cell-${index}`}
-                fill={COLORS[entry.color as keyof typeof COLORS]}
+                fill={themeColors[entry.color as keyof typeof themeColors]}
                 pointerEvents="none"
               />
             );

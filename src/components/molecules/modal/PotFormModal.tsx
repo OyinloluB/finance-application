@@ -4,6 +4,7 @@ import Modal from "@/components/atoms/Modal";
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
 import { Pot } from "@/types/pot";
+import { themes } from "@/utils/themeColors";
 
 interface PotFormModalProps {
   title: string;
@@ -14,15 +15,6 @@ interface PotFormModalProps {
   onSubmit: (data: Pot) => void;
   defaultValues?: Pot;
 }
-
-const themes = [
-  { label: "Green", value: "GREEN", color: "#277C78" },
-  { label: "Yellow", value: "YELLOW", color: "#F2CDAC" },
-  { label: "Cyan", value: "CYAN", color: "#82C9D7" },
-  { label: "Navy", value: "NAVY", color: "#626070" },
-  { label: "Red", value: "RED", color: "#C94736" },
-  { label: "Purple", value: "PURPLE", color: "#826CB0" },
-];
 
 const PotFormModal = ({
   title,

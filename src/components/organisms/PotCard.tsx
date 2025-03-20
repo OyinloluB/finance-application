@@ -56,9 +56,10 @@ const PotCard = ({ pot }: PotCardProps) => {
       <div className="flex justify-between items-center mb-500">
         <h3 className="text-preset-2 font-bold text-grey-900 flex items-center">
           <span
-            className={`w-200 h-200 rounded-full ${
-              themeColors[pot.theme]
-            } mr-200`}
+            className={`w-200 h-200 rounded-full mr-200`}
+            style={{
+              backgroundColor: `${themeColors[pot.theme]}`,
+            }}
           />
           {pot.name}
         </h3>

@@ -5,6 +5,7 @@ import SelectField from "@/components/atoms/SelectField";
 import { useForm, FormProvider } from "react-hook-form";
 import { Budget, BudgetFormData } from "@/types/budget";
 import Modal from "@/components/atoms/Modal";
+import { themes } from "@/utils/themeColors";
 
 interface BudgetFormModalProps {
   title: string;
@@ -76,27 +77,7 @@ const BudgetFormModal = ({
             name="theme"
             label="Theme"
             variant="color-selection"
-            options={[
-              {
-                label: "Green",
-                value: "GREEN",
-                color: "#277C78",
-                status: "used",
-              },
-              {
-                label: "Yellow",
-                value: "YELLOW",
-                color: "#F2CDAC",
-              },
-              {
-                label: "Cyan",
-                value: "CYAN",
-                color: "#82C9D7",
-              },
-              { label: "Navy", value: "NAVY", color: "#626070" },
-              { label: "Red", value: "RED", color: "#C94736" },
-              { label: "Purple", value: "PURPLE", color: "#826CB0" },
-            ]}
+            options={themes}
           />
         </form>
       </FormProvider>

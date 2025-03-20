@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { themeColors } from "./src/utils/themeColors";
 
 export default {
   content: [
@@ -6,21 +7,7 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  safelist: [
-    "bg-green-800",
-    "bg-yellow-800",
-    "bg-cyan-500",
-    "bg-blue-800",
-    "bg-red-800",
-    "bg-purple-800",
-    "bg-teal-800",
-    "bg-amber-800",
-    "bg-pink-800",
-    "bg-blue-800",
-    "bg-grey-800",
-    "bg-green-800",
-    "bg-pink-800",
-  ],
+  safelist: Object.values(themeColors).map((color) => `bg-[${color}]`),
   theme: {
     extend: {
       fontFamily: {
@@ -39,14 +26,7 @@ export default {
           300: "#B3B3B3",
           100: "#F2F2F2",
         },
-        secondary: {
-          green: "#277C78",
-          yellow: "#F2CDAC",
-          cyan: "#82C9D7",
-          navy: "#626070",
-          red: "#C94736",
-          purple: "#826CB0",
-        },
+        secondary: themeColors,
         other: {
           purple: "#AF81BA",
           turquoise: "#597C7C",
