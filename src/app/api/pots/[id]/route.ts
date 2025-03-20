@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import { verifyToken } from "../../transactions/route";
 import { PrismaClient } from "@prisma/client";
+import { verifyToken } from "@/utils/auth";
+import { handleResponse } from "@/utils/responseHandler";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +11,7 @@ export async function PATCH(
   try {
     const userId = await verifyToken(req);
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const { name, targetAmount, theme } = await req.json();
@@ -25,13 +25,10 @@ export async function PATCH(
       },
     });
 
-    return NextResponse.json(updatedPot, { status: 200 });
+    return handleResponse(200, updatedPot);
   } catch (error) {
     console.error("Error updating pot:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return handleResponse(500, { error: "Internal Server Error" });
   }
 }
 
@@ -43,22 +40,16 @@ export async function DELETE(
     const userId = await verifyToken(req);
 
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const { id } = params;
 
     await prisma.pot.delete({ where: { id, userId } });
 
-    return NextResponse.json(
-      { message: "Pot deleted successfully" },
-      { status: 200 }
-    );
+    return handleResponse(200, { message: "Pot deleted successfully" });
   } catch (error) {
     console.error("Error deleting pot:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return handleResponse(500, { error: "Internal Server Error" });
   }
 }

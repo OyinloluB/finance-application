@@ -1,6 +1,6 @@
+import { verifyToken } from "@/utils/auth";
+import { handleResponse } from "@/utils/responseHandler";
 import { PrismaClient } from "@prisma/client";
-import { verifyToken } from "../transactions/route";
-import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
@@ -9,19 +9,13 @@ export async function POST(req: Request) {
     const userId = await verifyToken(req);
 
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const { category, maxLimit, theme } = await req.json();
 
     if (!category || !maxLimit || !theme) {
-      return NextResponse.json(
-        {
-          error: "Missing required fields",
-          details: { category, maxLimit, theme },
-        },
-        { status: 400 }
-      );
+      return handleResponse(400, { error: "Missing required fields" });
     }
 
     const parsedMaxLimit = Number(maxLimit);
@@ -62,13 +56,10 @@ export async function POST(req: Request) {
       });
     }
 
-    return NextResponse.json(budget, { status: 201 });
+    return handleResponse(201, budget);
   } catch (error) {
     console.error("Error creating budget:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error", details: error },
-      { status: 500 }
-    );
+    return handleResponse(500, { error: "Internal Server Error" });
   }
 }
 
@@ -76,7 +67,7 @@ export async function GET(req: Request) {
   try {
     const userId = await verifyToken(req);
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const budgets = await prisma.budget.findMany({
@@ -104,9 +95,9 @@ export async function GET(req: Request) {
       },
     });
 
-    return NextResponse.json(budgets, { status: 200 });
+    return handleResponse(200, budgets);
   } catch (error) {
     console.error("Error fetching budgets", error);
-    NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return handleResponse(500, { error: "Internal Server Error" });
   }
 }

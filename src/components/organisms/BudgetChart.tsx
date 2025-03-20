@@ -16,7 +16,7 @@ interface BudgetChartProps {
 const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[300px]">
+      <div className="flex justify-center items-center min-h-[250px]">
         <Spinner />
       </div>
     );

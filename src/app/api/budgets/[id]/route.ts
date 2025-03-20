@@ -1,6 +1,6 @@
+import { verifyToken } from "@/utils/auth";
+import { handleResponse } from "@/utils/responseHandler";
 import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
-import { verifyToken } from "../../transactions/route";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +9,7 @@ export async function GET(req: Request, context: { params: { id: string } }) {
     const userId = await verifyToken(req);
 
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const budgetId = context.params.id;
@@ -20,13 +20,13 @@ export async function GET(req: Request, context: { params: { id: string } }) {
     });
 
     if (!budget) {
-      return NextResponse.json({ error: "Budget not found" }, { status: 404 });
+      return handleResponse(404, { error: "Budget not found" });
     }
 
-    return NextResponse.json(budget, { status: 200 });
+    return handleResponse(200, budget);
   } catch (error) {
     console.error("Error fetching budget:", error);
-    NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return handleResponse(500, { error: "Internal Server Error" });
   }
 }
 
@@ -35,7 +35,7 @@ export async function PATCH(req: Request, context: { params: { id: string } }) {
     const userId = await verifyToken(req);
 
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const budgetId = context.params.id;
@@ -52,10 +52,10 @@ export async function PATCH(req: Request, context: { params: { id: string } }) {
       },
     });
 
-    return NextResponse.json(updatedBudget, { status: 200 });
+    return handleResponse(200, updatedBudget);
   } catch (error) {
     console.error("Error updating budget:", error);
-    NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return handleResponse(500, { error: "Internal Server Error" });
   }
 }
 
@@ -67,7 +67,7 @@ export async function DELETE(
     const userId = await verifyToken(req);
 
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const budgetId = context.params.id;
@@ -76,12 +76,9 @@ export async function DELETE(
       where: { id: budgetId, userId },
     });
 
-    return NextResponse.json(
-      { message: "Budget deleted successfully" },
-      { status: 200 }
-    );
+    return handleResponse(200, { message: "Budget deleted successfully" });
   } catch (error) {
     console.error("Error deleting budget:", error);
-    NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    handleResponse(500, { error: "Internal Server Error" });
   }
 }

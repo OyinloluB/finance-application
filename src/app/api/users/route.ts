@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { verifyToken } from "../transactions/route";
+import { verifyToken } from "@/utils/auth";
+import { handleResponse } from "@/utils/responseHandler";
 
 const prisma = new PrismaClient();
 
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   try {
     const userId = await verifyToken(req);
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const { id, email, name } = await req.json();
@@ -30,13 +30,10 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ user });
+    return handleResponse(201, { user });
   } catch (error) {
     console.error("Error creating user:", error);
-    return NextResponse.json(
-      { error: "Failed to create user" },
-      { status: 500 }
-    );
+    return handleResponse(500, { error: "Failed to create user" });
   }
 }
 
@@ -44,7 +41,7 @@ export async function GET(req: Request) {
   try {
     const userId = await verifyToken(req);
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const users = await prisma.user.findMany({
@@ -56,12 +53,9 @@ export async function GET(req: Request) {
       },
     });
 
-    return NextResponse.json(users, { status: 200 });
+    return handleResponse(200, users);
   } catch (error) {
     console.error("Error creating user:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch user" },
-      { status: 500 }
-    );
+    return handleResponse(500, { error: "Failed to fetch users" });
   }
 }

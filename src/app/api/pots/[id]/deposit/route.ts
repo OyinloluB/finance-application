@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import { verifyToken } from "../../../transactions/route";
 import { PrismaClient } from "@prisma/client";
+import { verifyToken } from "@/utils/auth";
+import { handleResponse } from "@/utils/responseHandler";
 
 const prisma = new PrismaClient();
 
@@ -11,13 +11,13 @@ export async function POST(
   try {
     const userId = await verifyToken(req);
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const { amount } = await req.json();
 
     if (!amount || amount <= 0) {
-      return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+      return handleResponse(400, { error: "Invalid amount" });
     }
 
     const pot = await prisma.pot.update({
@@ -27,12 +27,9 @@ export async function POST(
       },
     });
 
-    return NextResponse.json(pot, { status: 200 });
+    return handleResponse(200, pot);
   } catch (error) {
     console.error("Error adding money to pot:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return handleResponse(500, { error: "Internal Server Error" });
   }
 }

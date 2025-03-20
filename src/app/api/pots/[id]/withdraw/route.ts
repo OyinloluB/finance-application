@@ -1,6 +1,6 @@
-import { verifyToken } from "@/app/api/transactions/route";
+import { verifyToken } from "@/utils/auth";
+import { handleResponse } from "@/utils/responseHandler";
 import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
@@ -11,13 +11,13 @@ export async function POST(
   try {
     const userId = await verifyToken(req);
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const { amount } = await req.json();
 
     if (!amount || amount <= 0) {
-      return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+      return handleResponse(400, { error: "Invalid amount" });
     }
 
     const pot = await prisma.pot.findUnique({
@@ -25,10 +25,7 @@ export async function POST(
     });
 
     if (!pot || pot.currentAmount < amount) {
-      return NextResponse.json(
-        { error: "Insufficient funds" },
-        { status: 400 }
-      );
+      return handleResponse(400, { error: "Insufficient funds" });
     }
 
     const updatedPot = await prisma.pot.update({
@@ -38,12 +35,9 @@ export async function POST(
       },
     });
 
-    return NextResponse.json(updatedPot, { status: 200 });
+    return handleResponse(200, updatedPot);
   } catch (error) {
     console.error("Error withdrawing from pot:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return handleResponse(500, { error: "Internal Server Error" });
   }
 }

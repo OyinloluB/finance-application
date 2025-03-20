@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import { verifyToken } from "../transactions/route";
 import { Prisma, PrismaClient } from "@prisma/client";
+import { verifyToken } from "@/utils/auth";
+import { handleResponse } from "@/utils/responseHandler";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +9,7 @@ export async function GET(req: Request) {
     const userId = await verifyToken(req);
 
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return handleResponse(401, { error: "Unauthorized" });
     }
 
     const { searchParams } = new URL(req.url);
@@ -28,39 +28,26 @@ export async function GET(req: Request) {
         : {}),
     };
 
-    let orderByClause: Prisma.RecurringBillOrderByWithRelationInput = {
-      dueDate: "desc",
+    const orderByOptions: Record<
+      string,
+      Prisma.RecurringBillOrderByWithRelationInput
+    > = {
+      latest: { dueDate: "desc" },
+      oldest: { dueDate: "asc" },
+      a_to_z: { name: "asc" },
+      z_to_a: { name: "desc" },
+      highest: { amount: "desc" },
+      lowest: { amount: "asc" },
     };
-
-    switch (sortBy) {
-      case "oldest":
-        orderByClause = { dueDate: "asc" };
-        break;
-      case "a_to_z":
-        orderByClause = { name: "asc" };
-        break;
-      case "z_to_a":
-        orderByClause = { name: "desc" };
-        break;
-      case "highest":
-        orderByClause = { amount: "desc" };
-        break;
-      case "lowest":
-        orderByClause = { amount: "asc" };
-        break;
-    }
-
+    
     const bills = await prisma.recurringBill.findMany({
       where: whereClause,
-      orderBy: orderByClause,
+      orderBy: orderByOptions[sortBy] || { dueDate: "desc" },
     });
 
-    return NextResponse.json({ bills }, { status: 200 });
+    return handleResponse(200, { bills });
   } catch (error) {
     console.error("Failed to fetch recurring bills", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return handleResponse(500, { error: "Internal Server Error" });
   }
 }
