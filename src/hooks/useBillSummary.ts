@@ -1,3 +1,5 @@
+"use client";
+
 import { RecurringBill } from "@/types/bills";
 
 export const useBillSummary = (bills: RecurringBill[] | undefined) => {

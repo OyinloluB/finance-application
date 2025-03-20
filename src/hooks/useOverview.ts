@@ -1,3 +1,5 @@
+"use client";
+
 import { useQuery } from "react-query";
 import { fetchTransactions } from "@/services/transactionService";
 import { fetchPots } from "@/services/potService";

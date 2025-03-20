@@ -1,3 +1,5 @@
+"use client";
+
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import {
   fetchPots,
@@ -8,7 +10,6 @@ import {
   withdrawFromPot,
 } from "@/services/potService";
 import { Pot } from "@/types/pot";
-
 
 export const usePots = () => {
   const queryClient = useQueryClient();
