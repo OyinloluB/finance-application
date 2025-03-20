@@ -12,14 +12,14 @@ model User {
   id                   String          @id
   name                 String?
   email                String          @unique
-  image                String          @default("/images/profile-one.png")
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
+  image                String          @default("/images/profile-one.png")
   budgets              Budget[]
   pots                 Pot[]
   recurringBills       RecurringBill[]
-  sentTransactions     Transaction[]   @relation(name: "TransactionOwner")
-  receivedTransactions Transaction[]   @relation(name: "TransactionRecipient")
+  receivedTransactions Transaction[]   @relation("TransactionRecipient")
+  sentTransactions     Transaction[]   @relation("TransactionOwner")
 }
 
 model Transaction {
@@ -29,25 +29,25 @@ model Transaction {
   category    CategoryType
   date        DateTime
   userId      String
-  recipientId String?
   image       String?
   name        String
-  user        User            @relation(name: "TransactionOwner", fields: [userId], references: [id])
-  recipient   User?           @relation(name: "TransactionRecipient", fields: [recipientId], references: [id])
   budgetId    String?
+  recipientId String?
   budget      Budget?         @relation(fields: [budgetId], references: [id])
+  recipient   User?           @relation("TransactionRecipient", fields: [recipientId], references: [id])
+  user        User            @relation("TransactionOwner", fields: [userId], references: [id])
 }
 
 model Budget {
   id           String        @id @default(uuid())
   category     CategoryType
-  theme        BudgetTheme
   maxLimit     Float         @default(0)
   currentSpend Float         @default(0)
-  remaining    Float         @default(0)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   userId       String
+  remaining    Float         @default(0)
+  theme        String
   user         User          @relation(fields: [userId], references: [id])
   transactions Transaction[]
 }
@@ -57,10 +57,10 @@ model Pot {
   name          String
   targetAmount  Float
   currentAmount Float    @default(0)
-  theme         PotTheme
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   userId        String
+  theme         String
   user          User     @relation(fields: [userId], references: [id])
 }
 
@@ -69,12 +69,12 @@ model RecurringBill {
   name      String
   amount    Float
   dueDate   DateTime
-  image     String
-  status    BillStatus
-  frequency FrequencyType
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   userId    String
+  frequency FrequencyType
+  image     String
+  status    BillStatus
   user      User          @relation(fields: [userId], references: [id])
 }
 
@@ -101,36 +101,4 @@ enum BillStatus {
   PAID
   UPCOMING
   DUE_SOON
-}
-
-enum BudgetTheme {
-  GREEN
-  YELLOW
-  CYAN
-  NAVY
-  RED
-  PURPLE
-  TURQUOISE
-  BROWN
-  MAGENTA
-  BLUE
-  GREY
-  ARMY
-  PINK
-}
-
-enum PotTheme {
-  GREEN
-  YELLOW
-  CYAN
-  NAVY
-  RED
-  PURPLE
-  TURQUOISE
-  BROWN
-  MAGENTA
-  BLUE
-  GREY
-  ARMY
-  PINK
 }

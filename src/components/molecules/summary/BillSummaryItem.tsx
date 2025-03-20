@@ -92,18 +92,20 @@ const calculateSummary = (
     dueSoon: { count: 0, total: 0 },
   };
 
-  for (const bill of bills) {
-    summary.totalAmount += bill.amount;
+  if (bills && bills.length > 0) {
+    for (const bill of bills) {
+      summary.totalAmount += bill.amount;
 
-    if (bill.status === "PAID") {
-      summary.paid.count++;
-      summary.paid.total += bill.amount;
-    } else if (bill.status === "UPCOMING") {
-      summary.upcoming.count++;
-      summary.upcoming.total += bill.amount;
-    } else if (bill.status === "DUE_SOON") {
-      summary.dueSoon.count++;
-      summary.dueSoon.total += bill.amount;
+      if (bill.status === "PAID") {
+        summary.paid.count++;
+        summary.paid.total += bill.amount;
+      } else if (bill.status === "UPCOMING") {
+        summary.upcoming.count++;
+        summary.upcoming.total += bill.amount;
+      } else if (bill.status === "DUE_SOON") {
+        summary.dueSoon.count++;
+        summary.dueSoon.total += bill.amount;
+      }
     }
   }
 
