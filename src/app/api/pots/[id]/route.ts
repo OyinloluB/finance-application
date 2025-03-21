@@ -21,7 +21,7 @@ export async function PATCH(
       data: {
         name,
         targetAmount: Number(targetAmount),
-        theme: theme.toUpperCase(),
+        theme: theme,
       },
     });
 

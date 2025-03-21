@@ -48,8 +48,7 @@ const Modal = ({
         <div className="flex flex-col gap-250">
           <Button
             type={confirmType}
-            text={actionButtonText}
-            loading={loading}
+            text={loading ? "Loading..." : actionButtonText}
             disabled={loading}
             onClick={onConfirm}
           />

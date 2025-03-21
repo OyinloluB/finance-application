@@ -41,8 +41,17 @@ const Transactions = () => {
   });
 
   const handleAddTransaction = async (newTransaction: TransactionFormData) => {
-    createTransaction.mutate(newTransaction, {
-      onSuccess: () => setIsAddModalOpen(false),
+    return new Promise<void>((resolve, reject) => {
+      createTransaction.mutate(newTransaction, {
+        onSuccess: () => {
+          setIsAddModalOpen(false);
+          resolve();
+        },
+        onError: (error) => {
+          console.error("Error updating budget:", error);
+          reject(error);
+        },
+      });
     });
   };
 

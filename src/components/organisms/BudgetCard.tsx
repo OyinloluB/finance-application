@@ -19,22 +19,35 @@ const BudgetCard = ({ budget }: BudgetCardProps) => {
   const { updateBudget, deleteBudget, isLoading } = useBudgets();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleEditBudget = (updatedBudget: Partial<Budget>) => {
-    updateBudget.mutate(
-      { id: budget.id, updatedBudget },
-      {
-        onSuccess: () => {
-          setIsEditModalOpen(false);
-        },
-      }
-    );
+  const handleEditBudget = async (updatedBudget: Partial<Budget>) => {
+    return new Promise<void>((resolve, reject) => {
+      updateBudget.mutate(
+        { id: budget.id, updatedBudget },
+        {
+          onSuccess: () => {
+            setIsEditModalOpen(false);
+            resolve();
+          },
+          onError: (error) => {
+            console.error("Error updating budget:", error);
+            reject(error);
+          },
+        }
+      );
+    });
   };
 
   const handleDeleteBudget = () => {
+    setIsDeleting(true);
     deleteBudget.mutate(budget.id, {
       onSuccess: () => {
         setIsDeleteModalOpen(false);
+        setIsDeleting(false);
+      },
+      onError: () => {
+        setIsDeleting(false);
       },
     });
   };
@@ -126,6 +139,7 @@ const BudgetCard = ({ budget }: BudgetCardProps) => {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleDeleteBudget}
+        isDeleting={isDeleting}
         title={`Delete '${CategoryLabels[budget.category]}'?`}
         description="Are you sure you want to delete this budget? This action cannot be reversed, and all the data inside it will be removed forever."
       />

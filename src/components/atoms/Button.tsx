@@ -12,7 +12,6 @@ interface ButtonProps {
   iconLeft?: IconName;
   iconRight?: IconName;
   hideOutline?: boolean;
-  loading?: boolean;
 }
 
 const Button = ({
@@ -23,7 +22,6 @@ const Button = ({
   iconRight,
   onClick,
   hideOutline = false,
-  loading,
   disabled,
 }: ButtonProps) => {
   const baseStyles =
@@ -49,10 +47,10 @@ const Button = ({
       type="submit"
       onClick={onClick}
       className={`${baseStyles} ${buttonStyles[type]} ${className ?? ""}`}
-      disabled={disabled || loading}
+      disabled={disabled}
     >
       {IconLeftComponent && <IconLeftComponent className="text-inherit" />}
-      {loading ? "Loading..." : text}
+      {text}
       {IconRightComponent && <IconRightComponent className="text-inherit" />}
     </button>
   );

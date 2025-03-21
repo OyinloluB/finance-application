@@ -47,7 +47,7 @@ export async function PATCH(req: Request, context: { params: { id: string } }) {
       data: {
         category: category.toUpperCase(),
         maxLimit: parsedMaxLimit,
-        theme: theme.toUpperCase(),
+        theme: theme,
         userId,
       },
     });

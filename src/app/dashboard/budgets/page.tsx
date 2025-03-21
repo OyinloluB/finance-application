@@ -16,8 +16,17 @@ const BudgetsPage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const handleAddBudget = (newBudget: Budget) => {
-    createBudget.mutate(newBudget, {
-      onSuccess: () => setIsAddModalOpen(false),
+    return new Promise<void>((resolve, reject) => {
+      createBudget.mutate(newBudget, {
+        onSuccess: () => {
+          setIsAddModalOpen(false);
+          resolve();
+        },
+        onError: (error) => {
+          console.error("Error updating budget:", error);
+          reject(error);
+        },
+      });
     });
   };
 

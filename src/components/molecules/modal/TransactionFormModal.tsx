@@ -33,7 +33,6 @@ const TransactionFormModal = ({
   onSubmit,
 }: TransactionFormModalProps) => {
   const [generalError, setGeneralError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(true);
 
   const transactionSchema = useMemo(
     () =>
@@ -84,7 +83,7 @@ const TransactionFormModal = ({
 
   const {
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = methods;
 
   const transactionType = useWatch({ control: methods.control, name: "type" });
@@ -94,7 +93,6 @@ const TransactionFormModal = ({
 
   const handleSubmitForm = handleSubmit(async (data) => {
     setGeneralError(null);
-    setSubmitting(true);
 
     try {
       await onSubmit(data);
@@ -102,8 +100,6 @@ const TransactionFormModal = ({
     } catch (error) {
       console.error("Transaction submission error:", error);
       setGeneralError("Failed to submit transaction. Please try again.");
-    } finally {
-      setSubmitting(false);
     }
   });
 
@@ -112,7 +108,7 @@ const TransactionFormModal = ({
       isOpen={isOpen}
       title={title}
       actionButtonText={actionButtonText}
-      loading={submitting}
+      loading={isSubmitting}
       onClose={() => {
         methods.reset();
         setGeneralError(null);
@@ -128,7 +124,7 @@ const TransactionFormModal = ({
             type="number"
             placeholder="e.g. 200"
             error={errors.amount?.message}
-            disabled={submitting}
+            disabled={isSubmitting}
           />
           <SelectField
             name="category"
@@ -144,7 +140,7 @@ const TransactionFormModal = ({
               { label: "Education", value: "EDUCATION" },
             ]}
             error={errors.category?.message}
-            disabled={submitting}
+            disabled={isSubmitting}
           />
           <SelectField
             name="type"
@@ -154,7 +150,7 @@ const TransactionFormModal = ({
               { label: "Expense", value: "EXPENSE" },
             ]}
             error={errors.type?.message}
-            disabled={submitting}
+            disabled={isSubmitting}
           />
           {transactionType === "EXPENSE" && (
             <SelectField
@@ -172,7 +168,7 @@ const TransactionFormModal = ({
                       }))
                   : [{ label: "No users available", value: "" }]
               }
-              disabled={submitting}
+              disabled={isSubmitting}
               error={errors.recipientId?.message}
             />
           )}
@@ -181,7 +177,7 @@ const TransactionFormModal = ({
             label="Date"
             type="date"
             error={errors.date?.message}
-            disabled={submitting}
+            disabled={isSubmitting}
           />
 
           {generalError && (

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
+import * as yup from "yup";
 
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
@@ -6,6 +7,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { Budget, BudgetFormData } from "@/types/budget";
 import Modal from "@/components/atoms/Modal";
 import { themes } from "@/utils/themeColors";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface BudgetFormModalProps {
   title: string;
@@ -13,7 +15,7 @@ interface BudgetFormModalProps {
   actionButtonText: string;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: Budget) => void;
+  onSubmit: (data: Budget) => Promise<void>;
   defaultValues?: Partial<Budget>;
 }
 
@@ -26,20 +28,48 @@ const BudgetFormModal = ({
   onSubmit,
   defaultValues,
 }: BudgetFormModalProps) => {
+  const [generalError, setGeneralError] = useState<string | null>(null);
+
+  const budgetSchema = useMemo(
+    () =>
+      yup.object({
+        category: yup.string().required("Category is required"),
+        maxLimit: yup
+          .number()
+          .typeError("Maximum Spend must be a number")
+          .positive("Amount must be greater than zero")
+          .required("Maximum Spend is required"),
+        theme: yup.string().required("Theme is required"),
+      }),
+    []
+  );
+
   const methods = useForm<BudgetFormData>({
+    resolver: yupResolver(budgetSchema),
+    mode: "onChange",
     defaultValues: {
       category: defaultValues?.category ?? "entertainment",
-      maxLimit: defaultValues?.maxLimit ?? 0,
+      maxLimit: defaultValues?.maxLimit ?? undefined,
       theme: defaultValues?.theme ?? "green",
     },
   });
 
-  const handleSubmitForm = methods.handleSubmit((data: BudgetFormData) => {
-    const newBudget: Partial<Budget> = {
-      ...data,
-    };
+  const {
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = methods;
 
-    onSubmit(newBudget as Budget);
+  const handleSubmitForm = handleSubmit(async (data) => {
+    setGeneralError(null);
+
+    try {
+      const newBudget: Partial<Budget> = { ...data };
+      await onSubmit(newBudget as Budget);
+      methods.reset();
+    } catch (error) {
+      console.error("Budget submission error:", error);
+      setGeneralError("Failed to submit budget. Please try again.");
+    }
   });
 
   return (
@@ -48,7 +78,12 @@ const BudgetFormModal = ({
       title={title}
       description={description}
       actionButtonText={actionButtonText}
-      onClose={onClose}
+      loading={isSubmitting}
+      onClose={() => {
+        methods.reset();
+        setGeneralError(null);
+        onClose();
+      }}
       onConfirm={handleSubmitForm}
     >
       <FormProvider {...methods}>
@@ -57,14 +92,17 @@ const BudgetFormModal = ({
             name="category"
             label="Budget Category"
             options={[
-              { label: "Entertainment", value: "entertainment" },
-              { label: "Bills", value: "bills" },
-              { label: "Groceries", value: "groceries" },
-              { label: "Dining Out", value: "dining_out" },
-              { label: "Transportation", value: "transportation" },
-              { label: "Personal Care", value: "personal_care" },
-              { label: "Education", value: "education" },
+              { label: "General", value: "GENERAL" },
+              { label: "Entertainment", value: "ENTERTAINMENT" },
+              { label: "Bills", value: "BILLS" },
+              { label: "Groceries", value: "GROCERIES" },
+              { label: "Dining Out", value: "DINING_OUT" },
+              { label: "Transportation", value: "TRANSPORTATION" },
+              { label: "Personal Care", value: "PERSONAL_CARE" },
+              { label: "Education", value: "EDUCATION" },
             ]}
+            error={errors.category?.message}
+            disabled={isSubmitting}
           />
           <InputField
             name="maxLimit"
@@ -72,13 +110,23 @@ const BudgetFormModal = ({
             prefix="$"
             type="number"
             placeholder="e.g. 2000"
+            error={errors.maxLimit?.message}
+            disabled={isSubmitting}
           />
           <SelectField
             name="theme"
             label="Theme"
             variant="color-selection"
             options={themes}
+            error={errors.theme?.message}
+            disabled={isSubmitting}
           />
+
+          {generalError && (
+            <p className="text-preset-5 text-right text-secondary-red">
+              {generalError}
+            </p>
+          )}
         </form>
       </FormProvider>
     </Modal>

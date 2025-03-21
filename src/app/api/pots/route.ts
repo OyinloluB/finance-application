@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       data: {
         name,
         targetAmount: Number(targetAmount),
-        theme: theme.toUpperCase(),
+        theme: theme,
         userId,
       },
     });

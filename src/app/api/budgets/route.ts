@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       data: {
         category: category.toUpperCase(),
         maxLimit: parsedMaxLimit,
-        theme: theme.toUpperCase(),
+        theme: theme,
         userId,
         currentSpend: totalSpent,
         remaining: parsedMaxLimit - totalSpent,

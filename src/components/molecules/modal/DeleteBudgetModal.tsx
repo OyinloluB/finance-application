@@ -5,6 +5,7 @@ interface DeleteBudgetModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  isDeleting: boolean;
   title: string;
   description: string;
 }
@@ -13,6 +14,7 @@ const DeleteBudgetModal = ({
   isOpen,
   onClose,
   onConfirm,
+  isDeleting,
   title,
   description,
 }: DeleteBudgetModalProps) => {
@@ -21,7 +23,7 @@ const DeleteBudgetModal = ({
       isOpen={isOpen}
       title={title}
       description={description}
-      actionButtonText="Yes, Confirm Deletion"
+      actionButtonText={isDeleting ? "Deleting..." : "Yes, Confirm Deletion"}
       cancelText="No, Go Back"
       confirmType="destroy"
       onClose={onClose}
