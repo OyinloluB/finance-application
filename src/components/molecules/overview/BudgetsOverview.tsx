@@ -1,5 +1,5 @@
 import Button from "@/components/atoms/Button";
-import Spinner from "@/components/atoms/Spinner";
+import DataStateHandler from "@/components/atoms/DataStateHandler";
 import BudgetChart from "@/components/organisms/BudgetChart";
 import useOverviewData from "@/hooks/useOverview";
 import { CategoryLabels } from "@/types/categories";
@@ -8,21 +8,13 @@ import { themeColors } from "@/utils/themeColors";
 import React from "react";
 
 const BudgetsOverview = () => {
-  const { data, isLoading } = useOverviewData();
+  const { data, isLoading, error } = useOverviewData();
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Spinner />
-      </div>
-    );
-  }
+  const budgets = data?.budgets ?? [];
 
-  if (!data) {
-    return <p>No data...</p>;
-  }
-
-  const budgets = data.budgets ?? [];
+  const budgetsWithSpending = budgets.filter(
+    (budget) => budget.currentSpend > 0
+  );
 
   return (
     <div className="p-400 bg-white rounded-lg w-full h-fit">
@@ -36,27 +28,33 @@ const BudgetsOverview = () => {
           className="text-grey-500 pr-0"
         />
       </div>
-      <div className="flex items-center">
-        <BudgetChart budgets={budgets} isLoading={false} />
-        <div className="grid grid-cols-[auto-fit,minmax(200px,1fr)] gap-200 w-full">
-          {budgets.slice(0, 4).map((budget) => (
-            <div key={budget.id} className="flex gap-200">
-              <div
-                className="w-50 rounded-md"
-                style={{ backgroundColor: `${themeColors[budget.theme]}` }}
-              />
-              <div className="flex flex-col gap-50">
-                <span className="text-preset-4 text-grey-500">
-                  {CategoryLabels[budget.category]}
-                </span>
-                <span className="text-preset-4 text-grey-900 font-bold">
-                  {formatCurrency(budget.currentSpend)}
-                </span>
+      <DataStateHandler
+        isLoading={isLoading}
+        error={error}
+        data={budgetsWithSpending}
+      >
+        <div className="flex items-center">
+          <BudgetChart budgets={budgets} isLoading={false} />
+          <div className="grid grid-cols-[auto-fit,minmax(200px,1fr)] gap-200 w-full">
+            {budgets.slice(0, 4).map((budget) => (
+              <div key={budget.id} className="flex gap-200">
+                <div
+                  className="w-50 rounded-md"
+                  style={{ backgroundColor: `${themeColors[budget.theme]}` }}
+                />
+                <div className="flex flex-col gap-50">
+                  <span className="text-preset-4 text-grey-500">
+                    {CategoryLabels[budget.category]}
+                  </span>
+                  <span className="text-preset-4 text-grey-900 font-bold">
+                    {formatCurrency(budget.currentSpend)}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      </DataStateHandler>
     </div>
   );
 };

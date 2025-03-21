@@ -33,7 +33,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
   const {
     handleSubmit,
-    formState: { isValid },
+    formState: { isValid, isSubmitting },
   } = methods;
 
   const onSubmit: SubmitHandler<FormDataProps> = async (data) => {
@@ -78,7 +78,13 @@ const AuthForm = ({ type }: AuthFormProps) => {
           </div>
 
           <Button
-            text={type === "signup" ? "Create Account" : "Login"}
+            text={
+              isSubmitting
+                ? "Loading..."
+                : type === "signup"
+                ? "Create Account"
+                : "Login"
+            }
             type="primary"
             disabled={!isValid}
             className="w-full mt-400"

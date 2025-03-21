@@ -11,6 +11,7 @@ import { CategoryType } from "@/types/categories";
 import { TransactionFormData } from "@/types/transaction";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { transactionSchema } from "@/utils/validationSchemas";
+import { usePots } from "@/hooks/usePots";
 
 interface User {
   id: string;
@@ -32,6 +33,8 @@ const TransactionFormModal = ({
   onClose,
   onSubmit,
 }: TransactionFormModalProps) => {
+  const { pots } = usePots();
+  const totalSavings = pots.reduce((sum, pot) => sum + pot.currentAmount, 0);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
   const methods = useForm<TransactionFormData>({
@@ -58,6 +61,13 @@ const TransactionFormModal = ({
 
   const handleSubmitForm = handleSubmit(async (data) => {
     setGeneralError(null);
+
+    if (data.type === "EXPENSE" && data.amount > totalSavings) {
+      setGeneralError(
+        "Insufficient savings. Add more funds to a pot or reduce your expense amount."
+      );
+      return;
+    }
 
     try {
       await onSubmit(data);
@@ -146,7 +156,7 @@ const TransactionFormModal = ({
           />
 
           {generalError && (
-            <p className="text-preset-5 text-right text-secondary-red">
+            <p className="text-preset-5 text-center text-secondary-red">
               {generalError}
             </p>
           )}

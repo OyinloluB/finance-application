@@ -74,6 +74,7 @@ const PotTransactionModal = ({
           ? `Add to '${pot.name}'`
           : `Withdraw from '${pot.name}'`
       }
+      loading={isSubmitting}
       actionButtonText={actionButtonText}
       description={description}
       onConfirm={handleSubmitForm}

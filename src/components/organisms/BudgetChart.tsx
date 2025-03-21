@@ -25,7 +25,6 @@ const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
   );
   const totalLimit = budgets.reduce((acc, budget) => acc + budget.maxLimit, 0);
 
-  // Filter budgets with spending
   const data = budgets
     .filter((budget) => budget.currentSpend > 0)
     .map((budget) => ({
@@ -34,7 +33,6 @@ const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
       color: budget.theme,
     }));
 
-  // 🔹 If no budgets exist OR all have zero spending, show an empty state
   if (budgets.length === 0 || totalSpending === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[250px] text-grey-500">

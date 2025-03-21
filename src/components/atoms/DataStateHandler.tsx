@@ -1,6 +1,19 @@
+import { getErrorMessage } from "@/utils/errors";
 import Spinner from "./Spinner";
 
-const DataStateHandler = ({ isLoading, error, data, children }: any) => {
+interface DataStateHandlerProps<T> {
+  isLoading: boolean;
+  error: unknown;
+  data?: T[] | null;
+  children: React.ReactNode;
+}
+
+const DataStateHandler = <T,>({
+  isLoading,
+  error,
+  data,
+  children,
+}: DataStateHandlerProps<T>) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[300px]">

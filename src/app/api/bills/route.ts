@@ -1,23 +1,15 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import { verifyToken } from "@/utils/auth";
 import { handleResponse } from "@/utils/responseHandler";
 
 const prisma = new PrismaClient();
 
 export async function GET(req: Request) {
   try {
-    const userId = await verifyToken(req);
-
-    if (!userId) {
-      return handleResponse(401, { error: "Unauthorized" });
-    }
-
     const { searchParams } = new URL(req.url);
     const sortBy = searchParams.get("sortBy") || "latest";
     const search = searchParams.get("search") || "";
 
     const whereClause: Prisma.RecurringBillWhereInput = {
-      userId,
       ...(search
         ? {
             name: {
@@ -39,7 +31,7 @@ export async function GET(req: Request) {
       highest: { amount: "desc" },
       lowest: { amount: "asc" },
     };
-    
+
     const bills = await prisma.recurringBill.findMany({
       where: whereClause,
       orderBy: orderByOptions[sortBy] || { dueDate: "desc" },

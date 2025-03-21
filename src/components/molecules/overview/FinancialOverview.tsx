@@ -1,15 +1,18 @@
+import { Pot } from "@/types/pot";
 import { Transaction } from "@/types/transaction";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { useMemo } from "react";
 
 interface FinancialSummaryProps {
   transactions: Transaction[];
+  pots: Pot[] | undefined;
 }
 
-const FinancialSummary = ({ transactions }: FinancialSummaryProps) => {
+const FinancialSummary = ({ transactions, pots }: FinancialSummaryProps) => {
   const { currentBalance, totalIncome, totalExpenses } = useMemo(() => {
     let income = 0;
     let expenses = 0;
+    let savings = 0;
 
     transactions.forEach(({ amount, type }) => {
       const numericAmount = Number(amount);
@@ -18,12 +21,18 @@ const FinancialSummary = ({ transactions }: FinancialSummaryProps) => {
       else expenses += Math.abs(numericAmount);
     });
 
+    savings = pots ? pots.reduce((acc, pot) => acc + pot.currentAmount, 0) : 0;
+
+    const calculatedBalance = income - expenses + savings;
+
+    const finalBalance = Math.max(calculatedBalance, 0);
+
     return {
-      currentBalance: income - expenses,
+      currentBalance: finalBalance,
       totalIncome: income,
       totalExpenses: expenses,
     };
-  }, [transactions]);
+  }, [transactions, pots]);
 
   return (
     <div className="flex justify-between gap-300 mb-500 w-full">

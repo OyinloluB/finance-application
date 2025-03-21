@@ -61,69 +61,71 @@ const BudgetCard = ({ budget }: BudgetCardProps) => {
   }
 
   return (
-    <div className="bg-white p-400 rounded-lg">
-      <div className="flex justify-between items-center mb-250">
-        <h3 className="text-preset-2 font-bold text-grey-900 flex items-center">
-          <span
-            className="w-200 h-200 rounded-full mr-200"
-            style={{ backgroundColor: `${themeColors[budget.theme]}` }}
-          />
-          {CategoryLabels[budget.category]}
-        </h3>
-        <DropdownMenu
-          items={[
-            { label: "Edit Budget", action: () => setIsEditModalOpen(true) },
-            {
-              label: "Delete Budget",
-              action: () => setIsDeleteModalOpen(true),
-              danger: true,
-            },
-          ]}
-        />
-      </div>
-
-      <div className="mb-250">
-        <span className="text-preset-4 text-grey-500">
-          Maximum of ${budget.maxLimit}
-        </span>
-        <div className="mt-200 bg-beige-100 h-400 p-50 rounded-sm overflow-hidden">
-          <div
-            className="h-full rounded-md"
-            style={{
-              width: `${(budget.currentSpend / budget.maxLimit) * 100}%`,
-              backgroundColor: `${themeColors[budget.theme]}`,
-              maxWidth: "100%",
-            }}
+    <div className="bg-white h-fit p-400 rounded-lg">
+      <div>
+        <div className="flex justify-between items-center mb-250">
+          <h3 className="text-preset-2 font-bold text-grey-900 flex items-center">
+            <span
+              className="w-200 h-200 rounded-full mr-200"
+              style={{ backgroundColor: `${themeColors[budget.theme]}` }}
+            />
+            {CategoryLabels[budget.category]}
+          </h3>
+          <DropdownMenu
+            items={[
+              { label: "Edit Budget", action: () => setIsEditModalOpen(true) },
+              {
+                label: "Delete Budget",
+                action: () => setIsDeleteModalOpen(true),
+                danger: true,
+              },
+            ]}
           />
         </div>
-      </div>
 
-      <div className="flex gap-200 text-preset-5 mb-250">
-        <BudgetStat
-          label="Spent"
-          value={budget.currentSpend}
-          theme={themeColors[budget.theme]}
-        />
-        <BudgetStat
-          label="Remaining"
-          value={budget.remaining}
-          theme="bg-beige-100"
-        />
-      </div>
+        <div className="mb-250">
+          <span className="text-preset-4 text-grey-500">
+            Maximum of ${budget.maxLimit}
+          </span>
+          <div className="mt-200 bg-beige-100 h-400 p-50 rounded-sm overflow-hidden">
+            <div
+              className="h-full rounded-md"
+              style={{
+                width: `${(budget.currentSpend / budget.maxLimit) * 100}%`,
+                backgroundColor: `${themeColors[budget.theme]}`,
+                maxWidth: "100%",
+              }}
+            />
+          </div>
+        </div>
 
-      <div className="p-250 bg-beige-100 rounded-lg">
-        <h4 className="text-preset-3 text-grey-900 font-bold mb-200">
-          Latest Spending
-        </h4>
-        {budget.transactions && budget.transactions.length > 0 ? (
-          budget.transactions
-            .slice(0, 3)
-            .map((tx) => <BudgetTransactionItem key={tx.id} tx={tx} />)
-        ) : (
-          <p className="text-grey-500 text-center text-preset-5 italic">
-            No transactions yet
-          </p>
-        )}
+        <div className="flex gap-200 text-preset-5 mb-250">
+          <BudgetStat
+            label="Spent"
+            value={budget.currentSpend}
+            theme={themeColors[budget.theme]}
+          />
+          <BudgetStat
+            label="Remaining"
+            value={budget.remaining}
+            theme="bg-beige-100"
+          />
+        </div>
+
+        <div className="p-250 bg-beige-100 rounded-lg">
+          <h4 className="text-preset-3 text-grey-900 font-bold mb-200">
+            Latest Spending
+          </h4>
+          {budget.transactions && budget.transactions.length > 0 ? (
+            budget.transactions
+              .slice(0, 3)
+              .map((tx) => <BudgetTransactionItem key={tx.id} tx={tx} />)
+          ) : (
+            <p className="text-grey-500 text-center text-preset-5 italic">
+              No transactions yet
+            </p>
+          )}
+        </div>
       </div>
 
       <BudgetFormModal

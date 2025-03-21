@@ -123,10 +123,10 @@ const Transactions = () => {
             error={error}
             data={data?.transactions}
           >
-            <Table data={data.transactions} columns={transactionColumns} />
+            <Table data={data?.transactions} columns={transactionColumns} />
             <Pagination
               currentPage={currentPage}
-              totalPages={data.totalPages}
+              totalPages={data?.totalPages}
               onPageChange={setCurrentPage}
             />
           </DataStateHandler>
