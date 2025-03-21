@@ -30,7 +30,7 @@ const BudgetFormModal = ({
     defaultValues: {
       category: defaultValues?.category ?? "entertainment",
       maxLimit: defaultValues?.maxLimit ?? 0,
-      theme: defaultValues?.theme ?? "GREEN",
+      theme: defaultValues?.theme ?? "green",
     },
   });
 

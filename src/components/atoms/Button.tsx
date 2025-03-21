@@ -12,6 +12,7 @@ interface ButtonProps {
   iconLeft?: IconName;
   iconRight?: IconName;
   hideOutline?: boolean;
+  loading?: boolean;
 }
 
 const Button = ({
@@ -22,6 +23,8 @@ const Button = ({
   iconRight,
   onClick,
   hideOutline = false,
+  loading,
+  disabled,
 }: ButtonProps) => {
   const baseStyles =
     "p-200 text-preset-4 text-center rounded-md transition-all duration-200 cursor-pointer box-border flex items-center justify-center gap-200";
@@ -46,9 +49,10 @@ const Button = ({
       type="submit"
       onClick={onClick}
       className={`${baseStyles} ${buttonStyles[type]} ${className ?? ""}`}
+      disabled={disabled || loading}
     >
       {IconLeftComponent && <IconLeftComponent className="text-inherit" />}
-      {text}
+      {loading ? "Loading..." : text}
       {IconRightComponent && <IconRightComponent className="text-inherit" />}
     </button>
   );

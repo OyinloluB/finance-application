@@ -10,6 +10,7 @@ interface ModalProps {
   actionButtonText: string;
   cancelText?: string;
   confirmType?: "primary" | "destroy" | "secondary";
+  loading?: boolean;
   onClose: () => void;
   onConfirm?: () => void;
 }
@@ -22,6 +23,7 @@ const Modal = ({
   actionButtonText,
   cancelText,
   confirmType = "primary",
+  loading,
   onClose,
   onConfirm,
 }: ModalProps) => {
@@ -47,6 +49,8 @@ const Modal = ({
           <Button
             type={confirmType}
             text={actionButtonText}
+            loading={loading}
+            disabled={loading}
             onClick={onConfirm}
           />
           {cancelText && (

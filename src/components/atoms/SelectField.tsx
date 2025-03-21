@@ -25,6 +25,7 @@ interface SelectFieldProps {
   error?: string;
   variant?: "default" | "color-selection" | "with-icons";
   layout?: "row" | "column";
+  disabled?: boolean;
 }
 
 const SelectField = ({
@@ -38,8 +39,9 @@ const SelectField = ({
   icon = "CaretDownIcon",
   variant = "default",
   layout = "column",
+  disabled = false,
 }: SelectFieldProps) => {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, clearErrors } = useFormContext();
   const { field } = useController({ name, control });
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -72,7 +74,7 @@ const SelectField = ({
     <div
       className={`relative flex ${
         layout === "row" ? "flex-row items-center gap-200" : "flex-col gap-50"
-      }`}
+      } ${disabled ? "opacity-50 pointer-events-none" : ""}`}
       ref={dropdownRef}
     >
       {label && (
@@ -82,7 +84,7 @@ const SelectField = ({
         className={`flex items-center py-150 px-250 gap-200 border rounded-lg cursor-pointer ${
           error ? "border-secondary-red" : "border-beige-500"
         }`}
-        onClick={() => setOpen(!open)}
+        onClick={() => !disabled && setOpen(!open)}
       >
         {prefix && <span className="pr-150 text-beige-500">{prefix}</span>}
 
@@ -125,6 +127,7 @@ const SelectField = ({
                 onClick={() => {
                   if (!isDisabled) {
                     setValue(name, value);
+                    clearErrors(name);
                     setOpen(false);
                   }
                 }}

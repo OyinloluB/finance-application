@@ -15,11 +15,9 @@ export interface Transaction {
 }
 
 export interface TransactionFormData {
-  name: string;
   amount: number;
   category: CategoryType;
   date: string;
   type: "INCOME" | "EXPENSE";
   recipientId?: string;
-  recipient: string;
 }

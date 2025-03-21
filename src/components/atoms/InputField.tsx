@@ -11,6 +11,7 @@ interface InputProps {
   helperText?: string;
   error?: string;
   type?: "number" | "text" | "date";
+  disabled?: boolean;
 }
 
 const InputField = ({
@@ -21,6 +22,7 @@ const InputField = ({
   icon,
   helperText,
   type = "text",
+  disabled
 }: InputProps) => {
   const {
     register,
@@ -43,6 +45,7 @@ const InputField = ({
           {...register(name)}
           placeholder={placeholder}
           type={type}
+          disabled={disabled}
           className="flex-1 bg-transparent focus:outline-none placeholder:text-preset-4 text-grey-900"
         />
         {IconComponent && (

@@ -29,7 +29,7 @@ const PotFormModal = ({
     defaultValues: defaultValues || {
       name: "",
       targetAmount: undefined,
-      theme: "GREEN",
+      theme: "green",
     },
   });
 
