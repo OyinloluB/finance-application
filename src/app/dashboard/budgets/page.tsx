@@ -8,11 +8,10 @@ import BudgetCard from "@/components/organisms/BudgetCard";
 import { Budget } from "@/types/budget";
 import { useBudgets } from "@/hooks/useBudgets";
 import BudgetFormModal from "@/components/molecules/modal/BudgetFormModal";
-import Spinner from "@/components/atoms/Spinner";
+import DataStateHandler from "@/components/atoms/DataStateHandler";
 
 const BudgetsPage = () => {
-  const { budgets, createBudget, isLoading } = useBudgets();
-
+  const { budgets, createBudget, isLoading, error } = useBudgets();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const handleAddBudget = (newBudget: Budget) => {
@@ -30,6 +29,10 @@ const BudgetsPage = () => {
     });
   };
 
+  const hasTransactions = budgets.some(
+    (budget) => budget.transactions && budget.transactions.length > 0
+  );
+
   return (
     <div className="flex-1 min-h-screen p-400">
       <div className="flex justify-between items-center mb-400">
@@ -40,32 +43,35 @@ const BudgetsPage = () => {
           onClick={() => setIsAddModalOpen(true)}
         />
       </div>
-      {isLoading ? (
-        <div className="flex justify-center items-center py-400">
-          <Spinner />
-        </div>
-      ) : budgets.length > 0 ? (
+
+      <DataStateHandler isLoading={isLoading} error={error} data={budgets}>
         <div className="flex gap-300">
           <div className="flex-1 h-fit bg-white p-400 rounded-lg mb-400">
             <div className="mb-400">
               <BudgetChart budgets={budgets} isLoading={isLoading} />
             </div>
-            <div>
-              <h2 className="text-preset-2 font-bold text-grey-900 mb-300">
-                Spending Summary
-              </h2>
 
-              <div className="flex-1">
-                {budgets
-                  .filter((budget) => budget.transactions.length > 0)
-                  .map((budget) => (
-                    <BudgetSpendingSummaryItem
-                      key={budget.id}
-                      budget={budget}
-                    />
-                  ))}
+            {hasTransactions && (
+              <div>
+                <h2 className="text-preset-2 font-bold text-grey-900 mb-300">
+                  Spending Summary
+                </h2>
+
+                <div className="flex-1">
+                  {budgets
+                    .filter(
+                      (budget) =>
+                        budget.transactions && budget.transactions.length > 0
+                    )
+                    .map((budget) => (
+                      <BudgetSpendingSummaryItem
+                        key={budget.id}
+                        budget={budget}
+                      />
+                    ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           <div className="flex-auto grid grid-cols-1 gap-400">
@@ -74,16 +80,7 @@ const BudgetsPage = () => {
             ))}
           </div>
         </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center h-[70vh] text-grey-600">
-          <p className="text-preset-4 text-grey-900 font-medium">
-            No budgets found
-          </p>
-          <p className="text-sm text-grey-500">
-            Start by creating a budget to track your spending.
-          </p>
-        </div>
-      )}
+      </DataStateHandler>
 
       <BudgetFormModal
         title="Add New Budget"

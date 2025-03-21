@@ -6,14 +6,13 @@ import Pagination from "@/components/organisms/Pagination";
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import Spinner from "@/components/atoms/Spinner";
-import { getErrorMessage } from "@/utils/errors";
 import { useEffect, useState } from "react";
 import useTransactions from "@/hooks/useTransactions";
 import Button from "@/components/atoms/Button";
 import TransactionFormModal from "@/components/molecules/modal/TransactionFormModal";
 import { TransactionFormData } from "@/types/transaction";
 import { transactionColumns } from "@/components/atoms/TableColumns";
+import DataStateHandler from "@/components/atoms/DataStateHandler";
 
 const Transactions = () => {
   const methods = useForm();
@@ -119,28 +118,18 @@ const Transactions = () => {
             </div>
           </FormProvider>
 
-          {isLoading ? (
-            <div className="flex justify-center items-center py-400">
-              <Spinner />
-            </div>
-          ) : error ? (
-            <p className="text-red-500 text-center py-400">
-              {getErrorMessage(error)}
-            </p>
-          ) : data?.transactions.length > 0 ? (
-            <>
-              <Table data={data.transactions} columns={transactionColumns} />
-              <Pagination
-                currentPage={currentPage}
-                totalPages={data.totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </>
-          ) : (
-            <p className="text-center text-grey-500 py-400">
-              No transactions found.
-            </p>
-          )}
+          <DataStateHandler
+            isLoading={isLoading}
+            error={error}
+            data={data?.transactions}
+          >
+            <Table data={data.transactions} columns={transactionColumns} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={data.totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </DataStateHandler>
         </div>
         <TransactionFormModal
           title="Add New Transaction"

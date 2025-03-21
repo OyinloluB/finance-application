@@ -115,7 +115,7 @@ const BudgetCard = ({ budget }: BudgetCardProps) => {
         <h4 className="text-preset-3 text-grey-900 font-bold mb-200">
           Latest Spending
         </h4>
-        {budget.transactions.length > 0 ? (
+        {budget.transactions && budget.transactions.length > 0 ? (
           budget.transactions
             .slice(0, 3)
             .map((tx) => <BudgetTransactionItem key={tx.id} tx={tx} />)

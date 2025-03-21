@@ -25,6 +25,7 @@ const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
   );
   const totalLimit = budgets.reduce((acc, budget) => acc + budget.maxLimit, 0);
 
+  // Filter budgets with spending
   const data = budgets
     .filter((budget) => budget.currentSpend > 0)
     .map((budget) => ({
@@ -32,6 +33,20 @@ const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
       value: budget.currentSpend,
       color: budget.theme,
     }));
+
+  // 🔹 If no budgets exist OR all have zero spending, show an empty state
+  if (budgets.length === 0 || totalSpending === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[250px] text-grey-500">
+        <p className="text-preset-4 text-center font-medium">
+          No spending data available
+        </p>
+        <p className="text-sm text-center">
+          Add a budget and track your spending.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center">
@@ -46,16 +61,13 @@ const BudgetChart = ({ budgets, isLoading }: BudgetChartProps) => {
           outerRadius={100}
           stroke="none"
         >
-          {data.map((entry, index) => {
-            return (
-              <Cell
-                className="bg-blue-700"
-                key={`cell-${index}`}
-                fill={themeColors[entry.color as keyof typeof themeColors]}
-                pointerEvents="none"
-              />
-            );
-          })}
+          {data.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={themeColors[entry.color as keyof typeof themeColors]}
+              pointerEvents="none"
+            />
+          ))}
         </Pie>
         <Pie
           data={data}
