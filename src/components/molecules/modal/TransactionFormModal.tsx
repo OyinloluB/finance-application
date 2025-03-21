@@ -39,7 +39,7 @@ const TransactionFormModal = ({
       yup.object({
         amount: yup
           .number()
-          .typeError("Amount must be a number")
+          .typeError("Please enter a valid amount")
           .positive("Amount must be greater than zero")
           .required("Amount is required"),
         category: yup

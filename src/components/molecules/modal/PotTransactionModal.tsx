@@ -33,16 +33,27 @@ const PotTransactionModal = ({
       yup.object({
         amount: yup
           .number()
-          .typeError("Amount must be a number")
+          .typeError("Please enter a valid amount")
           .positive("Amount must be greater than zero")
-          .required("Amount is required"),
+          .required("Amount is required")
+          .test(
+            "max-withdraw",
+            "Cannot withdraw more than available balance",
+            (value, context) => {
+              if (context.options.context?.type === "withdraw") {
+                return value !== undefined && value <= pot.currentAmount;
+              }
+              return true;
+            }
+          ),
       }),
-    []
+    [pot.currentAmount]
   );
 
   const methods = useForm<PotTransactionFormData>({
     resolver: yupResolver(transactionSchema),
     mode: "onChange",
+    context: { type },
     defaultValues: { amount: undefined },
   });
 

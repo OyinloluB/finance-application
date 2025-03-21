@@ -35,7 +35,7 @@ const PotFormModal = ({
         name: yup.string().required("Pot Name is required"),
         targetAmount: yup
           .number()
-          .typeError("Target Amount must be a number")
+          .typeError("Please enter a valid amount")
           .positive("Target Amount must be greater than zero")
           .required("Target Amount is required"),
         theme: yup.string().required("Theme is required"),
