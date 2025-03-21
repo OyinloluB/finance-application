@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import * as yup from "yup";
 import Modal from "@/components/atoms/Modal";
 import InputField from "@/components/atoms/InputField";
 import { Pot, PotTransactionFormData } from "@/types/pot";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { getPotTransactionSchema } from "@/utils/validationSchemas";
 
 interface PotTransactionModalProps {
   isOpen: boolean;
@@ -28,30 +28,8 @@ const PotTransactionModal = ({
 }: PotTransactionModalProps) => {
   const [generalError, setGeneralError] = useState<string | null>(null);
 
-  const transactionSchema = useMemo(
-    () =>
-      yup.object({
-        amount: yup
-          .number()
-          .typeError("Please enter a valid amount")
-          .positive("Amount must be greater than zero")
-          .required("Amount is required")
-          .test(
-            "max-withdraw",
-            "Cannot withdraw more than available balance",
-            (value, context) => {
-              if (context.options.context?.type === "withdraw") {
-                return value !== undefined && value <= pot.currentAmount;
-              }
-              return true;
-            }
-          ),
-      }),
-    [pot.currentAmount]
-  );
-
   const methods = useForm<PotTransactionFormData>({
-    resolver: yupResolver(transactionSchema),
+    resolver: yupResolver(getPotTransactionSchema(type, pot.currentAmount)),
     mode: "onChange",
     context: { type },
     defaultValues: { amount: undefined },

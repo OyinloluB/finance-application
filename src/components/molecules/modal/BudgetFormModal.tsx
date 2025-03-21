@@ -1,5 +1,4 @@
-import React, { useMemo, useState } from "react";
-import * as yup from "yup";
+import React, { useState } from "react";
 
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
@@ -8,6 +7,7 @@ import { Budget, BudgetFormData } from "@/types/budget";
 import Modal from "@/components/atoms/Modal";
 import { themes } from "@/utils/themeColors";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { budgetSchema } from "@/utils/validationSchemas";
 
 interface BudgetFormModalProps {
   title: string;
@@ -29,20 +29,6 @@ const BudgetFormModal = ({
   defaultValues,
 }: BudgetFormModalProps) => {
   const [generalError, setGeneralError] = useState<string | null>(null);
-
-  const budgetSchema = useMemo(
-    () =>
-      yup.object({
-        category: yup.string().required("Category is required"),
-        maxLimit: yup
-          .number()
-          .typeError("Maximum Spend must be a number")
-          .positive("Amount must be greater than zero")
-          .required("Maximum Spend is required"),
-        theme: yup.string().required("Theme is required"),
-      }),
-    []
-  );
 
   const methods = useForm<BudgetFormData>({
     resolver: yupResolver(budgetSchema),

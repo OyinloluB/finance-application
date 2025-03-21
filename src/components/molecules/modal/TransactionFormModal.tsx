@@ -1,7 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useForm, FormProvider, useWatch } from "react-hook-form";
 import { DateTime } from "luxon";
-import * as yup from "yup";
 
 import Modal from "../../atoms/Modal";
 import InputField from "@/components/atoms/InputField";
@@ -11,6 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 import { CategoryType } from "@/types/categories";
 import { TransactionFormData } from "@/types/transaction";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { transactionSchema } from "@/utils/validationSchemas";
 
 interface User {
   id: string;
@@ -33,41 +33,6 @@ const TransactionFormModal = ({
   onSubmit,
 }: TransactionFormModalProps) => {
   const [generalError, setGeneralError] = useState<string | null>(null);
-
-  const transactionSchema = useMemo(
-    () =>
-      yup.object({
-        amount: yup
-          .number()
-          .typeError("Please enter a valid amount")
-          .positive("Amount must be greater than zero")
-          .required("Amount is required"),
-        category: yup
-          .mixed<CategoryType>()
-          .oneOf(Object.values(CategoryType), "Invalid category")
-          .required("Category is required"),
-        type: yup
-          .string()
-          .oneOf(["INCOME", "EXPENSE"], "Invalid transaction type")
-          .required("Transaction type is required"),
-        recipientId: yup
-          .string()
-          .optional()
-          .when("type", ([type], schema) =>
-            type === "EXPENSE"
-              ? schema.required("Recipient is required")
-              : schema.notRequired()
-          ),
-        date: yup
-          .string()
-          .typeError("Invalid date format")
-          .required("Date is required")
-          .transform((value) =>
-            value instanceof Date ? value.toISOString() : value
-          ),
-      }),
-    []
-  );
 
   const methods = useForm<TransactionFormData>({
     resolver: yupResolver(transactionSchema),

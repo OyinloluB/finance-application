@@ -2,12 +2,12 @@
 
 import React, { useMemo, useState } from "react";
 import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
-import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import InputField from "../atoms/InputField";
 import Button from "../atoms/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "@/context/AuthContext";
+import { getAuthSchema } from "@/utils/validationSchemas";
 
 interface AuthFormProps {
   type: "signup" | "login";
@@ -24,29 +24,11 @@ const AuthForm = ({ type }: AuthFormProps) => {
   const { signUp, signIn, firebaseError } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const validationSchema = useMemo(
-    () =>
-      yup.object({
-        name:
-          type === "signup"
-            ? yup.string().required("Name is required")
-            : yup.string().optional(),
-        email: yup
-          .string()
-          .email("Invalid email")
-          .required("Email is required"),
-        password: yup
-          .string()
-          .min(8, "Password must be at least 8 characters")
-          .required("Password is required"),
-      }),
-    [type]
-  );
+  const validationSchema = useMemo(() => getAuthSchema(type), [type]);
 
   const methods = useForm<FormDataProps>({
     resolver: yupResolver(validationSchema),
-    mode: "onSubmit",
-    reValidateMode: "onChange",
+    mode: "onChange",
   });
 
   const {

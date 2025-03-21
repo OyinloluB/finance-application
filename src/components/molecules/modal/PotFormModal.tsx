@@ -1,12 +1,12 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import * as yup from "yup";
 import Modal from "@/components/atoms/Modal";
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
 import { Pot, PotFormData } from "@/types/pot";
 import { themes } from "@/utils/themeColors";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { potSchema } from "@/utils/validationSchemas";
 
 interface PotFormModalProps {
   title: string;
@@ -28,20 +28,6 @@ const PotFormModal = ({
   defaultValues,
 }: PotFormModalProps) => {
   const [generalError, setGeneralError] = useState<string | null>(null);
-
-  const potSchema = useMemo(
-    () =>
-      yup.object({
-        name: yup.string().required("Pot Name is required"),
-        targetAmount: yup
-          .number()
-          .typeError("Please enter a valid amount")
-          .positive("Target Amount must be greater than zero")
-          .required("Target Amount is required"),
-        theme: yup.string().required("Theme is required"),
-      }),
-    []
-  );
 
   const methods = useForm<PotFormData>({
     resolver: yupResolver(potSchema),
