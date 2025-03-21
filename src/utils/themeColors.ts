@@ -16,7 +16,7 @@ export const themeColors: Record<string, string> = {
 
 export const themes = [
   { label: "Green", value: "green", color: "#277C78" },
-  { label: "Yellow", value: "yelloW", color: "#F2CDAC" },
+  { label: "Yellow", value: "yellow", color: "#F2CDAC" },
   { label: "Cyan", value: "cyan", color: "#82C9D7" },
   { label: "Navy", value: "navy", color: "#626070" },
   { label: "Red", value: "red", color: "#C94736" },
