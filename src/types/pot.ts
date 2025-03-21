@@ -8,3 +8,13 @@ export type Pot = {
   updatedAt: string;
   userId: string;
 };
+
+export interface PotFormData {
+  name: string;
+  targetAmount: number;
+  theme: string;
+}
+
+export interface PotTransactionFormData {
+  amount: number;
+}

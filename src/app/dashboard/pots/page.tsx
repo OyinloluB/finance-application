@@ -15,8 +15,17 @@ const PotsPage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const handleAddPot = (newPot: Pot) => {
-    createPot.mutate(newPot, {
-      onSuccess: () => setIsAddModalOpen(false),
+    return new Promise<void>((resolve, reject) => {
+      createPot.mutate(newPot, {
+        onSuccess: () => {
+          setIsAddModalOpen(false);
+          resolve();
+        },
+        onError: (error) => {
+          console.error("Error updating budget:", error);
+          reject(error);
+        },
+      });
     });
   };
 

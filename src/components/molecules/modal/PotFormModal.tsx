@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
+import * as yup from "yup";
 import Modal from "@/components/atoms/Modal";
 import InputField from "@/components/atoms/InputField";
 import SelectField from "@/components/atoms/SelectField";
-import { Pot } from "@/types/pot";
+import { Pot, PotFormData } from "@/types/pot";
 import { themes } from "@/utils/themeColors";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface PotFormModalProps {
   title: string;
@@ -12,7 +14,7 @@ interface PotFormModalProps {
   actionButtonText: string;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: Pot) => void;
+  onSubmit: (data: Pot) => Promise<void>;
   defaultValues?: Pot;
 }
 
@@ -25,7 +27,25 @@ const PotFormModal = ({
   onSubmit,
   defaultValues,
 }: PotFormModalProps) => {
-  const methods = useForm({
+  const [generalError, setGeneralError] = useState<string | null>(null);
+
+  const potSchema = useMemo(
+    () =>
+      yup.object({
+        name: yup.string().required("Pot Name is required"),
+        targetAmount: yup
+          .number()
+          .typeError("Target Amount must be a number")
+          .positive("Target Amount must be greater than zero")
+          .required("Target Amount is required"),
+        theme: yup.string().required("Theme is required"),
+      }),
+    []
+  );
+
+  const methods = useForm<PotFormData>({
+    resolver: yupResolver(potSchema),
+    mode: "onChange",
     defaultValues: defaultValues || {
       name: "",
       targetAmount: undefined,
@@ -33,9 +53,23 @@ const PotFormModal = ({
     },
   });
 
-  const handleSubmitForm = () => {
-    methods.handleSubmit(onSubmit)();
-  };
+  const {
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = methods;
+
+  const handleSubmitForm = handleSubmit(async (data) => {
+    setGeneralError(null);
+
+    try {
+      const newPot: Partial<Pot> = { ...data };
+      await onSubmit(newPot as Pot);
+      methods.reset();
+    } catch (error) {
+      console.error("Pot submission error:", error);
+      setGeneralError("Failed to submit pot. Please try again.");
+    }
+  });
 
   return (
     <Modal
@@ -43,18 +77,22 @@ const PotFormModal = ({
       title={title}
       description={description}
       actionButtonText={actionButtonText}
-      onClose={onClose}
+      loading={isSubmitting}
+      onClose={() => {
+        methods.reset();
+        setGeneralError(null);
+        onClose();
+      }}
       onConfirm={handleSubmitForm}
     >
       <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit(onSubmit)}
-          className="flex flex-col gap-300"
-        >
+        <form onSubmit={handleSubmitForm} className="flex flex-col gap-300">
           <InputField
             name="name"
             label="Pot Name"
             placeholder="e.g. Rainy Days"
+            error={errors.name?.message}
+            disabled={isSubmitting}
           />
           <InputField
             name="targetAmount"
@@ -62,13 +100,23 @@ const PotFormModal = ({
             type="number"
             prefix="$"
             placeholder="e.g. 2000"
+            error={errors.targetAmount?.message}
+            disabled={isSubmitting}
           />
           <SelectField
             name="theme"
             label="Theme"
             variant="color-selection"
             options={themes}
+            error={errors.theme?.message}
+            disabled={isSubmitting}
           />
+
+          {generalError && (
+            <p className="text-preset-5 text-right text-secondary-red">
+              {generalError}
+            </p>
+          )}
         </form>
       </FormProvider>
     </Modal>

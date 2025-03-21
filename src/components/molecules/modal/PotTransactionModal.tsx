@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
+import * as yup from "yup";
 import Modal from "@/components/atoms/Modal";
 import InputField from "@/components/atoms/InputField";
-import { Pot } from "@/types/pot";
+import { Pot, PotTransactionFormData } from "@/types/pot";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface PotTransactionModalProps {
   isOpen: boolean;
@@ -11,7 +13,7 @@ interface PotTransactionModalProps {
   pot: Pot;
   type: "deposit" | "withdraw";
   actionButtonText: string;
-  onSubmit: (data: { amount: number }) => void;
+  onSubmit: (data: PotTransactionFormData) => Promise<void>;
   description: string;
 }
 
@@ -24,11 +26,33 @@ const PotTransactionModal = ({
   onSubmit,
   description,
 }: PotTransactionModalProps) => {
-  const methods = useForm({
-    defaultValues: { amount: 0 },
+  const [generalError, setGeneralError] = useState<string | null>(null);
+
+  const transactionSchema = useMemo(
+    () =>
+      yup.object({
+        amount: yup
+          .number()
+          .typeError("Amount must be a number")
+          .positive("Amount must be greater than zero")
+          .required("Amount is required"),
+      }),
+    []
+  );
+
+  const methods = useForm<PotTransactionFormData>({
+    resolver: yupResolver(transactionSchema),
+    mode: "onChange",
+    defaultValues: { amount: undefined },
   });
 
-  const enteredAmount = Number(methods.watch("amount")) || 0;
+  const {
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = methods;
+
+  const enteredAmount = Number(watch("amount")) || 0;
   const newAmount =
     type === "withdraw"
       ? pot.currentAmount - enteredAmount
@@ -37,10 +61,25 @@ const PotTransactionModal = ({
   const currentPercentage = (pot.currentAmount / pot.targetAmount) * 100;
   const newPercentage = (newAmount / pot.targetAmount) * 100;
 
+  const handleSubmitForm = handleSubmit(async (data) => {
+    setGeneralError(null);
+    try {
+      await onSubmit(data);
+      methods.reset();
+    } catch (error) {
+      console.error("Pot transaction error:", error);
+      setGeneralError("Failed to process transaction. Please try again.");
+    }
+  });
+
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => {
+        methods.reset();
+        setGeneralError(null);
+        onClose();
+      }}
       title={
         type === "deposit"
           ? `Add to '${pot.name}'`
@@ -48,7 +87,7 @@ const PotTransactionModal = ({
       }
       actionButtonText={actionButtonText}
       description={description}
-      onConfirm={methods.handleSubmit(onSubmit)}
+      onConfirm={handleSubmitForm}
     >
       <FormProvider {...methods}>
         <div className="flex justify-between items-center mt-250 mb-200">
@@ -110,8 +149,16 @@ const PotTransactionModal = ({
             type="number"
             prefix="$"
             placeholder="e.g. 200"
+            error={errors.amount?.message}
+            disabled={isSubmitting}
           />
         </form>
+
+        {generalError && (
+          <p className="text-preset-5 text-right text-secondary-red">
+            {generalError}
+          </p>
+        )}
       </FormProvider>
     </Modal>
   );

@@ -6,6 +6,7 @@ interface PotDeleteModalProps {
   onConfirm: () => void;
   title: string;
   description: string;
+  isDeleting: boolean;
 }
 
 const DeletePotModal = ({
@@ -14,6 +15,7 @@ const DeletePotModal = ({
   onConfirm,
   title,
   description,
+  isDeleting
 }: PotDeleteModalProps) => {
   return (
     <Modal
@@ -21,7 +23,7 @@ const DeletePotModal = ({
       onClose={onClose}
       title={title}
       description={description}
-      actionButtonText="Yes, Confirm Deletion"
+      actionButtonText={isDeleting ? "Deleting..." : "Yes, Confirm Deletion"}
       cancelText="No, Go Back"
       confirmType="destroy"
       onConfirm={onConfirm}

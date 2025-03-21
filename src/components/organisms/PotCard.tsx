@@ -1,4 +1,4 @@
-import { Pot } from "@/types/pot";
+import { Pot, PotTransactionFormData } from "@/types/pot";
 import Button from "@/components/atoms/Button";
 import { useState } from "react";
 import { usePots } from "@/hooks/usePots";
@@ -20,35 +20,73 @@ const PotCard = ({ pot }: PotCardProps) => {
   const [transactionType, setTransactionType] = useState<
     "deposit" | "withdraw"
   >("deposit");
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const percentageSaved = (pot.currentAmount / pot.targetAmount) * 100;
 
-  const handleEditPot = (updatedPot: Partial<Pot>) => {
-    updatePot.mutate(
-      { id: pot.id, updatedPot },
-      {
-        onSuccess: () => {
-          setIsEditModalOpen(false);
-        },
-      }
-    );
+  const handleEditPot = async (updatedPot: Partial<Pot>) => {
+    return new Promise<void>((resolve, reject) => {
+      updatePot.mutate(
+        { id: pot.id, updatedPot },
+        {
+          onSuccess: () => {
+            setIsEditModalOpen(false);
+            resolve();
+          },
+          onError: (error) => {
+            console.error("Error updating pot:", error);
+            reject(error);
+          },
+        }
+      );
+    });
   };
 
   const handleDeletePot = () => {
+    setIsDeleting(true);
     deletePot.mutate(pot.id, {
       onSuccess: () => {
         setIsDeleteModalOpen(false);
+        setIsDeleting(false);
+      },
+      onError: () => {
+        setIsDeleting(false);
       },
     });
   };
 
-  const handleTransaction = ({ amount }: { amount: number }) => {
-    if (transactionType === "deposit") {
-      depositToPot.mutate({ id: pot.id, amount });
-    } else {
-      withdrawFromPot.mutate({ id: pot.id, amount });
-    }
-    setIsTransactionModalOpen(false);
+  const handleTransaction = async ({ amount }: PotTransactionFormData) => {
+    return new Promise<void>((resolve, reject) => {
+      if (transactionType === "deposit") {
+        depositToPot.mutate(
+          { id: pot.id, amount },
+          {
+            onSuccess: () => {
+              setIsTransactionModalOpen(false);
+              resolve();
+            },
+            onError: (error) => {
+              console.error("Error processing deposit:", error);
+              reject(error);
+            },
+          }
+        );
+      } else {
+        withdrawFromPot.mutate(
+          { id: pot.id, amount },
+          {
+            onSuccess: () => {
+              setIsTransactionModalOpen(false);
+              resolve();
+            },
+            onError: (error) => {
+              console.error("Error processing withdrawal:", error);
+              reject(error);
+            },
+          }
+        );
+      }
+    });
   };
 
   return (
@@ -150,8 +188,9 @@ const PotCard = ({ pot }: PotCardProps) => {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleDeletePot}
+        isDeleting={isDeleting}
         title={`Delete '${pot.name}'?`}
-        description="Are you sure you want to delete this pot? This action cannot be reversed, and all the data inside it will be removed forever."
+        description="Are you sure you want to delete this pot? This action cannot be reversed."
       />
     </div>
   );
