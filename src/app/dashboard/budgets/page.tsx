@@ -46,12 +46,11 @@ const BudgetsPage = () => {
 
       <DataStateHandler isLoading={isLoading} error={error} data={budgets}>
         <div className="flex gap-300">
-          <div className="flex-1 h-fit bg-white p-400 rounded-lg mb-400">
-            <div className="mb-400">
-              <BudgetChart budgets={budgets} isLoading={isLoading} />
-            </div>
-
-            {hasTransactions && (
+          {hasTransactions && (
+            <div className="flex-1 h-fit bg-white p-400 rounded-lg mb-400">
+              <div className="mb-400">
+                <BudgetChart budgets={budgets} isLoading={isLoading} />
+              </div>
               <div>
                 <h2 className="text-preset-2 font-bold text-grey-900 mb-300">
                   Spending Summary
@@ -71,8 +70,8 @@ const BudgetsPage = () => {
                     ))}
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           <div className="flex-auto grid grid-cols-1 gap-400">
             {budgets.map((budget) => (

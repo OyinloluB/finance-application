@@ -6,8 +6,10 @@ import { Transaction } from "@/types/transaction";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { DateTime } from "luxon";
 import DataStateHandler from "@/components/atoms/DataStateHandler";
+import { useRouter } from "next/navigation";
 
 const TransactionsOverview = () => {
+  const router = useRouter();
   const { data, isLoading, error } = useOverviewData();
 
   const transactions = data?.latestTransactions.transactions ?? [];
@@ -22,6 +24,7 @@ const TransactionsOverview = () => {
           iconRight="CaretRightIcon"
           hideOutline
           className="text-grey-500 pr-0"
+          onClick={() => router.push("/dashboard/transactions")}
         />
       </div>
 

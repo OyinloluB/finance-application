@@ -3,9 +3,11 @@ import Spinner from "@/components/atoms/Spinner";
 import useOverviewData from "@/hooks/useOverview";
 import { RecurringBill } from "@/types/bills";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const BillsOverview = () => {
+  const router = useRouter();
   const { data, isLoading } = useOverviewData();
 
   if (isLoading) {
@@ -46,6 +48,7 @@ const BillsOverview = () => {
           iconRight="CaretRightIcon"
           hideOutline
           className="text-grey-500 pr-0"
+          onClick={() => router.push("/dashboard/recurring-bills")}
         />
       </div>
       <div className="flex flex-col gap-150">

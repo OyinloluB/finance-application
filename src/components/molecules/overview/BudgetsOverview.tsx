@@ -5,9 +5,11 @@ import useOverviewData from "@/hooks/useOverview";
 import { CategoryLabels } from "@/types/categories";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { themeColors } from "@/utils/themeColors";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const BudgetsOverview = () => {
+  const router = useRouter();
   const { data, isLoading, error } = useOverviewData();
 
   const budgets = data?.budgets ?? [];
@@ -26,6 +28,7 @@ const BudgetsOverview = () => {
           iconRight="CaretRightIcon"
           hideOutline
           className="text-grey-500 pr-0"
+          onClick={() => router.push("/dashboard/budgets")}
         />
       </div>
       <DataStateHandler
