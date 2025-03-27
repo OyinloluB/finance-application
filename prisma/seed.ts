@@ -34,7 +34,7 @@ async function main() {
       amount: 9.99,
       dueDate: new Date(new Date().setDate(21)),
       image: "/images/profile-three.png",
-      status: BillStatus.DUE_SOON, // ✅ Use Enum
+      status: BillStatus.DUE_SOON,
       frequency: FrequencyType.MONTHLY,
     },
     {

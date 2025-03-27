@@ -1,15 +1,23 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { handleResponse } from "@/utils/responseHandler";
+import { verifyToken } from "@/utils/auth";
 
 const prisma = new PrismaClient();
 
 export async function GET(req: Request) {
   try {
+    const userId = await verifyToken(req);
+
+    if (!userId) {
+      return handleResponse(401, { error: "Unauthorized" });
+    }
+
     const { searchParams } = new URL(req.url);
     const sortBy = searchParams.get("sortBy") || "latest";
     const search = searchParams.get("search") || "";
 
     const whereClause: Prisma.RecurringBillWhereInput = {
+      userId,
       ...(search
         ? {
             name: {

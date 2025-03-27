@@ -29,8 +29,6 @@ const BudgetsPage = () => {
     });
   };
 
-  console.log({ budgets });
-
   const hasTransactions = budgets.some(
     (budget) => budget.transactions && budget.transactions.length > 0
   );
