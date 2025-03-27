@@ -30,22 +30,22 @@ const Overview = () => {
   return (
     <ProtectedRoute>
       <DataStateHandler isLoading={isLoading} error={error} data={!isEmpty}>
-        <div className="flex-1 min-h-screen p-400">
+        <div className="flex-1 min-h-screen p-200 sm:p-500">
           <h1 className="text-preset-1 font-bold text-grey-900 mb-400">
             Overview   
           </h1>
-          <div className="flex gap-400">
+          <div className="flex">
             <FinancialSummary
               transactions={data?.allTransactions.transactions}
               pots={data?.pots}
             />
           </div>
-          <div className="flex gap-300">
-            <div className="w-3/5 flex flex-col gap-400">
+          <div className="flex flex-col lg:flex-row gap-200 sm:gap-300">
+            <div className="w-full lg:w-3/5 flex flex-col gap-400">
               <PotsOverview />
               <TransactionsOverview />
             </div>
-            <div className="w-2/5 flex flex-col gap-400">
+            <div className="w-full lg:w-2/5 flex flex-col gap-200 sm:gap-400">
               <BudgetsOverview />
               <BillsOverview />
             </div>

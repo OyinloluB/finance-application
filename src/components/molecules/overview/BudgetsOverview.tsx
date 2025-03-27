@@ -19,8 +19,8 @@ const BudgetsOverview = () => {
   );
 
   return (
-    <div className="p-400 bg-white rounded-lg w-full h-fit">
-      <div className="flex items-center justify-between mb-250">
+    <div className="px-250 py-300 sm:px-400 sm:py-400 bg-white rounded-lg w-full h-fit">
+      <div className="flex items-center justify-between mb-150">
         <h3 className="text-preset-2 text-grey-900 font-bold">Budgets</h3>
         <Button
           text="See details"
@@ -36,7 +36,7 @@ const BudgetsOverview = () => {
         error={error}
         data={budgetsWithSpending}
       >
-        <div className="flex items-center">
+        <div className="flex flex-col sm:flex-row items-center">
           <BudgetChart budgets={budgets} isLoading={false} />
           <div className="grid grid-cols-[auto-fit,minmax(200px,1fr)] gap-200 w-full">
             {budgets.slice(0, 4).map((budget) => (

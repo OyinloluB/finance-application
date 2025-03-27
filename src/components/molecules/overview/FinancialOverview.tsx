@@ -35,7 +35,7 @@ const FinancialSummary = ({ transactions, pots }: FinancialSummaryProps) => {
   }, [transactions, pots]);
 
   return (
-    <div className="flex justify-between gap-300 mb-500 w-full">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-150 sm:gap-300 mb-400 w-full">
       <SummaryCard title="Current Balance" amount={currentBalance} highlight />
       <SummaryCard title="Income" amount={totalIncome} />
       <SummaryCard title="Expenses" amount={totalExpenses} />

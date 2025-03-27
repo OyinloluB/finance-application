@@ -54,10 +54,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         password
       );
       const firebaseUser = userCredential.user;
+      const token = await firebaseUser.getIdToken();
 
       await fetch("/api/users", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           id: firebaseUser.uid,
           email: firebaseUser.email,

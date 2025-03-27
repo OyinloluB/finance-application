@@ -15,8 +15,8 @@ const PotsOverview = () => {
   const totalSaved = pots.reduce((sum, pot) => sum + pot.currentAmount, 0);
 
   return (
-    <div className="p-400 bg-white rounded-lg w-full h-fit">
-      <div className="flex items-center justify-between mb-250">
+    <div className="px-250 py-300 sm:px-400 sm:py-400 bg-white rounded-lg w-full h-fit">
+      <div className="flex items-center justify-between mb-150">
         <h3 className="text-preset-2 text-grey-900 font-bold">Pots</h3>
         <Button
           text="See details"
@@ -28,7 +28,7 @@ const PotsOverview = () => {
         />
       </div>
       <DataStateHandler isLoading={isLoading} error={error} data={pots}>
-        <div className="flex gap-250">
+        <div className="flex flex-col sm:flex-row gap-250">
           <div className="flex items-center gap-200 min-w-[250px] bg-beige-100 rounded-md p-200">
             <MoneyBagIcon />
             <div className="flex flex-col">

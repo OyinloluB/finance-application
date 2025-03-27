@@ -3,7 +3,11 @@ import React from "react";
 import Sidebar from "../molecules/Sidebar";
 
 const SidebarContainer = () => {
-  return <Sidebar />;
+  return (
+    <div className="hidden lg:block">
+      <Sidebar />
+    </div>
+  );
 };
 
 export default SidebarContainer;

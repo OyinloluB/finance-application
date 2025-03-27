@@ -15,7 +15,7 @@ const TransactionsOverview = () => {
   const transactions = data?.latestTransactions.transactions ?? [];
 
   return (
-    <div className="p-400 bg-white rounded-lg w-full h-fit">
+    <div className="px-250 py-300 sm:px-400 sm:py-400 bg-white rounded-lg w-full h-fit">
       <div className="flex items-center justify-between">
         <h3 className="text-preset-2 text-grey-900 font-bold">Transactions</h3>
         <Button
