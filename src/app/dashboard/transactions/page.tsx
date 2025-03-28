@@ -60,22 +60,22 @@ const Transactions = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex-1 h-screen p-400">
+      <div className="flex-1 h-screen px-200 py-300 sm:px-400 sm:py-400">
         <div className="flex justify-between items-center mb-400">
-          <h1 className="text-preset-1 font-bold text-grey-900">
+          <h1 className="sm:text-preset-1 text-preset-2 font-bold text-grey-900">
             Transactions
           </h1>
           <Button
             type="primary"
-            text="+ Add New Transaction"
+            text="+ Add New"
             onClick={() => setIsAddModalOpen(true)}
           />
         </div>
 
-        <div className="p-400 bg-white rounded-md">
+        <div className="px-250 py-300 sm:py-400 sm:px-400 bg-white rounded-md">
           <FormProvider {...methods}>
-            <div className="flex justify-between items-center gap-300 mb-400 ">
-              <div className="max-w-[380px] flex-1">
+            <div className="flex items-center gap-200 flex-wrap sm:gap-300 mb-400">
+              <div className="flex-grow min-w-[0] max-w-[60%] sm:max-w-[380px]">
                 <InputField
                   name="search_transactions"
                   placeholder="Search transaction"

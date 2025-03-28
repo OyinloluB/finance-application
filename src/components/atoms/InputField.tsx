@@ -22,7 +22,7 @@ const InputField = ({
   icon,
   helperText,
   type = "text",
-  disabled
+  disabled,
 }: InputProps) => {
   const {
     register,
@@ -36,24 +36,27 @@ const InputField = ({
         <label className="text-preset-5 text-grey-500 font-bold">{label}</label>
       )}
       <div
-        className={`flex items-center py-150 px-250 border rounded-lg ${
+        className={`flex items-center border rounded-lg sm:px-250 px-200 ${
           errors[name] ? "border-secondary-red" : "border-beige-500"
         }`}
       >
         {prefix && <span className="pr-150 text-beige-500">{prefix}</span>}
+
         <input
           {...register(name)}
           placeholder={placeholder}
           type={type}
           disabled={disabled}
-          className="flex-1 bg-transparent focus:outline-none placeholder:text-preset-4 text-grey-900"
+          className="w-full bg-transparent py-150 pr-150 focus:outline-none placeholder:text-preset-4 text-grey-900"
         />
+
         {IconComponent && (
-          <div>
+          <div className="shrink-0 flex items-center justify-center">
             <IconComponent />
           </div>
         )}
       </div>
+
       {helperText && !errors[name] && (
         <p className="text-preset-5 text-right text-grey-500">{helperText}</p>
       )}
