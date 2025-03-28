@@ -26,6 +26,7 @@ import NetworkIcon from "./NetworkIcon";
 import PottedPlantIcon from "./PottedPlantIcon";
 import ReceiptIcon from "./ReceiptIcon";
 import ReceiptIconOutline from "./ReceiptIconOutline";
+import SortByIcon from "./SortByIcon";
 import VideoIcon from "./VideoIcon";
 import WarehouseIcon from "./WarehouseIcon";
 import WarningCircleIcon from "./WarningCircleIcon";
@@ -64,6 +65,7 @@ export const Icons = {
   MinLogo,
   CloseIcon,
   MoneyBagIcon,
+  SortByIcon
 };
 
 // export a type for better TypeScript inference

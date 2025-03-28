@@ -83,37 +83,80 @@ const Transactions = () => {
                 />
               </div>
               <div className="flex flex-1 gap-300 items-center justify-end">
-                <SelectField
-                  name="sort_by"
-                  label="Sort by"
-                  placeholder="Latest"
-                  layout="row"
-                  options={[
-                    { label: "Latest", value: "latest" },
-                    { label: "Oldest", value: "oldest" },
-                    { label: "A to Z", value: "a_to_z" },
-                    { label: "Z to A", value: "z_to_a" },
-                    { label: "Highest", value: "highest" },
-                    { label: "Lowest", value: "lowest" },
-                  ]}
-                />
-                <SelectField
-                  name="category"
-                  label="Category"
-                  placeholder="All Transactions"
-                  layout="row"
-                  options={[
-                    { label: "All Transactions", value: "all_transactions" },
-                    { label: "General", value: "general" },
-                    { label: "Entertainment", value: "entertainment" },
-                    { label: "Bills", value: "bills" },
-                    { label: "Groceries", value: "groceries" },
-                    { label: "Dining Out", value: "dining_out" },
-                    { label: "Transportation", value: "transportation" },
-                    { label: "Personal Care", value: "personal_care" },
-                    { label: "Education", value: "education" },
-                  ]}
-                />
+                <div className="hidden lg:flex">
+                  <SelectField
+                    name="sort_by"
+                    label="Sort by"
+                    placeholder="Latest"
+                    layout="row"
+                    options={[
+                      { label: "Latest", value: "latest" },
+                      { label: "Oldest", value: "oldest" },
+                      { label: "A to Z", value: "a_to_z" },
+                      { label: "Z to A", value: "z_to_a" },
+                      { label: "Highest", value: "highest" },
+                      { label: "Lowest", value: "lowest" },
+                    ]}
+                  />
+                </div>
+
+                <div className="flex lg:hidden">
+                  <SelectField
+                    name="sort_by"
+                    icon="SortByIcon"
+                    variant="icon-only"
+                    options={[
+                      { label: "Latest", value: "latest" },
+                      { label: "Oldest", value: "oldest" },
+                      { label: "A to Z", value: "a_to_z" },
+                      { label: "Z to A", value: "z_to_a" },
+                      { label: "Highest", value: "highest" },
+                      { label: "Lowest", value: "lowest" },
+                    ]}
+                  />
+                </div>
+
+                <div className="hidden lg:flex">
+                  <SelectField
+                    name="category"
+                    label="Category"
+                    placeholder="All Transactions"
+                    layout="row"
+                    options={[
+                      { label: "All Transactions", value: "all_transactions" },
+                      { label: "General", value: "general" },
+                      { label: "Entertainment", value: "entertainment" },
+                      { label: "Bills", value: "bills" },
+                      { label: "Groceries", value: "groceries" },
+                      { label: "Dining Out", value: "dining_out" },
+                      { label: "Transportation", value: "transportation" },
+                      { label: "Personal Care", value: "personal_care" },
+                      { label: "Education", value: "education" },
+                    ]}
+                  />
+                </div>
+
+                <div className="flex lg:hidden">
+                  <SelectField
+                    name="category"
+                    label="Category"
+                    icon="FilterIcon"
+                    variant="icon-only"
+                    placeholder="All Transactions"
+                    layout="row"
+                    options={[
+                      { label: "All Transactions", value: "all_transactions" },
+                      { label: "General", value: "general" },
+                      { label: "Entertainment", value: "entertainment" },
+                      { label: "Bills", value: "bills" },
+                      { label: "Groceries", value: "groceries" },
+                      { label: "Dining Out", value: "dining_out" },
+                      { label: "Transportation", value: "transportation" },
+                      { label: "Personal Care", value: "personal_care" },
+                      { label: "Education", value: "education" },
+                    ]}
+                  />
+                </div>
               </div>
             </div>
           </FormProvider>

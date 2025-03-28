@@ -17,13 +17,14 @@ interface Option {
 interface SelectFieldProps {
   name: string;
   label?: string;
+  labelIcon?: IconName;
   options: Option[];
   placeholder?: string;
   prefix?: string;
   icon?: IconName;
   helperText?: string;
   error?: string;
-  variant?: "default" | "color-selection" | "with-icons";
+  variant?: "default" | "color-selection" | "with-icons" | "icon-only";
   layout?: "row" | "column";
   disabled?: boolean;
 }
@@ -31,6 +32,7 @@ interface SelectFieldProps {
 const SelectField = ({
   name,
   label,
+  labelIcon,
   error,
   prefix,
   options,
@@ -77,40 +79,48 @@ const SelectField = ({
       } ${disabled ? "opacity-50 pointer-events-none" : ""}`}
       ref={dropdownRef}
     >
-      {label && (
-        <label className="text-preset-5 text-grey-500 font-bold">{label}</label>
+      {variant !== "icon-only" && (label || labelIcon) && (
+        <div className="font-bold text-grey-500">
+          {label && (
+            <span className="hidden lg:block text-preset-5">{label}</span>
+          )}
+          {labelIcon && (
+            <span className="block lg:hidden">
+              {Icons[labelIcon] && React.createElement(Icons[labelIcon])}
+            </span>
+          )}
+        </div>
       )}
+
       <div
-        className={`flex items-center py-150 px-250 gap-200 border rounded-lg cursor-pointer ${
-          error ? "border-secondary-red" : "border-beige-500"
-        }`}
+        className={`${
+          variant === "icon-only"
+            ? "p-0 border-none w-auto"
+            : "py-150 px-250 gap-200 border rounded-lg"
+        } flex items-center cursor-pointer`}
         onClick={() => !disabled && setOpen(!open)}
       >
         {prefix && <span className="pr-150 text-beige-500">{prefix}</span>}
 
-        <span className="flex-1 text-preset-4 flex items-center gap-150">
-          {variant === "color-selection" && selectedOption ? (
-            <>
-              <span
-                className="w-4 h-4 rounded-full"
-                style={{
-                  backgroundColor: selectedOption.color,
-                }}
-              />
-              <span className="text-grey-900">{selectedOption.label}</span>
-            </>
-          ) : (
-            <span className="text-grey-900">
-              {selectedOption?.label || placeholder}
-            </span>
-          )}
-        </span>
-
-        {IconComponent && (
-          <div>
-            <IconComponent />
-          </div>
+        {variant !== "icon-only" && (
+          <span className="flex-1 text-preset-4 flex items-center gap-150">
+            {variant === "color-selection" && selectedOption ? (
+              <>
+                <span
+                  className="w-4 h-4 rounded-full"
+                  style={{ backgroundColor: selectedOption.color }}
+                />
+                <span className="text-grey-900">{selectedOption.label}</span>
+              </>
+            ) : (
+              <span className="text-grey-900">
+                {selectedOption?.label || placeholder}
+              </span>
+            )}
+          </span>
         )}
+
+        {IconComponent && <IconComponent />}
       </div>
 
       {open && (
@@ -120,10 +130,10 @@ const SelectField = ({
 
             return (
               <li
+                key={i}
                 className={`flex items-center justify-between py-200 text-preset-4 ${
                   isDisabled ? "text-beige-500" : "text-grey-900"
                 }  border-b border-grey-100 cursor-pointer`}
-                key={i}
                 onClick={() => {
                   if (!isDisabled) {
                     setValue(name, value);
@@ -164,7 +174,7 @@ const SelectField = ({
                   <span
                     className={`${
                       isDisabled ? "text-beige-500" : "text-grey-500"
-                    }  text-sm}`}
+                    } text-sm`}
                   >
                     {isDisabled ? "Already Used" : ""}
                   </span>
