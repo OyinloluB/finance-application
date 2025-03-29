@@ -165,7 +165,7 @@ const SelectField = ({
 
       {open && (
         <ul
-          className={`absolute top-full mt-50 w-full bg-white py-150 px-250 rounded-lg shadow-lg z-10 overflow-hidden max-h-[250px] overflow-y-auto no-scrollbar ${
+          className={`absolute top-full mt-50 bg-white py-150 px-250 rounded-lg shadow-lg z-10 overflow-hidden max-h-[250px] overflow-y-auto no-scrollbar ${
             variant === "icon-only" ? "right-0 w-[180px]" : "left-0 w-full"
           }`}
         >
