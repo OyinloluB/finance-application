@@ -4,7 +4,7 @@ import { IconName, Icons } from "./icons";
 type ButtonType = "primary" | "secondary" | "tertiary" | "destroy";
 
 interface ButtonProps {
-  text: string;
+  text: string | React.ReactNode;
   type: ButtonType;
   onClick?: () => void;
   disabled?: boolean;
