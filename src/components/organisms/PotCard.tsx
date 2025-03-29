@@ -90,7 +90,7 @@ const PotCard = ({ pot }: PotCardProps) => {
   };
 
   return (
-    <div className="bg-white p-300 rounded-lg shadow-md">
+    <div className="bg-white px-300 py-300 sm:py-300 sm:px-250 rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-500">
         <h3 className="text-preset-2 font-bold text-grey-900 flex items-center">
           <span

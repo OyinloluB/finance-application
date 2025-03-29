@@ -36,7 +36,7 @@ const BudgetsOverview = () => {
         error={error}
         data={budgetsWithSpending}
       >
-        <div className="flex flex-col sm:flex-row items-center">
+        <div className="flex flex-col lg:flex-row items-center">
           <BudgetChart budgets={budgets} isLoading={false} />
           <div className="grid grid-cols-[auto-fit,minmax(200px,1fr)] gap-200 w-full">
             {budgets.slice(0, 4).map((budget) => (

@@ -34,7 +34,7 @@ const BudgetsPage = () => {
   );
 
   return (
-    <div className="flex-1 min-h-screen p-400">
+    <div className="flex-1 min-h-screen px-200 py-300 sm:px-400 sm:py-400">
       <div className="flex justify-between items-center mb-400">
         <h1 className="text-preset-1 font-bold text-grey-900">Budgets</h1>
         <Button
@@ -45,9 +45,9 @@ const BudgetsPage = () => {
       </div>
 
       <DataStateHandler isLoading={isLoading} error={error} data={budgets}>
-        <div className="flex gap-300">
+        <div className="flex flex-col sm:flex-row gap-300">
           {hasTransactions && (
-            <div className="flex-1 h-fit bg-white p-400 rounded-lg mb-400">
+            <div className="flex-1 h-fit bg-white px-250 py-300 sm:py-400 sm:px-400 rounded-lg sm:mb-400">
               <div className="mb-400">
                 <BudgetChart budgets={budgets} isLoading={isLoading} />
               </div>
@@ -73,7 +73,7 @@ const BudgetsPage = () => {
             </div>
           )}
 
-          <div className="flex-auto grid grid-cols-1 gap-400">
+          <div className="flex-auto grid grid-cols-1 sm:gap-400 gap-300">
             {budgets.map((budget) => (
               <BudgetCard key={budget.id} budget={budget} />
             ))}

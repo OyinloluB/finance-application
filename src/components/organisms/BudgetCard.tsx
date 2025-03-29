@@ -61,7 +61,7 @@ const BudgetCard = ({ budget }: BudgetCardProps) => {
   }
 
   return (
-    <div className="bg-white h-fit p-400 rounded-lg">
+    <div className="bg-white h-fit px-250 py-300 sm:py-400 sm:px-400 rounded-lg">
       <div>
         <div className="flex justify-between items-center mb-250">
           <h3 className="text-preset-2 font-bold text-grey-900 flex items-center">

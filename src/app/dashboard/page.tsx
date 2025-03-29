@@ -40,12 +40,12 @@ const Overview = () => {
               pots={data?.pots}
             />
           </div>
-          <div className="flex flex-col lg:flex-row gap-200 sm:gap-300">
-            <div className="w-full lg:w-3/5 flex flex-col gap-400">
+          <div className="flex flex-col xl:flex-row gap-200 sm:gap-300">
+            <div className="w-full xl:w-3/5 flex flex-col gap-400">
               <PotsOverview />
               <TransactionsOverview />
             </div>
-            <div className="w-full lg:w-2/5 flex flex-col gap-200 sm:gap-400">
+            <div className="w-full xl:w-2/5 flex flex-col gap-200 sm:gap-400">
               <BudgetsOverview />
               <BillsOverview />
             </div>
