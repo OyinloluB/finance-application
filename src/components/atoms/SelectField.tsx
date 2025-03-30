@@ -150,7 +150,7 @@ const SelectField = ({
       {renderLabel()}
 
       <div
-        className={`flex items-center cursor-pointer ${
+        className={`flex items-center cursor-pointer justify-between ${
           variant === "icon-only"
             ? "p-0 border-none w-auto"
             : "py-150 px-250 gap-200 border rounded-lg " +

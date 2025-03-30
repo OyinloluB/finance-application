@@ -11,7 +11,7 @@ const BillSummary = ({ bills }: BillSummaryProps) => {
   const summaryData = useMemo(() => calculateSummary(bills), [bills]);
 
   return (
-    <div className="w-1/3 flex flex-col gap-300">
+    <div className="w-full sm:w-1/3  flex flex-col sm:flex-row lg:flex-col gap-300">
       <TotalBills totalAmount={summaryData.totalAmount} />
       <SummaryList summaryData={summaryData} />
     </div>
@@ -33,7 +33,7 @@ const SummaryList = ({
 }: {
   summaryData: ReturnType<typeof calculateSummary>;
 }) => (
-  <div className="bg-white p-250 rounded-lg mb-400">
+  <div className="bg-white p-250 rounded-lg sm:mb-400">
     <h2 className="text-preset-3 text-grey-900 mb-250 font-bold">Summary</h2>
     <SummaryItem
       label="Paid Bills"

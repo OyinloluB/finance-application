@@ -13,6 +13,10 @@ import TransactionFormModal from "@/components/molecules/modal/TransactionFormMo
 import { TransactionFormData } from "@/types/transaction";
 import { transactionColumns } from "@/components/atoms/TableColumns";
 import DataStateHandler from "@/components/atoms/DataStateHandler";
+import Image from "next/image";
+import { CategoryLabels } from "@/types/categories";
+import { formatCurrency } from "@/utils/formatCurrency";
+import { DateTime } from "luxon";
 
 const Transactions = () => {
   const methods = useForm();
@@ -166,7 +170,47 @@ const Transactions = () => {
             error={error}
             data={data?.transactions}
           >
-            <Table data={data?.transactions} columns={transactionColumns} />
+            <Table
+              data={data?.transactions}
+              columns={transactionColumns}
+              renderMobileRow={(txn) => {
+                const isExpense = txn.type === "EXPENSE";
+                const amountClass =
+                  Number(txn.amount) >= 0 ? "text-green-500" : "text-grey-900";
+
+                return (
+                  <div className="flex justify-between items-center border-b border-grey-100 pb-300">
+                    <div className="flex items-center gap-150">
+                      <Image
+                        src={txn.image}
+                        alt={txn.name}
+                        width={28}
+                        height={28}
+                        className="w-10 h-10 rounded-full"
+                      />
+                      <div className="flex flex-col">
+                        <span className="text-preset-4 text-grey-900 font-bold">
+                          {isExpense ? txn.recipient.name : txn.name}
+                        </span>
+                        <span className="text-grey-500 text-preset-5">
+                          {CategoryLabels[txn.category]}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <span
+                        className={`text-preset-4 font-bold ${amountClass}`}
+                      >
+                        {formatCurrency(Number(txn.amount))}
+                      </span>
+                      <span className="text-grey-500 text-preset-5">
+                        {DateTime.fromISO(txn.date).toFormat("dd MMM yyyy")}
+                      </span>
+                    </div>
+                  </div>
+                );
+              }}
+            />
             <Pagination
               currentPage={currentPage}
               totalPages={data?.totalPages}
