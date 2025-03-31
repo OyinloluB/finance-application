@@ -9,7 +9,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     <ProtectedRoute>
       <div className="flex h-screen overflow-hidden">
         <SidebarContainer />
-        <main className="flex-1 overflow-y-auto bg-beige-100">{children}</main>
+        <main className="flex-1 overflow-y-auto bg-beige-100 pb-[80px] lg:pb-0">{children}</main>
       </div>
     </ProtectedRoute>
   );

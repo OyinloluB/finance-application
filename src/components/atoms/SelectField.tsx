@@ -4,14 +4,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { IconName, Icons } from "./icons";
 import { useController, useFormContext } from "react-hook-form";
 
-type Status = "used" | "unused";
-
 interface Option {
   label: string;
   value: string;
   color?: string;
   icon?: IconName;
-  status?: Status;
 }
 
 interface SelectFieldProps {
@@ -59,7 +56,6 @@ const SelectField = ({
         setOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -72,7 +68,6 @@ const SelectField = ({
 
   const renderSelected = () => {
     if (variant === "icon-only") return null;
-
     if (variant === "color-selection" && selectedOption) {
       return (
         <span className="flex items-center gap-150 text-preset-4 text-grey-900">
@@ -94,7 +89,6 @@ const SelectField = ({
 
   const renderLabel = () => {
     if (variant === "icon-only") return null;
-
     return (
       <div className="font-bold text-grey-500">
         {label && (
@@ -108,34 +102,24 @@ const SelectField = ({
       </div>
     );
   };
-  const renderOption = (option: Option) => {
-    const isDisabled = option.status === "used";
-    const baseClasses = `flex items-center justify-between py-200 px-200 text-preset-4 border-b border-grey-100 cursor-pointer ${
-      isDisabled ? "text-beige-500" : "text-grey-900"
-    }`;
 
+  const renderOption = (option: Option) => {
     return (
       <li
         key={option.value}
-        className={baseClasses}
-        onClick={() => !isDisabled && handleSelect(option.value)}
+        className="flex items-center justify-between py-200 px-200 text-preset-4 border-b border-grey-100 text-grey-900 cursor-pointer"
+        onClick={() => handleSelect(option.value)}
       >
         <div className="flex items-center gap-150">
           {(variant === "color-selection" || variant === "with-icons") &&
             option.color && (
               <span
-                className={`w-4 h-4 rounded-full ${
-                  isDisabled ? "opacity-25" : "opacity-100"
-                }`}
+                className="w-4 h-4 rounded-full"
                 style={{ backgroundColor: option.color }}
               />
             )}
           <span>{option.label}</span>
         </div>
-
-        {option.status && isDisabled && (
-          <span className="text-grey-500 text-sm">Already Used</span>
-        )}
       </li>
     );
   };
@@ -148,9 +132,8 @@ const SelectField = ({
       ref={dropdownRef}
     >
       {renderLabel()}
-
       <div
-        className={`flex items-center cursor-pointer justify-between ${
+        className={`flex items-center justify-between cursor-pointer ${
           variant === "icon-only"
             ? "p-0 border-none w-auto"
             : "py-150 px-250 gap-200 border rounded-lg " +
