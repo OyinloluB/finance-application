@@ -1,12 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 import { verifyToken } from "@/utils/auth";
 import { handleResponse } from "@/utils/responseHandler";
+import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
 export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const userId = await verifyToken(req);
@@ -20,8 +21,10 @@ export async function POST(
       return handleResponse(400, { error: "Invalid amount" });
     }
 
+    const potId = (await params).id;
+
     const pot = await prisma.pot.update({
-      where: { id: params.id, userId },
+      where: { id: potId, userId },
       data: {
         currentAmount: { increment: Number(amount) },
       },

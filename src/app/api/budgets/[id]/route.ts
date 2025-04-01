@@ -1,10 +1,14 @@
 import { verifyToken } from "@/utils/auth";
 import { handleResponse } from "@/utils/responseHandler";
 import { PrismaClient } from "@prisma/client";
+import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: Request, context: { params: { id: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const userId = await verifyToken(req);
 
@@ -12,7 +16,7 @@ export async function GET(req: Request, context: { params: { id: string } }) {
       return handleResponse(401, { error: "Unauthorized" });
     }
 
-    const budgetId = context.params.id;
+    const budgetId = (await params).id;
 
     const budget = await prisma.budget.findUnique({
       where: { id: budgetId, userId },
@@ -30,7 +34,10 @@ export async function GET(req: Request, context: { params: { id: string } }) {
   }
 }
 
-export async function PATCH(req: Request, context: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const userId = await verifyToken(req);
 
@@ -38,7 +45,7 @@ export async function PATCH(req: Request, context: { params: { id: string } }) {
       return handleResponse(401, { error: "Unauthorized" });
     }
 
-    const budgetId = context.params.id;
+    const budgetId = (await params).id;
     const { category, maxLimit, theme } = await req.json();
 
     const parsedMaxLimit = Number(maxLimit);
@@ -60,8 +67,8 @@ export async function PATCH(req: Request, context: { params: { id: string } }) {
 }
 
 export async function DELETE(
-  req: Request,
-  context: { params: { id: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const userId = await verifyToken(req);
@@ -70,7 +77,7 @@ export async function DELETE(
       return handleResponse(401, { error: "Unauthorized" });
     }
 
-    const budgetId = context.params.id;
+    const budgetId = (await params).id;
 
     await prisma.budget.delete({
       where: { id: budgetId, userId },
@@ -79,6 +86,6 @@ export async function DELETE(
     return handleResponse(200, { message: "Budget deleted successfully" });
   } catch (error) {
     console.error("Error deleting budget:", error);
-    handleResponse(500, { error: "Internal Server Error" });
+    return handleResponse(500, { error: "Internal Server Error" });
   }
 }
