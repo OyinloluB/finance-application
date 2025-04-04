@@ -12,6 +12,7 @@ import { TransactionFormData } from "@/types/transaction";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { transactionSchema } from "@/utils/validationSchemas";
 import { usePots } from "@/hooks/usePots";
+import useTransactionSummary from "@/hooks/useTransactionSummary";
 
 interface User {
   id: string;
@@ -34,7 +35,9 @@ const TransactionFormModal = ({
   onSubmit,
 }: TransactionFormModalProps) => {
   const { pots } = usePots();
+  const { totalIncome, totalExpenses } = useTransactionSummary();
   const totalSavings = pots.reduce((sum, pot) => sum + pot.currentAmount, 0);
+  const availableBalance = totalIncome - totalExpenses + totalSavings;
   const [generalError, setGeneralError] = useState<string | null>(null);
 
   const methods = useForm<TransactionFormData>({
@@ -62,7 +65,7 @@ const TransactionFormModal = ({
   const handleSubmitForm = handleSubmit(async (data) => {
     setGeneralError(null);
 
-    if (data.type === "EXPENSE" && data.amount > totalSavings) {
+    if (data.type === "EXPENSE" && data.amount > availableBalance) {
       setGeneralError(
         "Insufficient savings. Add more funds to a pot or reduce your expense amount."
       );

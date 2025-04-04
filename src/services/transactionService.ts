@@ -53,7 +53,7 @@ export const fetchTransactions = async (params?: {
     category: params?.category || "all_transactions",
     sortBy: params?.sortBy || "latest",
   });
-  
+
   const response = await fetch(`${API_BASE_URL}?${queryParams}`, {
     method: "GET",
     headers: {
@@ -67,4 +67,21 @@ export const fetchTransactions = async (params?: {
 
   const data = await response.json();
   return data ?? [];
+};
+
+export const fetchTransactionSummary = async () => {
+  const token = await getUserIdToken();
+
+  const response = await fetch(`${API_BASE_URL}/summary`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch transaction summary");
+  }
+
+  return response.json();
 };
