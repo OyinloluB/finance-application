@@ -34,6 +34,14 @@ export async function POST(req: Request) {
       }
     }
 
+    // If it's an expense, update the associated budget
+    const budget = await prisma.budget.findFirst({
+      where: {
+        userId,
+        category: category.toUpperCase(),
+      },
+    });
+
     const transaction = await prisma.transaction.create({
       data: {
         name: user.name || "Test User",
@@ -44,14 +52,7 @@ export async function POST(req: Request) {
         recipientId: recipientUser ? recipientUser.id : null,
         userId,
         image: user.image,
-      },
-    });
-
-    // If it's an expense, update the associated budget
-    const budget = await prisma.budget.findFirst({
-      where: {
-        userId,
-        category: category.toUpperCase(),
+        budgetId: budget?.id ?? null,
       },
     });
 
