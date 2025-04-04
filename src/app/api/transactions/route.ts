@@ -112,7 +112,7 @@ export async function GET(req: Request) {
       where: whereClause,
       include: {
         user: { select: { image: true, name: true } },
-        recipient: { select: { name: true } },
+        recipient: { select: { name: true, image: true } },
       },
       orderBy: orderByOptions[sortBy] || { date: "desc" },
     });
@@ -133,7 +133,10 @@ export async function GET(req: Request) {
       transactions: paginatedTransactions.map((tx) => ({
         ...tx,
         name: tx.type === "EXPENSE" ? tx.recipient?.name || tx.name : tx.name,
-        image: tx.user?.image,
+        image:
+          tx.type === "EXPENSE"
+            ? tx.recipient?.image || tx.user?.image
+            : tx.user?.image,
       })),
       totalCount: filteredTransactions.length,
       totalPages: Math.ceil(filteredTransactions.length / limit),
