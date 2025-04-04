@@ -55,7 +55,7 @@ export async function POST(req: Request) {
         },
       });
     }
-
+    console.log({ budget });
     return handleResponse(201, budget);
   } catch (error) {
     console.error("Error creating budget:", error);

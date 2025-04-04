@@ -90,6 +90,8 @@ enum CategoryType {
   BILLS
   ENTERTAINMENT
   PERSONAL_CARE
+  TRANSPORTATION
+  EDUCATION
 }
 
 enum FrequencyType {

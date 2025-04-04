@@ -17,6 +17,6 @@ export const CategoryLabels: Record<string, string> = {
   BILLS: "Bills",
   ENTERTAINMENT: "Entertainment",
   PERSONAL_CARE: "Personal Care",
-  TRANSPORTATION: "transportation",
-  EDUCATION: "education",
+  TRANSPORTATION: "Transportation",
+  EDUCATION: "Education",
 };

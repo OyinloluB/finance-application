@@ -12,13 +12,11 @@ export async function POST(req: Request) {
     }
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
-
     if (!user) {
       return handleResponse(404, { error: "User not found" });
     }
 
     const { amount, category, date, type, recipientId } = await req.json();
-
     if (!amount || !category || !date || !type) {
       return handleResponse(400, { error: "Missing required fields" });
     }
@@ -34,7 +32,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // If it's an expense, update the associated budget
+    // check if there's an existing budget for this category
     const budget = await prisma.budget.findFirst({
       where: {
         userId,
@@ -56,6 +54,7 @@ export async function POST(req: Request) {
       },
     });
 
+    // update budget if this was an expense
     if (budget && type === "EXPENSE") {
       await prisma.budget.update({
         where: { id: budget.id },
