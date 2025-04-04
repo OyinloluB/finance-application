@@ -12,6 +12,8 @@ const Pagination = ({
   totalPages,
   onPageChange,
 }: PaginationProps) => {
+  if (totalPages <= 1) return null;
+
   const createButton = (page: number, isActive = false) => (
     <Button
       key={page}

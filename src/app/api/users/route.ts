@@ -8,6 +8,15 @@ const profileImages = [
   "/images/profile-one.png",
   "/images/profile-two.png",
   "/images/profile-three.png",
+  "/images/profile-one.png",
+  "/images/profile-two.png",
+  "/images/profile-three.png",
+  "/images/profile-one.png",
+  "/images/profile-two.png",
+  "/images/profile-three.png",
+  "/images/profile-one.png",
+  "/images/profile-two.png",
+  "/images/profile-three.png",
 ];
 
 const defaultBills = [

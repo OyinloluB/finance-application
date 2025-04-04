@@ -24,8 +24,9 @@ const Button = ({
   hideOutline = false,
   disabled,
 }: ButtonProps) => {
-  const baseStyles =
-    "p-200 text-preset-4 text-center rounded-md transition-all duration-200 cursor-pointer box-border flex items-center justify-center gap-200";
+  const baseStyles = `p-200 text-preset-4 text-center rounded-md transition-all duration-200 box-border flex items-center justify-center gap-200 ${
+    disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : "cursor-pointer"
+  }`;
 
   const buttonStyles = {
     primary: "bg-grey-900 text-white hover:bg-grey-500 font-bold",
