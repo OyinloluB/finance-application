@@ -107,6 +107,10 @@ const AuthForm = ({ type }: AuthFormProps) => {
               {type === "signup" ? "Login" : "Sign Up"}
             </a>
           </p>
+          <div className="flex flex-col text-preset-5 text-center text-grey-500 mt-250">
+            <span className="font-bold">Test Email:</span> demo@gmail.com
+            <span className="font-bold">Test Password:</span> demo12345
+          </div>
         </form>
       </div>
     </FormProvider>
