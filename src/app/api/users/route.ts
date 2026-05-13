@@ -89,8 +89,12 @@ export async function POST(req: Request) {
     const randomImage =
       profileImages[Math.floor(Math.random() * profileImages.length)];
 
-    const user = await prisma.user.create({
-      data: {
+    const existingUser = await prisma.user.findUnique({ where: { id } });
+
+    const user = await prisma.user.upsert({
+      where: { id },
+      update: {},
+      create: {
         id,
         email,
         name,
@@ -98,15 +102,17 @@ export async function POST(req: Request) {
       },
     });
 
-    const billCreationPromises = defaultBills.map((bill) =>
-      prisma.recurringBill.create({
-        data: {
-          ...bill,
-          userId: user.id,
-        },
-      })
-    );
-    await Promise.all(billCreationPromises);
+    if (!existingUser) {
+      const billCreationPromises = defaultBills.map((bill) =>
+        prisma.recurringBill.create({
+          data: {
+            ...bill,
+            userId: user.id,
+          },
+        })
+      );
+      await Promise.all(billCreationPromises);
+    }
 
     return handleResponse(201, { user });
   } catch (error) {

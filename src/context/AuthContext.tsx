@@ -36,7 +36,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [firebaseError, setFirebaseError] = useState<string | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const token = await firebaseUser.getIdToken();
+        await fetch("/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            id: firebaseUser.uid,
+            email: firebaseUser.email,
+            name: firebaseUser.displayName || "",
+          }),
+        });
+      }
       setUser(firebaseUser);
       setLoading(false);
     });
@@ -78,7 +93,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setFirebaseError(null);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const firebaseUser = userCredential.user;
+      const token = await firebaseUser.getIdToken();
+
+      await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id: firebaseUser.uid,
+          email: firebaseUser.email,
+          name: firebaseUser.displayName || "",
+        }),
+      });
     } catch (error) {
       setFirebaseError(getFirebaseErrorMessage(error));
       throw error;
